@@ -13,6 +13,5 @@ namespace Shopeee.Models
         Pants = 2,
         Socks = 3,
         Shoes = 4,
-
     }
 }
