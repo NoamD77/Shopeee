@@ -15,5 +15,7 @@ namespace Shopeee.Data
         }
 
         public DbSet<Shopeee.Models.User> User { get; set; }
+
+        public DbSet<Shopeee.Models.ShoppingCart> ShoppingCart { get; set; }
     }
 }
