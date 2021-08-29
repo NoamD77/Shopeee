@@ -20,9 +20,10 @@ namespace Shopeee.Models
         public ColorType Color { get; set; }
 
 
-        public List<Branch> BranchAvailabilty { get; set; }
+        //public ICollection<Branch> BranchAvailabilty { get; set; }
+
         [ForeignKey("Brand")]
-        public int BrandID { get; set; }
-        public Brand Brand { get; set; }
+        public int BrandId { get; set; }
+        public virtual Brand Brand { get; set; }
     }
 }

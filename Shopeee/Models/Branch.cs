@@ -17,7 +17,7 @@ namespace Shopeee.Models
         [DataType(DataType.Time)]
         public int OpenHours { get; set; }
 
-        public List<Item> ItemStock { get; set; }
+        //public ICollection<Item> ItemStock { get; set; }
 
     }
 }
