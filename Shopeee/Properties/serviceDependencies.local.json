@@ -11,6 +11,11 @@
       "type": "mssql.onprem",
       "connectionId": "ShopeeeContext",
       "secretStore": "LocalSecretsFile"
+    },
+    "mssql3": {
+      "type": "mssql.onprem",
+      "connectionId": "ConnectionStrings:ShopeeeContext",
+      "secretStore": "LocalSecretsFile"
     }
   }
 }
