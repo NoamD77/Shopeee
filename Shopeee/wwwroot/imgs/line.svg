@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1" height="20" viewBox="0 0 1 20">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+        stroke: rgba(0,0,0,0.27);
+      }
+    </style>
+  </defs>
+  <line id="Line_1" data-name="Line 1" class="cls-1" y2="20" transform="translate(0.5)"/>
+</svg>
