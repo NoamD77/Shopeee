@@ -56,8 +56,8 @@ body {
     }
 
 .user-connected {
-display: flex;
-/*    display: none;*/
+/*display: flex;*/
+    display: none;
     justify-content: center;
     align-items: center;
 }
@@ -72,8 +72,8 @@ display: flex;
 }
 
 .user-disconnected {
-/*    display: flex;*/
-display: none;
+    display: flex;
+/*display: none;*/
     justify-content: center;
     align-items: center;
 }

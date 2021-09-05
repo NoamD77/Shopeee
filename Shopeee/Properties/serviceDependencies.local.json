@@ -5,11 +5,20 @@
       "connectionId": "ShopeeeContext"
     },
     "secrets1": {
-      "type": "secrets.user"
+      "resourceId": null,
+      "type": "secrets.user",
+      "connectionId": null,
+      "secretStore": null
     },
     "mssql2": {
+      "resourceId": null,
       "type": "mssql.onprem",
       "connectionId": "ShopeeeContext",
+      "secretStore": "LocalSecretsFile"
+    },
+    "mssql3": {
+      "type": "mssql.onprem",
+      "connectionId": "ConnectionStrings:ShopeeeContext",
       "secretStore": "LocalSecretsFile"
     }
   }
