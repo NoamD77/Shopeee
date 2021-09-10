@@ -22,7 +22,8 @@ namespace Shopeee.Controllers
         // GET: Permissions
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Permissions.ToListAsync());
+            var shopeeeContext = _context.Permissions.Include(p => p.User);
+            return View(await shopeeeContext.ToListAsync());
         }
 
         // GET: Permissions/Details/5
@@ -34,7 +35,8 @@ namespace Shopeee.Controllers
             }
 
             var permissions = await _context.Permissions
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .Include(p => p.User)
+                .FirstOrDefaultAsync(m => m.UserId == id);
             if (permissions == null)
             {
                 return NotFound();
@@ -46,6 +48,7 @@ namespace Shopeee.Controllers
         // GET: Permissions/Create
         public IActionResult Create()
         {
+            ViewData["UserId"] = new SelectList(_context.User, "Id", "Email");
             return View();
         }
 
@@ -54,7 +57,7 @@ namespace Shopeee.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Privilege")] Permissions permissions)
+        public async Task<IActionResult> Create([Bind("UserId,Privilege")] Permissions permissions)
         {
             if (ModelState.IsValid)
             {
@@ -62,6 +65,7 @@ namespace Shopeee.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["UserId"] = new SelectList(_context.User, "Id", "Email", permissions.UserId);
             return View(permissions);
         }
 
@@ -78,6 +82,7 @@ namespace Shopeee.Controllers
             {
                 return NotFound();
             }
+            ViewData["UserId"] = new SelectList(_context.User, "Id", "Email", permissions.UserId);
             return View(permissions);
         }
 
@@ -86,9 +91,9 @@ namespace Shopeee.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Privilege")] Permissions permissions)
+        public async Task<IActionResult> Edit(int id, [Bind("UserId,Privilege")] Permissions permissions)
         {
-            if (id != permissions.Id)
+            if (id != permissions.UserId)
             {
                 return NotFound();
             }
@@ -102,7 +107,7 @@ namespace Shopeee.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!PermissionsExists(permissions.Id))
+                    if (!PermissionsExists(permissions.UserId))
                     {
                         return NotFound();
                     }
@@ -113,6 +118,7 @@ namespace Shopeee.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["UserId"] = new SelectList(_context.User, "Id", "Email", permissions.UserId);
             return View(permissions);
         }
 
@@ -125,7 +131,8 @@ namespace Shopeee.Controllers
             }
 
             var permissions = await _context.Permissions
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .Include(p => p.User)
+                .FirstOrDefaultAsync(m => m.UserId == id);
             if (permissions == null)
             {
                 return NotFound();
@@ -147,7 +154,7 @@ namespace Shopeee.Controllers
 
         private bool PermissionsExists(int id)
         {
-            return _context.Permissions.Any(e => e.Id == id);
+            return _context.Permissions.Any(e => e.UserId == id);
         }
     }
 }
