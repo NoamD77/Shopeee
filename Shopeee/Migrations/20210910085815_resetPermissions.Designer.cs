@@ -10,8 +10,8 @@ using Shopeee.Data;
 namespace Shopeee.Migrations
 {
     [DbContext(typeof(ShopeeeContext))]
-    [Migration("20210831162601_UpdatedUsers")]
-    partial class UpdatedUsers
+    [Migration("20210910085815_resetPermissions")]
+    partial class resetPermissions
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -114,7 +114,12 @@ namespace Shopeee.Migrations
                     b.Property<int>("Privilege")
                         .HasColumnType("int");
 
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Permissions");
                 });
@@ -167,9 +172,6 @@ namespace Shopeee.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Permissions")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -186,6 +188,13 @@ namespace Shopeee.Migrations
                         .HasForeignKey("BrandId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Shopeee.Models.Permissions", b =>
+                {
+                    b.HasOne("Shopeee.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
                 });
 #pragma warning restore 612, 618
         }

@@ -6,6 +6,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20210910103616_resetPermissions3.cs" />
+    <Compile Remove="Migrations\20210910103616_resetPermissions3.Designer.cs" />
+    <Compile Remove="Migrations\20210910103830_resetPermissions3.cs" />
+    <Compile Remove="Migrations\20210910103830_resetPermissions3.Designer.cs" />
+    <Compile Remove="Migrations\20210910104339_resetPermissions3.cs" />
+    <Compile Remove="Migrations\20210910104339_resetPermissions3.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.15" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.15" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.15">

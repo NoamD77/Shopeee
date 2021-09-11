@@ -43,28 +43,6 @@ namespace Shopeee.Controllers
             return View(user);
         }
 
-        // GET: Users/Register
-        public IActionResult Register()
-        {
-            return View();
-        }
-
-        // POST: Users/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register([Bind("Id,FirstName,LastName,UserName,Password,Email")] User user)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(user);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(user);
-        }
-
         // GET: Users/Create
         public IActionResult Create()
         {
@@ -76,7 +54,7 @@ namespace Shopeee.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,UserName,Password,Email,Permissions")] User user)
+        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,UserName,Password,Email,BirthDate")] User user)
         {
             if (ModelState.IsValid)
             {
@@ -108,7 +86,7 @@ namespace Shopeee.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,UserName,Password,eMail,Permissions")] User user)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,UserName,Password,Email,BirthDate")] User user)
         {
             if (id != user.Id)
             {

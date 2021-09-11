@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -31,9 +30,7 @@ namespace Shopeee.Models
         [Required]
         [Display(Name = "Birth Date")]
         public DateTime BirthDate { get; set; }
-
-
-
-        public String Permissions { get; set; }
+        [ForeignKey("Permissions")]
+        public virtual Permissions Permissions { get; set; }
     }
 }
