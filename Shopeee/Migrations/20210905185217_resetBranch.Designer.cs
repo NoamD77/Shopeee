@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Shopeee.Data;
 
 namespace Shopeee.Migrations
 {
     [DbContext(typeof(ShopeeeContext))]
-    partial class ShopeeeContextModelSnapshot : ModelSnapshot
+    [Migration("20210905185217_resetBranch")]
+    partial class resetBranch
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,17 +31,14 @@ namespace Shopeee.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("CloseHours")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Location")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("OpenHours")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("OpenHours")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
