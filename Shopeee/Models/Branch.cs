@@ -15,7 +15,21 @@ namespace Shopeee.Models
         
 
         [DataType(DataType.Time)]
-        public int OpenHours { get; set; }
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:HH:mm}")]
+        public String OpenHours { get; set; }
+
+        [DataType(DataType.Time)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:HH:mm}")]
+        public String CloseHours { get; set; }
+
+        public String WorkHours
+        {
+            get
+            {
+                return OpenHours + " - " + CloseHours;
+            }
+
+        }
 
         //public ICollection<Item> ItemStock { get; set; }
 

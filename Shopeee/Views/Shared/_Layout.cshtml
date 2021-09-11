@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Shopeee</title>
-    @* <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />*@
+     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,7 +13,7 @@
 <body>
     <header>
         <nav class="border-bottom box-shadow">
-            <div class="container">
+            <div class="header-container">
                 <div class="blank-div">
                 </div>
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Shopeee.</a>
@@ -59,7 +59,7 @@
         </div>
     </header>
 
-    <div class="container">
+    <div class="body-container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>

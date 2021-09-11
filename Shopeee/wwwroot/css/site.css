@@ -20,7 +20,7 @@ body {
     line-height: 60px; /* Vertically center the text there */
 }
 
-.container {
+.header-container {
     width: 100%;
     height: 20%;
     display: grid;
@@ -35,6 +35,7 @@ body {
 
 .navbar-nav {
     display: flex;
+    flex-direction:row;
     justify-content: center;
     list-style-type: none;
 }
@@ -56,7 +57,7 @@ body {
     }
 
 .user-connected {
-/*display: flex;*/
+    /*display: flex;*/
     display: none;
     justify-content: center;
     align-items: center;
@@ -73,7 +74,7 @@ body {
 
 .user-disconnected {
     display: flex;
-/*display: none;*/
+    /*display: none;*/
     justify-content: center;
     align-items: center;
 }
@@ -84,7 +85,6 @@ body {
         padding: 5px 15px;
         font-size: 19px;
         margin-right: 30px;
-
     }
 
 .btn-sign-in {
@@ -122,6 +122,11 @@ a.navbar-brand {
 .box-shadow {
     box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
 }
+
+.body-container{
+    margin-top: 40px;
+}
+
 
 /* Provide sufficient contrast against white background */
 /*a {
