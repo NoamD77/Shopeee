@@ -11,10 +11,6 @@
     "mssql2": {
       "type": "mssql",
       "connectionId": "ShopeeeContext"
-    },
-    "mssql3": {
-      "type": "mssql",
-      "connectionId": "ConnectionStrings:ShopeeeContext"
     }
   }
 }

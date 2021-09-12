@@ -20,13 +20,10 @@ namespace Shopeee.Controllers
         }
 
         // GET: ShoppingCarts
-        public IActionResult ShoppingCart()
-        {
-            return View();
-        }
         public async Task<IActionResult> Index()
         {
-            return View(await _context.ShoppingCart.ToListAsync());
+            var shopeeeContext = _context.ShoppingCart.Include(s => s.Item).Include(s => s.User);
+            return View(await shopeeeContext.ToListAsync());
         }
 
         // GET: ShoppingCarts/Details/5
@@ -38,7 +35,9 @@ namespace Shopeee.Controllers
             }
 
             var shoppingCart = await _context.ShoppingCart
-                .FirstOrDefaultAsync(m => m.CartId == id);
+                .Include(s => s.Item)
+                .Include(s => s.User)
+                .FirstOrDefaultAsync(m => m.CartID == id);
             if (shoppingCart == null)
             {
                 return NotFound();
@@ -50,6 +49,8 @@ namespace Shopeee.Controllers
         // GET: ShoppingCarts/Create
         public IActionResult Create()
         {
+            ViewData["ItemId"] = new SelectList(_context.Item, "Id", "Id");
+            ViewData["UserId"] = new SelectList(_context.User, "Id", "Email");
             return View();
         }
 
@@ -58,7 +59,7 @@ namespace Shopeee.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CartId,UserID,ProductID,Quantity")] ShoppingCart shoppingCart)
+        public async Task<IActionResult> Create([Bind("CartID,UserId,ItemId,TotalPrice,Quantity")] ShoppingCart shoppingCart)
         {
             if (ModelState.IsValid)
             {
@@ -66,6 +67,8 @@ namespace Shopeee.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["ItemId"] = new SelectList(_context.Item, "Id", "Id", shoppingCart.ItemId);
+            ViewData["UserId"] = new SelectList(_context.User, "Id", "Email", shoppingCart.UserId);
             return View(shoppingCart);
         }
 
@@ -82,6 +85,8 @@ namespace Shopeee.Controllers
             {
                 return NotFound();
             }
+            ViewData["ItemId"] = new SelectList(_context.Item, "Id", "Id", shoppingCart.ItemId);
+            ViewData["UserId"] = new SelectList(_context.User, "Id", "Email", shoppingCart.UserId);
             return View(shoppingCart);
         }
 
@@ -90,9 +95,9 @@ namespace Shopeee.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CartId,UserID,ProductID,Quantity")] ShoppingCart shoppingCart)
+        public async Task<IActionResult> Edit(int id, [Bind("CartID,UserId,ItemId,TotalPrice,Quantity")] ShoppingCart shoppingCart)
         {
-            if (id != shoppingCart.CartId)
+            if (id != shoppingCart.CartID)
             {
                 return NotFound();
             }
@@ -106,7 +111,7 @@ namespace Shopeee.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ShoppingCartExists(shoppingCart.CartId))
+                    if (!ShoppingCartExists(shoppingCart.CartID))
                     {
                         return NotFound();
                     }
@@ -117,6 +122,8 @@ namespace Shopeee.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["ItemId"] = new SelectList(_context.Item, "Id", "Id", shoppingCart.ItemId);
+            ViewData["UserId"] = new SelectList(_context.User, "Id", "Email", shoppingCart.UserId);
             return View(shoppingCart);
         }
 
@@ -129,7 +136,9 @@ namespace Shopeee.Controllers
             }
 
             var shoppingCart = await _context.ShoppingCart
-                .FirstOrDefaultAsync(m => m.CartId == id);
+                .Include(s => s.Item)
+                .Include(s => s.User)
+                .FirstOrDefaultAsync(m => m.CartID == id);
             if (shoppingCart == null)
             {
                 return NotFound();
@@ -151,7 +160,7 @@ namespace Shopeee.Controllers
 
         private bool ShoppingCartExists(int id)
         {
-            return _context.ShoppingCart.Any(e => e.CartId == id);
+            return _context.ShoppingCart.Any(e => e.CartID == id);
         }
     }
 }

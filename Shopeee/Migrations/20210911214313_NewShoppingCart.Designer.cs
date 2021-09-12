@@ -10,8 +10,8 @@ using Shopeee.Data;
 namespace Shopeee.Migrations
 {
     [DbContext(typeof(ShopeeeContext))]
-    [Migration("20210905185217_resetBranch")]
-    partial class resetBranch
+    [Migration("20210911214313_NewShoppingCart")]
+    partial class NewShoppingCart
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -31,14 +31,17 @@ namespace Shopeee.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("CloseHours")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Location")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("OpenHours")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("OpenHours")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -106,17 +109,43 @@ namespace Shopeee.Migrations
 
             modelBuilder.Entity("Shopeee.Models.Permissions", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
                     b.Property<int>("Privilege")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("UserId");
 
                     b.ToTable("Permissions");
+                });
+
+            modelBuilder.Entity("Shopeee.Models.ShoppingCart", b =>
+                {
+                    b.Property<int>("CartID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ItemId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<float>("TotalPrice")
+                        .HasColumnType("real");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CartID");
+
+                    b.HasIndex("ItemId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ShoppingCart");
                 });
 
             modelBuilder.Entity("Shopeee.Models.User", b =>
@@ -145,9 +174,6 @@ namespace Shopeee.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Permissions")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -162,6 +188,30 @@ namespace Shopeee.Migrations
                     b.HasOne("Shopeee.Models.Brand", "Brand")
                         .WithMany("BrandItems")
                         .HasForeignKey("BrandId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Shopeee.Models.Permissions", b =>
+                {
+                    b.HasOne("Shopeee.Models.User", "User")
+                        .WithOne("Permissions")
+                        .HasForeignKey("Shopeee.Models.Permissions", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Shopeee.Models.ShoppingCart", b =>
+                {
+                    b.HasOne("Shopeee.Models.Item", "Item")
+                        .WithMany()
+                        .HasForeignKey("ItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Shopeee.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

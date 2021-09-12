@@ -16,8 +16,6 @@ namespace Shopeee.Data
 
         public DbSet<Shopeee.Models.User> User { get; set; }
 
-        public DbSet<Shopeee.Models.ShoppingCart> ShoppingCart { get; set; }
-
         public DbSet<Shopeee.Models.Brand> Brand { get; set; }
 
         public DbSet<Shopeee.Models.Item> Item { get; set; }
@@ -25,5 +23,7 @@ namespace Shopeee.Data
         public DbSet<Shopeee.Models.Branch> Branch { get; set; }
 
         public DbSet<Shopeee.Models.Permissions> Permissions { get; set; }
+
+        public DbSet<Shopeee.Models.ShoppingCart> ShoppingCart { get; set; }
     }
 }
