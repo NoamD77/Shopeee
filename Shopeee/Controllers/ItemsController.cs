@@ -48,7 +48,7 @@ namespace Shopeee.Controllers
         // GET: Items/Create
         public IActionResult Create()
         {
-            ViewData["BrandId"] = new SelectList(_context.Brand, "Id", "Id");
+            ViewData["BrandId"] = new SelectList(_context.Brand, "Id", "Name");
             return View();
         }
 
@@ -65,7 +65,7 @@ namespace Shopeee.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BrandId"] = new SelectList(_context.Brand, "Id", "Id", item.BrandId);
+            ViewData["BrandId"] = new SelectList(_context.Brand, "Id", "Name", item.BrandId);
             return View(item);
         }
 
@@ -82,7 +82,7 @@ namespace Shopeee.Controllers
             {
                 return NotFound();
             }
-            ViewData["BrandId"] = new SelectList(_context.Brand, "Id", "Id", item.BrandId);
+            ViewData["BrandId"] = new SelectList(_context.Brand, "Id", "Name", item.BrandId);
             return View(item);
         }
 
@@ -118,7 +118,7 @@ namespace Shopeee.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BrandId"] = new SelectList(_context.Brand, "Id", "Id", item.BrandId);
+            ViewData["BrandId"] = new SelectList(_context.Brand, "Id", "Name", item.BrandId);
             return View(item);
         }
 

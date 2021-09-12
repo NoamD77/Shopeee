@@ -9,9 +9,9 @@ namespace Shopeee.Models
     public enum ItemType
     {
         [Display(Name = "Shirt")]
-        Shirt = 1,
-        Pants = 2,
-        Socks = 3,
-        Shoes = 4,
+        Shirt = 0,
+        Pants = 1,
+        Socks = 2,
+        Shoes = 3,
     }
 }
