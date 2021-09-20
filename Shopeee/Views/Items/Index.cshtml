@@ -14,6 +14,23 @@
     <a asp-action="Create">Create New</a>
 </p>
 
+<div class="grid-container">
+    @foreach (var item in Model)
+    {
+    <div class="card">
+        <a asp-action="Details" asp-route-id="@item.Id">
+            <img src="~/imgs/@Html.DisplayFor(modelItem =>item.Picture)" style="width:100%">
+        </a>
+        <a asp-action="Details" asp-route-id="@item.Id">
+            <p>@Html.DisplayFor(modelItem => item.Name)</p>
+        </a>
+        <p class="price">$@Html.DisplayFor(modelItem => item.Price)</p>
+        @*<p>@Html.DisplayFor(modelItem => item.Description)</p>*@
+        <p><button>Buy Now</button></p>
+    </div>
+    }
+</div>
+
     @*@{ var count = Model.Count();
         var col = 4;
         var row = count / col;
@@ -35,18 +52,6 @@
         </tr>
             }
         }*@
-<div class="grid-container">
-    @foreach (var item in Model)
-    {
-        <div class="card">
-            <img src="~/imgs/@Html.DisplayFor(modelItem =>item.Picture)" style="width:100%">
-            <p>@Html.DisplayFor(modelItem => item.Name)</p>
-            <p class="price">$@Html.DisplayFor(modelItem => item.Price)</p>
-            <p>@Html.DisplayFor(modelItem => item.Description)</p>
-            <p><button>Buy Now</button></p>
-        </div>
-    }
-</div>
 
     @*<table class="table">
             <thead>
