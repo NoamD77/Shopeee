@@ -10,6 +10,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Shopeee.Data;
+using Shopeee.Models;
+using Microsoft.AspNetCore.Identity;
+using Shopeee.Areas.Identity;
 
 namespace Shopeee
 {
@@ -29,6 +32,10 @@ namespace Shopeee
 
             services.AddDbContext<ShopeeeContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("ShopeeeContext")));
+
+
+            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                 .AddEntityFrameworkStores<ShopeeeContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,6 +56,7 @@ namespace Shopeee
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -56,6 +64,7 @@ namespace Shopeee
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapRazorPages();
             });
         }
     }

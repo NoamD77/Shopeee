@@ -13,20 +13,22 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using Shopeee.Areas.Identity;
+using Shopeee.Data;
 
 namespace Shopeee.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class RegisterModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
 
         public RegisterModel(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager,
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender)
         {
@@ -46,9 +48,26 @@ namespace Shopeee.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required]
+            [Display(Name = "First Name")]
+            public String FirstName { get; set; }
+            [Required]
+            [Display(Name = "Last Name")]
+            public String LastName { get; set; }
+            [Required]
+            [Display(Name = "User Name")]
+            [Remote("IsUserNameExist", "ApplicationUser", HttpMethod = "POST", ErrorMessage = "Username already registerd.")]
+            public String UserName { get; set; }
+
+            [Required]
             [EmailAddress]
             [Display(Name = "Email")]
+            [Remote("IsEmailExist", "ApplicationUser", HttpMethod = "POST", ErrorMessage = "Email already registerd.")]
             public string Email { get; set; }
+
+            [Required]
+            [DataType(DataType.Date)]
+            [Display(Name = "Birth Date")]
+            public DateTime BirthDate { get; set; }
 
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
@@ -74,7 +93,15 @@ namespace Shopeee.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser { UserName = Input.Email, Email = Input.Email };
+                var user = new ApplicationUser
+                {
+                    FirstName = Input.FirstName,
+                    LastName = Input.LastName,
+                    UserName = Input.UserName,
+                    Email = Input.Email,
+                    BirthDate = Input.BirthDate
+                };
+                
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {

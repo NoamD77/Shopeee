@@ -4,10 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Shopeee.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Shopeee.Areas.Identity;
 
 namespace Shopeee.Data
 {
-    public class ShopeeeContext : DbContext
+    public class ShopeeeContext : IdentityDbContext<ApplicationUser>
     {
         public ShopeeeContext (DbContextOptions<ShopeeeContext> options)
             : base(options)
