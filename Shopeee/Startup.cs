@@ -13,6 +13,7 @@ using Shopeee.Data;
 using Shopeee.Models;
 using Microsoft.AspNetCore.Identity;
 using Shopeee.Areas.Identity;
+using Shopeee.Areas.Identity.Models;
 
 namespace Shopeee
 {
@@ -34,8 +35,15 @@ namespace Shopeee
                     options.UseSqlServer(Configuration.GetConnectionString("ShopeeeContext")));
 
 
-            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                 .AddEntityFrameworkStores<ShopeeeContext>();
+            //services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
+            //     .AddEntityFrameworkStores<ShopeeeContext>();
+
+            services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
+            {
+                options.User.RequireUniqueEmail = true;
+                options.Password.RequireNonAlphanumeric = false;
+            })
+                .AddEntityFrameworkStores<ShopeeeContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
