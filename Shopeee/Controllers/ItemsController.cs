@@ -74,13 +74,50 @@ namespace Shopeee.Controllers
             if (ModelState.IsValid){
                 if (postedFiles.Count != 0)
                 {
-                    //save images to local folder just for backup
-                    saveImageLocally(postedFiles[0]);
+                    string ext = Path.GetExtension(postedFiles[0].FileName);
+                    //if (postedFiles[0].ContentType.ToLower().StartsWith("image/"))
+                    // Check whether the selected file is image
+                    //{
+                    //    byte[] b;
+                    //    using (BinaryReader br = new BinaryReader(postedFiles[0].OpenReadStream()))
+                    //    {
+                    //        b = br.ReadBytes((int)postedFiles[0].OpenReadStream().Length);
+                    //        // Convert the image in to bytes
+                    //    }
+                    //    Response.StatusCode = 200;
+                    //}
+                    bool check = false;
+                    using (var reader = new BinaryReader(postedFiles[0].OpenReadStream()))
+                    {
+                        var signatures = Signatures._fileSignature[ext];
+                        var headerBytes = reader.ReadBytes(signatures.Max(m => m.Length));
 
-                    //upload images to ftp server
-                    uploadPicture(postedFiles[0]);
+                        check = signatures.Any(signature => headerBytes.Take(signature.Length).SequenceEqual(signature));
+                    }
+                    if (check)
+                    {
+                        try
+                        {
+                        //save images to local folder just for backup
+                        saveImageLocally(postedFiles[0]);
 
-                    item.Picture = Path.GetFileName(postedFiles[0].FileName);
+                        //upload images to ftp server
+                        uploadPicture(postedFiles[0]);
+
+                        item.Picture = Path.GetFileName(postedFiles[0].FileName);
+                        }
+                        catch(Exception e)
+                        {
+                            ViewBag.ErrorMessage = "Connection Timeout";
+                            ViewData["BrandId"] = new SelectList(_context.Brand, "Id", "Name", item.BrandId);
+                            return View(item);
+                        }
+                    }
+                    else { 
+                        ViewBag.ErrorMessage = "Not an image";
+                        ViewData["BrandId"] = new SelectList(_context.Brand, "Id", "Name", item.BrandId);
+                        return View(item);
+                    }
                 }
                 _context.Add(item);
                 await _context.SaveChangesAsync();
@@ -192,6 +229,14 @@ namespace Shopeee.Controllers
         private bool ItemExists(int id)
         {
             return _context.Item.Any(e => e.Id == id);
+        }
+
+        private byte[] ConvertToBytes(IFormFile image)
+        {
+            byte[] CoverImageBytes = null;
+            BinaryReader reader = new BinaryReader(image.OpenReadStream());
+            CoverImageBytes = reader.ReadBytes((int)image.Length);
+            return CoverImageBytes;
         }
 
         private void saveImageLocally(IFormFile file)

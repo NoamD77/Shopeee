@@ -14,5 +14,7 @@ namespace Shopeee.Class
         public static readonly string ftpServerUsername = "unthinkable-surface";
 
         public static readonly string ftpServerPassword = "Aa123456";
+
+        public static readonly string[] permittedExtensions = { ".jpg", ".jpeg", ".svg", ".webp", ".bmp" };
     }
 }
