@@ -33,10 +33,10 @@ namespace Shopeee.Controllers
                             where s.UserId == shoppingCart.User.Id
                             select i;
 
-            //var shopeeeContext = _context.ShoppingCart
-            //    .Include(s => s.Item)
-            //    .Include(s => s.User);
-            return View(await bagitems.ToListAsync());
+            var shopeeeContext = _context.ShoppingCart
+                .Include(s => s.Item)
+                .Include(s => s.User);
+            return View(await shopeeeContext.ToListAsync());
         }
 
         // GET: ShoppingCarts/Details/5
