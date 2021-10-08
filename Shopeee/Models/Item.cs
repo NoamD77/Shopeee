@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace Shopeee.Models
 {
@@ -18,6 +19,9 @@ namespace Shopeee.Models
         public GenderType Gender { get; set; }
         public ItemType Type { get; set; }
         public ColorType Color { get; set; }
+
+        [NotMapped]
+        public IFormFile TempPicture { get; set; }
 
 
         //public ICollection<Branch> BranchAvailabilty { get; set; }

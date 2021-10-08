@@ -19,7 +19,7 @@
     {
     <div class="card">
         <a asp-action="Details" asp-route-id="@item.Id">
-            <img src="~/imgs/@Html.DisplayFor(modelItem =>item.Picture)" style="width:100%">
+            <img src="@Url.Content(Shopeee.Class.GlobalVariables.webImagesPath)@Html.DisplayFor(modelItem =>item.Picture)" style="width:100%">
         </a>
         <a asp-action="Details" asp-route-id="@item.Id">
             <p>@Html.DisplayFor(modelItem => item.Name)</p>
