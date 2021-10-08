@@ -10,18 +10,17 @@ namespace Shopeee.Models
     {
         [Key]
         public int CartID { get; set; }
-        //All One to One
+        
+        //One to One
         [ForeignKey("User")]
         public int UserId { get; set; }
         public virtual User User { get; set; }
 
-
+        //One to Many
         [ForeignKey("Item")]
         public int ItemId { get; set; }
         public Item Item { get; set; }
 
-        [Display(Name = "Total Price")]
-        public float TotalPrice { get; set; }
         public int Quantity { get; set; }
     }
 }

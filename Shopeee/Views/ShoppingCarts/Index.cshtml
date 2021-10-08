@@ -4,50 +4,81 @@
     ViewData["Title"] = "Shopping Cart";
 }
 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.User)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Item)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TotalPrice)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Quantity)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.User.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TotalPrice)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Quantity)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.CartID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.CartID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.CartID">Delete</a>
-            </td>
-        </tr>
+@{
+    var totalPrice = 0.0;
+    var count_qty = 0;
 }
-    </tbody>
-</table>
+
+<head>
+    <link rel="stylesheet" href="~/css/shoppingcart.css" />
+    @*<link rel="stylesheet" href="~\lib\bootstrap\dist\css\bootstrap-grid.css" />*@
+</head>
+
+<body>
+    @foreach (var item in Model)
+    {
+        totalPrice += (item.Item.Price * item.Item.Quantity);
+        count_qty += 1;
+    }
+    <div class="container">
+        <div class="row sticky">
+            <div class="col sticky">
+                <div class="hdr">
+                    <h4>my bag</h4>
+                    <p>@count_qty Items in your cart</p>
+                </div>
+                @foreach (var item in Model)
+                {
+                    <div class="cart-item">
+
+                        <img src="~/imgs/@item.Item.Picture" />
+
+                        <div class="item-des">
+                            <p>₪@(@item.Item.Price * @item.Quantity)</p>
+                            <a asp-controller="Items" asp-action="Details" asp-route-id="@item.ItemId">@item.Item.Description</a>
+                            <div class="item-det">
+                                <p>@item.Item.Color | </p>
+                                <p>@item.Item.Gender | </p>
+                                <p>Qty @item.Quantity</p>
+                            </div>
+                        </div>
+
+                        <div class="del-btn">
+                            <a asp-action="Delete" asp-route-id="@item.CartID">
+                                <i class="fa fa-trash"></i>
+                            </a>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="col">
+                <div class="sticky">
+                    <div class="total-price">
+                        <h4>total price</h4>
+                        <p>@totalPrice</p>
+                        <span class="small">
+                            *For United States, applicable sales tax will be applied
+                        </span>
+                        <a class="btn btn-success" asp-action="CheckOut"><i class="fa fa-arrow-left"></i> Check Out</a>
+                        <a class="btn btn-dark" asp-controller="Items"><i class="fa fa-arrow-left"></i> Continue Shopping</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-reco-itms">
+            <h2>
+                Other products you may be interested
+            </h2>
+            <div class="row-rec-itm">
+                @foreach (var item in Model)
+                {
+                    <div class="recommended-item">
+                        <a asp-controller="Items" asp-action="Details" asp-route-id="@item.ItemId">
+                            <img src="~/imgs/@item.Item.Picture" />
+                        </a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</body>
