@@ -2,13 +2,15 @@
     margin: 1px
 }
 
+a {
+    color: black;
+}
+
 .grid-container {
     display: grid;
     grid-template-columns: repeat(4,1fr);
     grid-gap:50px;
 }
-
-
 
 .card {
     display: inline-grid;

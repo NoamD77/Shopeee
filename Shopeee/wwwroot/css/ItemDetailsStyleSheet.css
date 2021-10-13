@@ -1,0 +1,41 @@
+﻿p {
+    margin: 1px
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    grid-gap: 6em;
+}
+
+.left{
+
+}
+
+.right {
+    text-align: left;
+}
+
+.price {
+    color: black;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.title {
+    font-weight: bold;
+    display:inline;
+}
+
+.td_space {
+    padding-right:10px;
+}
+
+/*#overlay {
+    border: 1px solid black;
+    width: 300px;
+    height: 300px;
+    display: inline-block;
+    background-image: url('../imgs/1618289204efe26a30b7dbd26fed575f8a6df91dfa_thumbnail_900x.jpg');
+    background-repeat: no-repeat;
+}*/

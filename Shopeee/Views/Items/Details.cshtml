@@ -4,9 +4,47 @@
     ViewData["Title"] = "Details";
 }
 
+<head>
+    <link rel="stylesheet" href="~/css/ItemDetailsStyleSheet.css" />
+</head>
+
 <h1>Details</h1>
 
+<div class="container">
+
+    <div class="left">
+        <img src="@Url.Content(Shopeee.Class.GlobalVariables.webImagesPath)@Html.DisplayFor(modelItem =>Model.Picture)" style="width:100%" />
+        @*<img src="~/imgs/@Html.DisplayFor(modelItem =>Model.Picture)" style="width:100%" onmousemove="zoomIn(event)" onmouseout="zoomOut()" />*@
+    </div>
+
+
+    <div class="right">
+        @*<div id="overlay" onmousemove="zoomIn(event)"></div>*@
+        <p><h1>@Html.DisplayFor(modelItem => Model.Name)</h1></p>
+        <p class="price">$@Html.DisplayFor(modelItem => Model.Price)</p>
+        <table>
+            <tr>
+                <td class="td_space"><div class="title">@Html.DisplayNameFor(modelItem => Model.Brand)</div></td>
+                <td>@Html.DisplayFor(modelItem => Model.Brand.Name)</td>
+            </tr>
+            <tr>
+                <td class="td_space"><div class="title">@Html.DisplayNameFor(modelItem => Model.Color)</div></td>
+                <td>@Html.DisplayFor(modelItem => Model.Color)</td>
+            </tr>
+            <tr>
+                <td class="td_space"><div class="title">@Html.DisplayNameFor(modelItem => Model.Gender)</div></td>
+                <td>@Html.DisplayFor(modelItem => Model.Gender)</td>
+            </tr>
+        </table>
+    </div>
+
+</div>
+
 <div>
+    <p>@Html.DisplayFor(modelItem => Model.Description)</p>
+</div>
+
+@*<div>
     <h4>Item</h4>
     <hr />
     <dl class="row">
@@ -65,7 +103,7 @@
             @Html.DisplayFor(model => model.Brand.Name)
         </dd>
     </dl>
-</div>
+</div>*@
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>

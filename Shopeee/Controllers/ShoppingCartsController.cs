@@ -20,9 +20,22 @@ namespace Shopeee.Controllers
         }
 
         // GET: ShoppingCarts
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? id)
         {
-            var shopeeeContext = _context.ShoppingCart.Include(s => s.Item).Include(s => s.User);
+            var shoppingCart = await _context.ShoppingCart
+                .Include(s => s.Item)
+                .Include(s => s.User)
+                .FirstOrDefaultAsync(m => m.CartID == id);
+
+            var bagitems = from i in _context.Item
+                            join s in _context.ShoppingCart
+                            on i.Id equals s.ItemId
+                            where s.UserId == shoppingCart.User.Id
+                            select i;
+
+            var shopeeeContext = _context.ShoppingCart
+                .Include(s => s.Item)
+                .Include(s => s.User);
             return View(await shopeeeContext.ToListAsync());
         }
 
@@ -34,10 +47,12 @@ namespace Shopeee.Controllers
                 return NotFound();
             }
 
+
             var shoppingCart = await _context.ShoppingCart
                 .Include(s => s.Item)
                 .Include(s => s.User)
                 .FirstOrDefaultAsync(m => m.CartID == id);
+
             if (shoppingCart == null)
             {
                 return NotFound();
@@ -59,7 +74,7 @@ namespace Shopeee.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CartID,UserId,ItemId,TotalPrice,Quantity")] ShoppingCart shoppingCart)
+        public async Task<IActionResult> Create([Bind("CartID,UserId,ItemId,Quantity")] ShoppingCart shoppingCart)
         {
             if (ModelState.IsValid)
             {
@@ -95,7 +110,7 @@ namespace Shopeee.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CartID,UserId,ItemId,TotalPrice,Quantity")] ShoppingCart shoppingCart)
+        public async Task<IActionResult> Edit(int id, [Bind("CartID,UserId,ItemId,Quantity")] ShoppingCart shoppingCart)
         {
             if (id != shoppingCart.CartID)
             {
