@@ -77,12 +77,13 @@ namespace Shopeee.Controllers
                 var list = await UserManager.IsInRoleAsync(user, role.Name) ? members : nonMembers;
                 list.Add(user);
             }
-            return View(new RoleEdit
+            RoleEdit roleEdit = new RoleEdit
             {
                 Role = role,
                 Members = members,
                 NonMembers = nonMembers
-            });
+            };
+            return View(roleEdit);
         }
 
         [Authorize(Policy = "writepolicy")]
