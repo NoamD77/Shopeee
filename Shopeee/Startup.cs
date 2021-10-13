@@ -13,7 +13,6 @@ using Shopeee.Data;
 using Shopeee.Models;
 using Microsoft.AspNetCore.Identity;
 using Shopeee.Areas.Identity;
-using Shopeee.Areas.Identity.Models;
 
 namespace Shopeee
 {
@@ -34,16 +33,26 @@ namespace Shopeee
             services.AddDbContext<ShopeeeContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("ShopeeeContext")));
 
-
-            //services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
+            //services.AddDefaultIdentity<ApplicationUser>(options => options.Password.RequireNonAlphanumeric = false)
             //     .AddEntityFrameworkStores<ShopeeeContext>();
 
-            services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
+            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+                {
+                    options.User.RequireUniqueEmail = true;
+                    options.Password.RequireNonAlphanumeric = false;
+                })
+                .AddDefaultUI()
+                .AddEntityFrameworkStores<ShopeeeContext>()
+                .AddDefaultTokenProviders();
+            services.AddRazorPages();
+
+            services.AddAuthorization(options =>
             {
-                options.User.RequireUniqueEmail = true;
-                options.Password.RequireNonAlphanumeric = false;
-            })
-                .AddEntityFrameworkStores<ShopeeeContext>();
+                options.AddPolicy("readpolicy",
+                    builder => builder.RequireRole("Administrator", "Branch Manager", "Client"));
+                options.AddPolicy("writepolicy",
+                    builder => builder.RequireRole("Administrator", "Branch Manager"));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

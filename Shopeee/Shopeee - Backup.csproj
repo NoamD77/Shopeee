@@ -12,16 +12,6 @@
     <Compile Remove="Migrations\20210910103830_resetPermissions3.Designer.cs" />
     <Compile Remove="Migrations\20210910104339_resetPermissions3.cs" />
     <Compile Remove="Migrations\20210910104339_resetPermissions3.Designer.cs" />
-    <Compile Remove="Migrations\20210922164331_identityrere.cs" />
-    <Compile Remove="Migrations\20210922164331_identityrere.Designer.cs" />
-    <Compile Remove="Migrations\20210922164440_identityrere.cs" />
-    <Compile Remove="Migrations\20210922164440_identityrere.Designer.cs" />
-    <Compile Remove="Migrations\20210922170937_identityrere.cs" />
-    <Compile Remove="Migrations\20210922170937_identityrere.Designer.cs" />
-    <Compile Remove="Migrations\20210922172358_identityroles.cs" />
-    <Compile Remove="Migrations\20210922172358_identityroles.Designer.cs" />
-    <Compile Remove="Migrations\20211011153730_roleModifications.cs" />
-    <Compile Remove="Migrations\20211011153730_roleModifications.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -36,10 +26,6 @@
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
     <PackageReference Include="MvcScaffolding" Version="1.0.9" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Areas\Identity\Views\" />
   </ItemGroup>
 
 </Project>
