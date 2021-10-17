@@ -2,58 +2,59 @@
     ViewData["Title"] = "Home Page";
 }
 
-    <div class="text-center">
-        <h1 class="display-4">Welcome</h1>
-        <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-        <p>temp control controllers: <a href="https://localhost:44319/Users">Users</a></p>
-        <p><a href="https://localhost:44319/ShoppingCarts">ShoppingCarts</a></p>
-        <p><a href="https://localhost:44319/Items">Items</a></p>
-        <p><a href="https://localhost:44319/Brands">Brands</a></p>
-        <p><a href="https://localhost:44319/Branches">Branches</a></p>
-        <p><a href="https://localhost:44319/Permissions">Permissions</a></p>
+<head>
+    <script src="~/js/APIfunctions.js"></script>
+</head>
 
-        <!--contact start-->
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p><a href="https://localhost:44319/Users">Users</a></p>
+    <p><a href="https://localhost:44319/ShoppingCarts">ShoppingCarts</a></p>
+    <p><a href="https://localhost:44319/Items">Items</a></p>
+    <p><a href="https://localhost:44319/Brands">Brands</a></p>
+    <p><a href="https://localhost:44319/Branches">Branches</a></p>
+    <p><a href="https://localhost:44319/Permissions">Permissions</a></p>
 
-        <div class="conyainer-fluid contact bg-gray">
-            <div class="container">
-                <div class="row top-heading">
-                    <div class="col-md-12">
-                        <h1>Contact Us</h1>
-                    </div>
+    <!--contact start-->
+
+    <div class="conyainer-fluid contact bg-gray">
+        <div class="container">
+            <div class="row top-heading">
+                <div class="col-md-12">
+                    <h1>Contact Us</h1>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-md-4">
+                    <h4>Address:</h4>
+                    <p>
+                        1,Alenbi st.
+                        <br /> Tel Aviv
+                    </p>
+                    <br />
+                    <p><i class="fa fa-envelope" aria-hidden="true"></i> : idanba@gmail.com</p>
+                    <p><i class="fa fa-phone" aria-hidden="true"></i> :+972 528668781 </p>
+                    <p><i class="fa fa-facebook-square" aria-hidden="true"></i> : www.facebook.com/shopeee </p>
+                    <p><i class="fa fa-fax" aria-hidden="true"></i> : 123456789</p>
                 </div>
 
-                <div class="row mt-4">
-                    <div class="col-md-4">
-                        <h4>Address:</h4>
-                        <p>
-                            1,Alenbi st.
-                            <br /> Tel Aviv
-                        </p>
-                        <br />
-                        <p><i class="fa fa-envelope" aria-hidden="true"></i> : idanba@gmail.com</p>
-                        <p><i class="fa fa-phone" aria-hidden="true"></i> :+972 528668781 </p>
-                        <p><i class="fa fa-facebook-square" aria-hidden="true"></i> : www.facebook.com/shopeee </p>
-                        <p><i class="fa fa-fax" aria-hidden="true"></i> : 123456789</p>
-                    </div>
-
-                    <div class="col-md-4">
-                        <h4>OPENING HOURS:</h4>
-                        <p>Sunday: 10am to 8pm</p>
-                        <p>Monday: 10am to 8pm</p>
-                        <p>Tuesday: 10am to 8pm</p>
-                        <p>Wednesday: 10am to 8pm</p>
-                        <p>Thrusday: 10am to 8pm</p>
-                        <p>Friday: 10am to 2pm</p>
-
-                    </div>
-
-                    <div class="col-md-4">
-                        <iframe src="https://maps.google.com/maps?q=alenbi%201%20tel%20aviv&t=&z=13&ie=UTF8&iwloc=&output=embed" width="400" height="300" frameborder="0" style="border:0" allowfullscreen></iframe>
-                    </div>
+                <div class="col-md-4">
+                    <h4>OPENING HOURS:</h4>
+                    <p>Sunday: 10am to 8pm</p>
+                    <p>Monday: 10am to 8pm</p>
+                    <p>Tuesday: 10am to 8pm</p>
+                    <p>Wednesday: 10am to 8pm</p>
+                    <p>Thrusday: 10am to 8pm</p>
+                    <p>Friday: 10am to 2pm</p>
                 </div>
 
+                <div class="col-md-4">
+                    <iframe src="https://maps.google.com/maps?q=alenbi%201%20tel%20aviv&t=&z=13&ie=UTF8&iwloc=&output=embed" width="400" height="300" frameborder="0" style="border:0" allowfullscreen></iframe>
+                </div>
             </div>
         </div>
-
-        <!--/*contact end*/-->
     </div>
+
+    <!--/*contact end*/-->
+</div>
