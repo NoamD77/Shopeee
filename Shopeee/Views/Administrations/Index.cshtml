@@ -1,0 +1,35 @@
+﻿@model Shopeee.Controllers.AdministrationsController.ViewModel
+@{
+    ViewData["Title"] = "Administration Panel";
+}
+
+<h1>Administration Panel</h1>
+<a asp-action="UsersList">Users</a>
+@{
+    var NumOfUsers = Model.UserManager.Users.ToList().Count();
+    <p>Total Users: @NumOfUsers</p>
+}
+<br />
+<a asp-action="RolesList">Roles</a>
+@{
+    var NumOfRoles = Model.RoleManager.Roles.ToList().Count();
+    <p>Total Users: @NumOfRoles</p>
+}
+<br />
+<a asp-controller="Items" asp-action="Index">Items</a>
+@{
+    var NumOfItems = Model.context.Item.Count();
+    <p>Total Items: @NumOfItems</p>
+}
+<br />
+<a asp-controller="Brands" asp-action="Index">Brands</a>
+@{
+    var NumOfBrands = Model.context.Brand.Count();
+    <p>Total Items: @NumOfBrands</p>
+}
+<br />
+<a asp-controller="Branches" asp-action="Index">Branches</a>
+@{
+    var NumOfBranches = Model.context.Branch.Count();
+    <p>Total Items: @NumOfBranches</p>
+}

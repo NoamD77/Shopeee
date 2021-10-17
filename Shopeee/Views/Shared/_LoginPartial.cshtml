@@ -3,29 +3,42 @@
 
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
-
 <ul class="navbar-nav">
-@if (SignInManager.IsSignedIn(User))
-{
-    <li class="nav-item">
-        <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
-    </li>
-    <li class="nav-item">
-        <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-            <button id="logout" type="submit" class="nav-link btn btn-link text-dark">Logout</button>
-        </form>
-    </li>
-}
-else
-{
-<li class="nav-item">
-    <a asp-area="Identity" asp-page="/Account/Register">
-        <button class="button btn-sign-up"><span>Sign Up </span></button>
-    </a>
-    @*<a class="nav-link text-dark" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>*@
-</li>
-    <li class="nav-item">
-        <a class="nav-link text-dark" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
-    </li>
-}
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <li class="nav-item">
+            <a id="manage" class="usr-connected-item" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
+        </li>
+        <img class="usr-connected-item" src="~/imgs/line.svg" />
+        @*<li class="nav-item">
+                <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                    <button id="logout" type="submit" class="usr-connected-item usr-connected-img">Logout</button>
+                </form>
+            </li>*@
+        <li class="nav-item">
+            <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                <button type="submit" id="logout" class="usr-connected-item usr-connected-img"><img src="~/imgs/btn-disconnect.svg" /></button>
+            </form>
+        </li>
+        var UserName = await UserManager.GetUserAsync(User);
+        if (await UserManager.IsInRoleAsync(UserName, "Administrator"))
+        {
+            <li class="nav-item">
+                <a id="Administration" class="usr-connected-item usr-connected-img" asp-area="" asp-controller="Administrations" asp-action="Index" title="Administration">Administration Panel</a>
+            </li>
+        }
+    }
+    else
+    {
+        <li class="nav-item">
+            <a asp-area="Identity" asp-page="/Account/Register">
+                <button class="button btn-sign-up"><span>Sign Up</span></button>
+            </a>
+        </li>
+        <li class="nav-item">
+            <form asp-area="Identity" asp-page="/Account/Login" method="get">
+                <button class="button usr-disconnected-item btn-sign-in"><span>Sign In</span></button>
+            </form>
+        </li>
+    }
 </ul>

@@ -12,52 +12,78 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 using Shopeee.Models;
+using Shopeee.Areas.Identity.Pages.Account;
 
 namespace Shopeee.Controllers
 {
-    public class RoleController : Controller
+    public class AdministrationsController : Controller
     {
         RoleManager<IdentityRole> RoleManager;
         UserManager<ApplicationUser> UserManager;
         private readonly ShopeeeContext _context;
 
-        public RoleController(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager)
+        public AdministrationsController(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, ShopeeeContext context)
         {
             this.UserManager = userManager;
             this.RoleManager = roleManager;
+            this._context = context;
         }
         public class ViewModel
         {
-            public ApplicationUser User { get; set; }
             public UserManager<ApplicationUser> UserManager { get; set; }
             public RoleManager<IdentityRole> RoleManager { get; set; }
+            public ShopeeeContext context { get; set; }
         }
 
         [BindProperty]
         public InputModel Input { get; set; }
+        public RegisterModel Register { get; set; }
 
         public class InputModel
         {
             public string RoleName { get; set; }
         }
+
         [Authorize(Policy = "writepolicy")]
         public IActionResult Index()
+        {
+            return View(new ViewModel
+            {
+                UserManager = UserManager,
+                RoleManager = RoleManager,
+                context = _context
+            }); ;
+        }
+
+
+        [Authorize(Policy = "writepolicy")]
+        public IActionResult RolesList()
         {
             var roles = RoleManager.Roles.ToList();
             return View(roles);
         }
         [Authorize(Policy = "writepolicy")]
-        public IActionResult Create() => View();
+        public IActionResult UsersList()
+        {
+            var users = UserManager.Users.ToList();
+            return View(users);
+        }
+
+        [Authorize(Policy = "writepolicy")]
+        public IActionResult CreateRole()
+        {
+            return View();
+        }
 
         [Authorize(Policy = "writepolicy")]
         [HttpPost]
-        public async Task<IActionResult> Create([Required] string name)
+        public async Task<IActionResult> CreateRole([Required] string name)
         {
             if (ModelState.IsValid)
             {
                 IdentityResult result = await RoleManager.CreateAsync(new IdentityRole(name));
                 if (result.Succeeded)
-                    return RedirectToAction("Index");
+                    return RedirectToAction("RolesList");
                 else
                     Errors(result);
             }
@@ -66,7 +92,7 @@ namespace Shopeee.Controllers
 
         [Authorize(Policy = "writepolicy")]
         [HttpGet]
-        public async Task<IActionResult> Update(string id)
+        public async Task<IActionResult> UpdateRole(string id)
         {
             IdentityRole role = await RoleManager.FindByIdAsync(id);
             List<ApplicationUser> members = new List<ApplicationUser>();
@@ -88,7 +114,7 @@ namespace Shopeee.Controllers
 
         [Authorize(Policy = "writepolicy")]
         [HttpPost]
-        public async Task<IActionResult> Update(RoleModification model)
+        public async Task<IActionResult> UpdateRole(RoleModification model)
         {
             IdentityResult result;
             if (ModelState.IsValid)
@@ -116,27 +142,46 @@ namespace Shopeee.Controllers
             }
 
             if (ModelState.IsValid)
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("RolesList");
             else
-                return await Update(model.RoleId);
+                return await UpdateRole(model.RoleId);
         }
 
         [Authorize(Policy = "writepolicy")]
         [HttpPost]
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> DeleteRole(string id)
         {
             IdentityRole role = await RoleManager.FindByIdAsync(id);
             if (role != null)
             {
                 IdentityResult result = await RoleManager.DeleteAsync(role);
                 if (result.Succeeded)
-                    return RedirectToAction("Index");
+                    return RedirectToAction("RolesList");
                 else
                     Errors(result);
             }
             else
                 ModelState.AddModelError("", "No role found");
-            return View("Index", RoleManager.Roles);
+            return View("RolesList", RoleManager.Roles);
+        }
+
+
+        [Authorize(Policy = "writepolicy")]
+        [HttpPost]
+        public async Task<IActionResult> DeleteUser(string id)
+        {
+            ApplicationUser user = await UserManager.FindByIdAsync(id);
+            if (user != null)
+            {
+                IdentityResult result = await UserManager.DeleteAsync(user);
+                if (result.Succeeded)
+                    return RedirectToAction("UsersList");
+                else
+                    Errors(result);
+            }
+            else
+                ModelState.AddModelError("", "No user found");
+            return View("UsersList", UserManager.Users);
         }
 
         private bool UserExists(string id)

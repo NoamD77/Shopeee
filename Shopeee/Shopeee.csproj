@@ -47,8 +47,4 @@
     </Content>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Areas\Identity\Views\" />
-  </ItemGroup>
-
 </Project>
