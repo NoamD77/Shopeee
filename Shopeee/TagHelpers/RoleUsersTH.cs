@@ -15,13 +15,11 @@ namespace Shopeee.TagHelpers
     {
         private UserManager<ApplicationUser> userManager;
         private RoleManager<IdentityRole> roleManager;
-        private readonly ShopeeeContext _context;
 
-        public RoleUsersTH(UserManager<ApplicationUser> UserManager, RoleManager<IdentityRole> RoleManager, ShopeeeContext Context)
+        public RoleUsersTH(UserManager<ApplicationUser> UserManager, RoleManager<IdentityRole> RoleManager)
         {
             userManager = UserManager;
             roleManager = RoleManager;
-            _context = Context;
         }
 
         [HtmlAttributeName("i-role")]
@@ -36,12 +34,8 @@ namespace Shopeee.TagHelpers
             {
                 foreach (var user in ListOfUsers)
                 {
-                    //if (_context.Entry(user).State != EntityState.Detached)
-                    //    _context.Entry(user).State = EntityState.Detached;
                     if (user != null)
                     {
-                        _context.Entry(user).State = EntityState.Detached;
-                        _context.Entry(role).State = EntityState.Detached;
                         if (await userManager.IsInRoleAsync(user, role.Name))
                             names.Add(user.UserName);
                     }

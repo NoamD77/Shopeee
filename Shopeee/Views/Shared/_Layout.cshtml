@@ -29,7 +29,8 @@
                 <div class="blank-div">
                 </div>
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Shopeee.</a>
-                <div class="user-connected">
+                <partial name="_LoginPartial" />
+                @*<div class="user-connected">
                     <p class="usr-connected-item">Hi Stav</p>
                     <img class="usr-connected-item" src="~/imgs/line.svg" />
                     <img class="usr-connected-item usr-connected-img" src="~/imgs/btn-user.svg" />
@@ -42,8 +43,7 @@
                     <a asp-area="" asp-controller="Users" asp-action="Create">
                         <button class="button btn-sign-up"><span>Sign Up </span></button>
                     </a>
-                </div>
-                <partial name="_LoginPartial" />
+                </div>*@
             </div>
         </nav>
 
@@ -54,7 +54,7 @@
                 <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Explore">Explore</a>
+                <a class="nav-link" asp-area="" asp-controller="Items" asp-action="Index">Explore</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Sales">Sales</a>
