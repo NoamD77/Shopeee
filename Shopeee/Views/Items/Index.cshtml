@@ -14,7 +14,83 @@
     <a asp-action="Create">Create New</a>
 </p>
 
-<div class="grid-container">
+<p>
+    <input id="livesearchtextbox" name="livesearchtextbox" placeholder="Search" autocomplete="off" />
+</p>
+<p>
+    <div class="form-group">
+        <label class="control-label">Type</label>
+        <select asp-items="Html.GetEnumSelectList<ItemType>()" class="form-control" id="typeselect">
+            <option value="" selected="selected"></option>
+        </select>
+        @*@Html.DropDownList( "DropDownValue", Html.GetEnumSelectList<ItemType>(), "No Filter" )*@
+    </div>
+
+    <div class="form-group">
+        <label class="control-label">Color</label>
+        <select asp-items="Html.GetEnumSelectList<ColorType>()" class="form-control" id="colorselect">
+            <option value="" selected="selected"></option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label">Gender</label>
+        <select asp-items="Html.GetEnumSelectList<GenderType>()" class="form-control" id="genderselect">
+            <option value="" selected="selected"></option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label">Brand</label>
+        <select asp-items="ViewBag.BrandId" class="form-control" id="brandselect">
+            <option value="" selected="selected"></option>
+        </select>
+    </div>
+</p>
+
+<div id="con">
+    @Html.Partial("_PartialItemsView", Model);
+</div>
+<script>
+    presearch = null
+    document.getElementById('livesearchtextbox').addEventListener('keyup', function (e) {
+        //Run LiveSearch on ever key up
+        let value = document.getElementById('livesearchtextbox').value
+        if (value != presearch) {
+            LiveSearch(value)
+            presearch = value
+        }
+    });
+
+    var elements = document.getElementsByClassName('form-control')
+    Array.from(elements).forEach(function (element) {
+        element.addEventListener('change', function (e) {
+            let value = document.getElementById('livesearchtextbox').value
+            LiveSearch(value)
+        });
+    });
+
+    function LiveSearch(value) {
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("LiveSearch", "Items")",
+            data: {
+                search: value,
+                type: $("#typeselect :selected").text(),
+                color: $("#colorselect :selected").text(),
+                gender: $("#genderselect :selected").text(),
+                brand: $("#brandselect :selected").text()
+            },
+            datatype: "html",
+            success: function (data) {
+                // Insert the returned search results html into the result element
+                $('#con').empty();
+                $('#con').html(data);
+            }
+        });
+    }
+</script>
+@*@<div class="grid-container">
     @foreach (var item in Model)
     {
     <div class="card">
@@ -25,11 +101,11 @@
             <p>@Html.DisplayFor(modelItem => item.Name)</p>
         </a>
         <p class="price">$@Html.DisplayFor(modelItem => item.Price)</p>
-        @*<p>@Html.DisplayFor(modelItem => item.Description)</p>*@
+        @*<p>@Html.DisplayFor(modelItem => item.Description)</p>
         <p><button>Buy Now</button></p>
     </div>
     }
-</div>
+</div>*@
 
     @*@{ var count = Model.Count();
         var col = 4;

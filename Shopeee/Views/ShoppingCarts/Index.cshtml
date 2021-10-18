@@ -17,16 +17,16 @@
 
 <body>
     <div class="bag-details">
-        @if (Model.Bagitems.Count() == 0)
+        @if (Model.Bag.Count() == 0)
         {
             <h2> Your Bag is empty </h2>
             <a class="btn btn-dark" asp-controller="Items"><i class="fa fa-arrow-left"></i> Continue Shopping</a>
         }
         else
         {
-            @foreach (var item in Model.Bagitems)
+            @foreach (var item in Model.Bag)
             {
-                totalPrice += (item.Price * Model.Bag.Quantity);
+                totalPrice += (item.Item.Price * item.Quantity);
                 count_qty += 1;
             }
             <div class="container">
@@ -36,24 +36,24 @@
                             <h4>my bag</h4>
                             <p>@count_qty Items in your cart</p>
                         </div>
-                        @foreach (var item in Model.Bagitems)
+                        @foreach (var item in Model.Bag)
                         {
                             <div class="cart-item">
 
-                                <img src="~/imgs/@item.Picture" />
+                                <img src="~/imgs/@item.Item.Picture" />
 
                                 <div class="item-des">
-                                    <p>₪@(@item.Price * Model.Bag.Quantity)</p>
-                                    <a asp-controller="Items" asp-action="Details" asp-route-id="@item.Id">@item.Description</a>
+                                    <p>₪@(@item.Item.Price * item.Quantity)</p>
+                                    <a asp-controller="Items" asp-action="Details" asp-route-id="@item.Item.Id">@item.Item.Description</a>
                                     <div class="item-det">
-                                        <p>@item.Color | </p>
-                                        <p>@item.Gender | </p>
-                                        <p>Qty @Model.Bag.Quantity</p>
+                                        <p>@item.Item.Color | </p>
+                                        <p>@item.Item.Gender | </p>
+                                        <p>Qty @item.Quantity</p>
                                     </div>
                                 </div>
 
                                 <div class="del-btn">
-                                    <form asp-action="Delete" asp-route-id="@Model.Bag.CartID" method="post">
+                                    <form asp-action="Delete" asp-route-id="@item.CartID" method="post">
                                     <button type="submit">
                                         <i class="fa fa-trash"></i>
                                     </button>

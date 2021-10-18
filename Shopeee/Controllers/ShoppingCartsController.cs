@@ -21,26 +21,36 @@ namespace Shopeee.Controllers
 
         public class ViewModel
         {
-            public ShoppingCart Bag { get; set; }
-            public List<Item> Bagitems { get; set; }
+            public List<ShoppingCart> Bag { get; set; }
         }
 
         // GET: ShoppingCarts
         public async Task<IActionResult> Index(int id)
         {
             ViewModel Viewbag = new ViewModel();
-            Viewbag.Bag = await _context.ShoppingCart
-                .Include(s => s.Item)
-                .Include(s => s.User)
-                .FirstOrDefaultAsync(m => m.UserId == id);
+            //Viewbag.Bag = await _context.ShoppingCart
+            //    .Include(s => s.Item)
+            //    .Include(s => s.User)
+            //    .FirstOrDefaultAsync(m => m.UserId == id);
 
-            var bagitems = from i in _context.Item
-                           join s in _context.ShoppingCart
-                           on i.Id equals s.ItemId
-                           where s.UserId == id
-                           select i;
+            //Viewbag.Bag = _context.ShoppingCart
+            //    .Include(s => s.Item)
+            //    .Include(s => s.User)
+            //    .Where(s => s.UserId == id).ToList();
 
-            Viewbag.Bagitems = bagitems.ToList();
+            Viewbag.Bag = (from s in _context.ShoppingCart
+                          join i in _context.Item
+                          on s.ItemId equals i.Id
+                          where s.UserId == id
+                          select s).Include(s=>s.Item).ToList();
+
+            //var bagitems = from i in _context.Item
+            //               join s in _context.ShoppingCart
+            //               on i.Id equals s.ItemId
+            //               where s.UserId == id
+            //               select i;
+
+            //Viewbag.Bagitems = bagitems.ToList();
             
             //var temp = _context.Item
             //                .Join(_context.ShoppingCart,
@@ -90,7 +100,7 @@ namespace Shopeee.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("CartID,UserId,ItemId,Quantity")] ShoppingCart shoppingCart)
         {
             if (ModelState.IsValid)
