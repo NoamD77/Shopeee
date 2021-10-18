@@ -1,0 +1,44 @@
+﻿@using Shopeee.Models;
+@model IEnumerable<Shopeee.Models.Item>
+
+<div class="grid-container">
+    @foreach (var item in Model)
+    {
+        <div class="card">
+            <a asp-action="Details" asp-route-id="@item.Id">
+                <img src="@Url.Content(Shopeee.Class.GlobalVariables.webImagesPath)@Html.DisplayFor(modelItem =>item.Picture)" style="width:100%">
+            </a>
+            <a asp-action="Details" asp-route-id="@item.Id">
+                <p>@Html.DisplayFor(modelItem => item.Name)</p>
+            </a>
+            <input id="qty_@item.Id" type="number" class="form-control" min="1" max="@item.Quantity" value="1" />
+            <p class="price">$@Html.DisplayFor(modelItem => item.Price)</p>
+            @*<p>@Html.DisplayFor(modelItem => item.Description)</p>*@
+            <p><button onclick="addtoCart(@item.Id)">Add to Cart</button></p>
+        </div>
+    }
+</div>
+
+<script>
+    function addtoCart(itemid) {
+        var qty = document.getElementById("qty_".concat(itemid)).value
+        alert(qty)
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("Create", "ShoppingCarts")",
+            headers: {
+                RequestVerificationToken: $('input:hidden[name="__RequestVerificationToken"]').val()
+            },
+            data: {
+                ItemId: itemid,
+                Quantity: qty,
+                UserId: 7
+            },
+            datatype: "html",
+            success: function (data) {
+                // Insert the returned search results html into the result element
+                alert("added to cart")
+            }
+        });
+    }
+</script>

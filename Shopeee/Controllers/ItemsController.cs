@@ -32,7 +32,45 @@ namespace Shopeee.Controllers
         public async Task<IActionResult> Index()
         {
             var shopeeeContext = _context.Item.Include(i => i.Brand);
+            ViewData["BrandId"] = new SelectList(_context.Brand, "Id", "Name");
             return View(await shopeeeContext.ToListAsync());
+        }
+
+        [HttpPost]
+        public PartialViewResult LiveSearch(string search, string type, string color, string gender, string brand)
+        {
+            List<Item> res = null;
+            res = (
+                from i in _context.Item
+                select i
+            ).Include(i => i.Brand).ToList();
+            if (search != null) 
+            {
+                res = res.Where(i => i.Name.Contains(search)).ToList();
+            }
+
+            if (type != null)
+            {
+                res = res.Where(i => i.Type.ToString().ToLower().Equals(type.ToLower())).ToList();
+            }
+
+            if (color != null)
+            {
+                res = res.Where(i => i.Color.ToString().ToLower().Equals(color.ToLower())).ToList();
+            }
+
+            if (gender != null)
+            {
+                res = res.Where(i => i.Gender.ToString().ToLower().Equals(gender.ToLower())).ToList();
+            }
+
+            if (brand != null)
+            {
+                res = res.Where(i => i.Brand.Name.ToString().ToLower().Equals(brand.ToLower())).ToList();
+            }
+
+            // Pass the List of results to a Partial View 
+            return PartialView("_PartialItemsView", res);
         }
 
         // GET: Items/Details/5
