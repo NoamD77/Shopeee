@@ -55,27 +55,37 @@
                 <span asp-validation-for="InputModel.ConfirmPassword" class="text-danger"></span>
             </div>
 
-            @*@if (AdminUser)
-                {
-                    <div class="form-group">
-                        <label asp-for="Model.InputModel.Role"></label>
-                        <select asp-for="Model.InputModel.Role" class="form-control" asp-items='new SelectList(roles,"Id","Name")'>
-                        </select>
-                        <span asp-validation-for="Model.InputModel.Role" class="text-danger"></span>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Create</button>
-                }
-                else
-                {
-                    <div class="form-group">
-                        <input asp-for="Model.InputModel.Role" type="hidden" class="form-control" value="@Client.Id" />
-                        <span asp-validation-for="Model.InputModel.Role" class="text-danger"></span>
-                    </div>
-                }*@
+
+            <div class="form-group">
+                <label>Add to Roles</label>
+                <table class="table table-bordered table-sm">
+                    @foreach (IdentityRole role in Model.NonMember)
+                    {
+                        <tr>
+                            <td>@role.Name</td>
+                            <td>
+                                <input type="checkbox" name="AddRoles" value="@role.Name">
+                            </td>
+                        </tr>
+                    }
+                </table>
+                <label>Remove from Roles</label>
+                <table class="table table-bordered table-sm">
+                    @foreach (IdentityRole role in Model.Member)
+                    {
+                        <tr>
+                            <td>@role.Name</td>
+                            <td>
+                                <input type="checkbox" name="RemoveRoles" value="@role.Name">
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
+                <button type="submit" class="btn btn-primary">Update</button>
             </div>
-            <button type="submit" class="btn btn-primary">Update</button>
         </form>
     </div>
 </div>

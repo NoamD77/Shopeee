@@ -40,6 +40,13 @@ namespace Shopeee.Controllers
             public string UserId { get; set; }
             public ApplicationUser User { get; set; }
             public RegisterModel.InputModel InputModel { get; set; }
+
+
+            public List<IdentityRole> Member { get; set; }
+            public List<IdentityRole> NonMember { get; set; }
+
+            public string[] AddRoles { get; set; }
+            public string[] RemoveRoles { get; set; }
         }
 
         [BindProperty]
@@ -171,6 +178,16 @@ namespace Shopeee.Controllers
             UpdateUserModel updateUserModel = new UpdateUserModel();
             updateUserModel.User = await UserManager.FindByIdAsync(id);
             updateUserModel.InputModel = new RegisterModel.InputModel();
+            updateUserModel.Member = new List<IdentityRole>();
+            updateUserModel.NonMember = new List<IdentityRole>();
+            List<IdentityRole> ListOfRoles = RoleManager.Roles.ToList();
+            foreach (IdentityRole role in ListOfRoles)
+            {
+                var list = await UserManager.IsInRoleAsync(user, role.Name) ? updateUserModel.Member : updateUserModel.NonMember;
+                list.Add(role);
+            }
+
+
             return View(updateUserModel);
         }
 
@@ -178,6 +195,7 @@ namespace Shopeee.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateUser(UpdateUserModel Model)
         {
+            IdentityResult result;
             var user = await UserManager.FindByIdAsync(Model.UserId);
             if (user == null)
             {
@@ -191,7 +209,9 @@ namespace Shopeee.Controllers
                 if (!user.Email.Equals(Model.InputModel.Email))
                 {
                     var code = await UserManager.GenerateChangeEmailTokenAsync(user, Model.InputModel.Email);
-                    await UserManager.ChangeEmailAsync(user, Model.InputModel.Email, code);
+                    result = await UserManager.ChangeEmailAsync(user, Model.InputModel.Email, code);
+                    if (!result.Succeeded)
+                        Errors(result);
                 }
                 if ("" + user.PhoneNumber == "")
                 {
@@ -200,16 +220,42 @@ namespace Shopeee.Controllers
                 else if (!user.PhoneNumber.Equals(Model.InputModel.PhoneNumber))
                 {
                     var code = await UserManager.GenerateChangePhoneNumberTokenAsync(user, Model.InputModel.PhoneNumber);
-                    await UserManager.ChangePhoneNumberAsync(user, Model.InputModel.PhoneNumber, code);
+                    result = await UserManager.ChangePhoneNumberAsync(user, Model.InputModel.PhoneNumber, code);
+                    if (!result.Succeeded)
+                        Errors(result);
                 }
                 if (!Model.InputModel.Password.Equals("NoChange"))
                 {
-                    await UserManager.RemovePasswordAsync(user);
-                    await UserManager.AddPasswordAsync(user, Model.InputModel.Password);
+                    result = await UserManager.RemovePasswordAsync(user);
+                    if (!result.Succeeded)
+                        Errors(result);
+                    result = await UserManager.AddPasswordAsync(user, Model.InputModel.Password);
+                    if (!result.Succeeded)
+                        Errors(result);
+                }
+
+                foreach (string RoleName in Model.AddRoles ?? new string[] { })
+                {
+                    IdentityRole role = await RoleManager.FindByNameAsync(RoleName);
+                    if (role != null)
+                    {
+                        result = await UserManager.AddToRoleAsync(user, RoleName);
+                        if (!result.Succeeded)
+                            Errors(result);
+                    }
+                }
+                foreach (string RoleName in Model.RemoveRoles ?? new string[] { })
+                {
+                    IdentityRole role = await RoleManager.FindByNameAsync(RoleName);
+                    if (role != null)
+                    {
+                        result = await UserManager.RemoveFromRoleAsync(user, RoleName);
+                        if (!result.Succeeded)
+                            Errors(result);
+                    }
                 }
                 await UserManager.UpdateAsync(user);
             }
-
 
             if (ModelState.IsValid)
                 return RedirectToAction("UsersList");
