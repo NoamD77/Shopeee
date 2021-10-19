@@ -35,6 +35,13 @@ namespace Shopeee.Controllers
             public ShopeeeContext context { get; set; }
         }
 
+        public class UpdateUserModel
+        {
+            public string UserId { get; set; }
+            public ApplicationUser User { get; set; }
+            public RegisterModel.InputModel InputModel { get; set; }
+        }
+
         [BindProperty]
         public InputModel Input { get; set; }
         public RegisterModel Register { get; set; }
@@ -146,6 +153,71 @@ namespace Shopeee.Controllers
             else
                 return await UpdateRole(model.RoleId);
         }
+
+
+        [Authorize(Policy = "writepolicy")]
+        [HttpGet]
+        public async Task<IActionResult> UpdateUser(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var user = await UserManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            UpdateUserModel updateUserModel = new UpdateUserModel();
+            updateUserModel.User = await UserManager.FindByIdAsync(id);
+            updateUserModel.InputModel = new RegisterModel.InputModel();
+            return View(updateUserModel);
+        }
+
+        [Authorize(Policy = "writepolicy")]
+        [HttpPost]
+        public async Task<IActionResult> UpdateUser(UpdateUserModel Model)
+        {
+            var user = await UserManager.FindByIdAsync(Model.UserId);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            if (ModelState.IsValid)
+            {
+                user.FirstName = Model.InputModel.FirstName;
+                user.LastName = Model.InputModel.LastName;
+                user.BirthDate = Model.InputModel.BirthDate;
+                if (!user.Email.Equals(Model.InputModel.Email))
+                {
+                    var code = await UserManager.GenerateChangeEmailTokenAsync(user, Model.InputModel.Email);
+                    await UserManager.ChangeEmailAsync(user, Model.InputModel.Email, code);
+                }
+                if ("" + user.PhoneNumber == "")
+                {
+                    await UserManager.SetPhoneNumberAsync(user, Model.InputModel.PhoneNumber);
+                }
+                else if (!user.PhoneNumber.Equals(Model.InputModel.PhoneNumber))
+                {
+                    var code = await UserManager.GenerateChangePhoneNumberTokenAsync(user, Model.InputModel.PhoneNumber);
+                    await UserManager.ChangePhoneNumberAsync(user, Model.InputModel.PhoneNumber, code);
+                }
+                if (!Model.InputModel.Password.Equals("NoChange"))
+                {
+                    await UserManager.RemovePasswordAsync(user);
+                    await UserManager.AddPasswordAsync(user, Model.InputModel.Password);
+                }
+                await UserManager.UpdateAsync(user);
+            }
+
+
+            if (ModelState.IsValid)
+                return RedirectToAction("UsersList");
+            else
+                return await UpdateUser(Model.UserId);
+            //return View();
+        }
+
 
         [Authorize(Policy = "writepolicy")]
         [HttpPost]
