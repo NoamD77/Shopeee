@@ -338,9 +338,10 @@ namespace Shopeee.Controllers
             foreach (Brand brand in BrandsList)
             {
                 var BrandItemsCount = (from i in _context.Item
-                                      where i.BrandId == brand.Id
-                                      select i).ToList().Count();
-                data.Add(new { Product = brand.Name, Count = BrandItemsCount });
+                                       where i.BrandId == brand.Id
+                                       select i).ToList().Count();
+                if (BrandItemsCount > 0)
+                    data.Add(new { Product = brand.Name, Count = BrandItemsCount });
             }
             return Json(data);
         }
