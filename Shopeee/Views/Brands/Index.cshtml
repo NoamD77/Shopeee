@@ -3,39 +3,76 @@
 @{
     ViewData["Title"] = "Index";
 }
+<div id="test">
+    <h1>Index</h1>
 
-<h1>Index</h1>
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Logo)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <input id="txt_search" autocomplete="off" />
+        <button id="btn_search">Search</button>
+        <tbody id="body">
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Logo)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Logo)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Logo)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<script>
+    presearch = null
+    document.getElementById('btn_search').addEventListener('click', function (e) {
+        //Run LiveSearch on ever key up
+        let value = document.getElementById('txt_search').value
+        if (value != presearch) {
+            Search(value)
+            presearch = value
+        }
+    });
+
+    function Search(value) {
+        //window.location.href = window.location.href + "?search=" + value;
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("Index", "Brands")",
+            data: {
+                search: value
+            },
+            datatype: "html",
+            success: function (data) {
+                $('#test').html(data);
+                document.getElementById('txt_search').value = value
+                // Insert the returned search results html into the result element
+                //$('#con').empty();
+                //$('#con').html(data);
+                //window.location.href = window.location.href.split("?")[0] + "?search=" + value;
+
+            }
+        });
+    }
+</script>
