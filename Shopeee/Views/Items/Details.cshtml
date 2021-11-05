@@ -1,4 +1,5 @@
 ﻿@model Shopeee.Models.Item
+@using Shopeee.Class;
 
 @{
     ViewData["Title"] = "Details";
@@ -13,7 +14,7 @@
 <div class="container">
 
     <div class="left">
-        <img src="@Url.Content(Shopeee.Class.GlobalVariables.webImagesPath)@Html.DisplayFor(modelItem =>Model.Picture)" style="width:100%" />
+        <img src="@Url.Content(GlobalVariables.webImagesPath)@Html.DisplayFor(modelItem =>Model.Picture)" style="width:100%" />
         @*<img src="~/imgs/@Html.DisplayFor(modelItem =>Model.Picture)" style="width:100%" onmousemove="zoomIn(event)" onmouseout="zoomOut()" />*@
     </div>
 
