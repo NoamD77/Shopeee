@@ -1,0 +1,89 @@
+﻿p {
+    margin-bottom: 1px;
+    margin-top: 1px;
+}
+
+a {
+    color: black;
+
+    margin-bottom:1px;
+    margin-top: 1px;
+}
+
+.btn-buy-now{
+    width: 100%;
+}
+    a:hover {
+        color: black;
+    }
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    grid-gap: 10px;
+    width: 90%;
+    align-self: center;
+    margin: auto;
+}
+
+.card {
+    display: grid;
+/*    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);*/
+    width: 238.5px;
+    justify-items: center;
+    margin: auto;
+    padding: 1px 1px;
+    border-radius: 0;
+/*    background-color: red;*/
+}
+
+    .card > a > img {
+        margin: auto;
+        width: 234.5px;
+        height: 283.5px;
+        align-self: center;
+    }
+
+.crd-des {
+    font-size: 13px;
+}
+
+.card > a > button {
+    width: 99%;
+    border-style: none;
+    background-color: white;
+    color: #009A4D;
+    margin-top: 1px;
+    text-transform: uppercase;
+    font-weight: 500;
+    outline: none;
+    padding: 5px;
+    transition: .3s all;
+}
+
+.card > a >button:hover{
+    color: white;
+    background-color: #009A4D;
+}
+
+.price {
+    color: black;
+    font-weight: 500;
+    font-size: 18px;
+}
+
+/*.card button {
+    border: none;
+    outline: 0;
+    padding: 12px;
+    color: green;
+    background-color: #FFF;
+    text-align: center;
+    cursor: pointer;
+    width: 100%;
+    font-size: 22px;
+}
+
+.card button:hover {
+    opacity: 0.7;
+}*/

@@ -7,16 +7,24 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Shopeee.Data;
 using Shopeee.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
+using Shopeee.Class;
 
 namespace Shopeee.Controllers
 {
     public class BrandsController : Controller
     {
         private readonly ShopeeeContext _context;
+        private readonly IWebHostEnvironment Environment;
+        private GlobalFunctions.GlobalFunctions Functions;
 
-        public BrandsController(ShopeeeContext context)
+        public BrandsController(ShopeeeContext context, IWebHostEnvironment _webHostEnvironment)
         {
             _context = context;
+            Environment = _webHostEnvironment;
+            Functions = new GlobalFunctions.GlobalFunctions(_context, Environment);
         }
 
         // GET: Brands
@@ -54,10 +62,48 @@ namespace Shopeee.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Logo")] Brand brand)
+        public async Task<IActionResult> Create([Bind("Id,Name,Logo")] Brand brand, List<IFormFile> postedFiles)
         {
             if (ModelState.IsValid)
             {
+                if (postedFiles.Count != 0)
+                {
+                    IFormFile newUploadedFile = postedFiles[0];
+                    string fileExtention = Path.GetExtension(newUploadedFile.FileName);
+
+                    bool check = false;
+                    using (var reader = new BinaryReader(newUploadedFile.OpenReadStream()))
+                    {
+                        var signatures = Signatures._fileSignature[fileExtention];
+                        var headerBytes = reader.ReadBytes(signatures.Max(m => m.Length));
+
+                        check = signatures.Any(signature => headerBytes.Take(signature.Length).SequenceEqual(signature));
+                    }
+                    if (check)
+                    {
+                        try
+                        {
+                            //save images to local folder just for backup
+                            Functions.saveImageLocally(newUploadedFile);
+                            //.saveImageLocally(newUploadedFile);
+
+                            //upload images to ftp server
+                            Functions.UploadPicture(newUploadedFile);
+
+                            brand.Logo = Path.GetFileName(newUploadedFile.FileName);
+                        }
+                        catch (Exception e)
+                        {
+                            ViewBag.ErrorMessage = "Connection Timeout";
+                            return View(brand);
+                        }
+                    }
+                    else
+                    {
+                        ViewBag.ErrorMessage = "Not an image";
+                        return View(brand);
+                    }
+                }
                 _context.Add(brand);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -86,7 +132,7 @@ namespace Shopeee.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Logo")] Brand brand)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Logo")] Brand brand, List<IFormFile> postedFiles)
         {
             if (id != brand.Id)
             {
@@ -97,6 +143,23 @@ namespace Shopeee.Controllers
             {
                 try
                 {
+                    if (postedFiles.Count != 0)
+                    {
+                        IFormFile newUploadedFile = postedFiles[0];
+                        //save images to local folder just for backup
+                        Functions.saveImageLocally(newUploadedFile);
+
+                        //upload images to ftp server
+                        Functions.UploadPicture(newUploadedFile);
+
+                        brand.Logo = Path.GetFileName(newUploadedFile.FileName);
+                    }
+                    else
+                    {
+                        var tempbrand = await _context.Brand.FirstOrDefaultAsync(i => i.Id == id);
+                        brand.Logo = tempbrand.Logo;
+                        _context.Entry(tempbrand).State = EntityState.Detached;
+                    }
                     _context.Update(brand);
                     await _context.SaveChangesAsync();
                 }

@@ -1,60 +1,86 @@
-﻿@{
+﻿@model Shopeee.Controllers.HomeController.ViewModel
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <head>
-    <script src="~/js/APIfunctions.js"></script>
+    @*<script src="~/js/APIfunctions.js"></script>*@
+    <link rel="stylesheet" href="~/css/home.css" />
+    <script src="https://use.fontawesome.com/6e16709d88.js"></script>
 </head>
+<body class="home-body">
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p><a href="https://localhost:44319/Users">Users</a></p>
-    <p><a href="https://localhost:44319/ShoppingCarts">ShoppingCarts</a></p>
-    <p><a href="https://localhost:44319/Items">Items</a></p>
-    <p><a href="https://localhost:44319/Brands">Brands</a></p>
-    <p><a href="https://localhost:44319/Branches">Branches</a></p>
-    <p><a href="https://localhost:44319/Permissions">Permissions</a></p>
+    <section id="banner-section">
+        <div class="banner-text">
+            <h1>#dress_your_day</h1>
+            <p>Click here to find out your dress</p>
+            <a asp-controller="Items" asp-action="Index">
+                <button>shop new</button>
+            </a>
+        </div>
+        <div class="banner-img">
+            <img src="~/imgs/favpng_fashion-model-bijin.png" />
+        </div>
+    </section>
 
-    <!--contact start-->
-
-    <div class="conyainer-fluid contact bg-gray">
-        <div class="container">
-            <div class="row top-heading">
-                <div class="col-md-12">
-                    <h1>Contact Us</h1>
+    <section class="section" id="our-brands-section">
+        <h2>#our_brands</h2>
+        <div class="brand-container">
+            @for (int i = 0; i < 4; i++)
+            {
+                <div class="brand-item">
+                    <p>@Model.ourBrands[i].Name</p>
+                    <img src="@Url.Content(Shopeee.Class.GlobalVariables.webImagesPath)@Model.ourBrands[i].Logo" />
                 </div>
+            }
+        </div>
+    </section>
+
+    <section class="section" id="our-team-section">
+        <h2>#our_team</h2>
+        <div class="team-members">
+            <div class="team-member">
+                <img src="~/imgs/team-member.png" />
+                <h4>Stav Gabay</h4>
+                <p>College of management</p>
             </div>
-
-            <div class="row mt-4">
-                <div class="col-md-4">
-                    <h4>Address:</h4>
-                    <p>
-                        1,Alenbi st.
-                        <br /> Tel Aviv
-                    </p>
-                    <br />
-                    <p><i class="fa fa-envelope" aria-hidden="true"></i> : idanba@gmail.com</p>
-                    <p><i class="fa fa-phone" aria-hidden="true"></i> :+972 528668781 </p>
-                    <p><i class="fa fa-facebook-square" aria-hidden="true"></i> : www.facebook.com/shopeee </p>
-                    <p><i class="fa fa-fax" aria-hidden="true"></i> : 123456789</p>
-                </div>
-
-                <div class="col-md-4">
-                    <h4>OPENING HOURS:</h4>
-                    <p>Sunday: 10am to 8pm</p>
-                    <p>Monday: 10am to 8pm</p>
-                    <p>Tuesday: 10am to 8pm</p>
-                    <p>Wednesday: 10am to 8pm</p>
-                    <p>Thrusday: 10am to 8pm</p>
-                    <p>Friday: 10am to 2pm</p>
-                </div>
-
-                <div class="col-md-4">
-                    <iframe src="https://maps.google.com/maps?q=alenbi%201%20tel%20aviv&t=&z=13&ie=UTF8&iwloc=&output=embed" width="400" height="300" frameborder="0" style="border:0" allowfullscreen></iframe>
-                </div>
+            <div class="team-member">
+                <img src="~/imgs/team-member.png" />
+                <h4>Idan Bar Shlomo</h4>
+                <p>College of management</p>
+            </div>
+            <div class="team-member">
+                <img src="~/imgs/team-member.png" />
+                <h4>Almog Frozenfar</h4>
+                <p>College of management</p>
+            </div>
+            <div class="team-member">
+                <img src="~/imgs/team-member.png" />
+                <h4>Noam Dadush</h4>
+                <p>College of management</p>
             </div>
         </div>
-    </div>
-
-    <!--/*contact end*/-->
-</div>
+    </section>
+    <section class="section" id="contact-section">
+        <h2>#contact_us</h2>
+        <ul>
+            <li>
+                <p>Street Jump 21 TLV, Israel</p>
+            </li>
+            <li>
+                <i></i>
+                <p>(+972) 3-123-456</p>
+            </li>
+            <li>
+                <i></i>
+                <p>Support@Shopeee.colman</p>
+            </li>
+        </ul>
+    </section>
+    @*<div>
+            @for(int i=0; i<4; i++)
+            {
+                <p>@Model.ourBrands[i].Name</p>
+            }
+        </div>*@
+</body>

@@ -1,0 +1,119 @@
+﻿body {
+    width: 100%;
+    margin: auto;
+}
+
+.links > p > a {
+    margin-left: 20px;
+}
+
+#banner-section {
+    width: 100%;
+    height: 250px;
+    background: linear-gradient(45deg, rgba(12,217,121,0.24) 0%, rgba(0,255,230,0.23) 50%, rgba(24,112,179,0.79) 100%);
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    grid-template-columns: repeat(2, 1fr);
+    box-shadow: 0 15px 20px rgba(0, 0, 0, 0.10);
+}
+
+.banner-text > a > button {
+    background-color: black;
+    color: white;
+    font-weight: 800;
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+    font-family: Segoe UI,Frutiger,Frutiger Linotype,Dejavu Sans,Helvetica Neue,Arial,sans-serif;
+    font-style: italic;
+    width: 120px;
+    height: 40px;
+    transition: 0.2s ease all;
+}
+
+    .banner-text > a > button:focus {
+        outline: none;
+    }
+
+    .banner-text > a > button:hover {
+        color: black;
+        background-color: white;
+        box-shadow: 0 15px 10px rgba(0, 0, 0, 0.1);
+    }
+
+.banner-img > img {
+    overflow: hidden;
+    height: 300px;
+    aspect-ratio: auto;
+    transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+}
+
+    .banner-img > img:hover {
+        transform: scaleX(1);
+        -webkit-transform: scaleX(1);
+    }
+
+#our-brands-section > h2, #our-team-section > h2, #contact-section > h2 {
+    text-transform: uppercase;
+}
+
+.team-members {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.team-member > img {
+    width: 40%;
+    aspect-ratio: auto;
+}
+
+.section {
+    width: 100%;
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    padding-top: 130px;
+    padding-bottom: 120px;
+}
+
+#contact-section > ul > li {
+    font-size: 20px;
+}
+
+body {
+    width: 100%;
+    margin: 0;
+    justify-content: center;
+    align-items: center;
+}
+
+.links {
+    margin: auto;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+    .links > p > a {
+        margin-left: 20px;
+    }
+
+.brand-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.brand-item {
+    display: flex;
+    flex-direction: column-reverse;
+}
+.brand-item > img {
+    max-height:150px;
+    aspect-ratio: auto;
+}

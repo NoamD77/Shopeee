@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
+using Shopeee.Data;
 using Shopeee.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,24 +15,30 @@ namespace Shopeee.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ShopeeeContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+
+        public HomeController(ILogger<HomeController> logger, ShopeeeContext context)
         {
             _logger = logger;
+            _context = context;
         }
-
+        public class ViewModel
+        {
+            public List<Brand> ourBrands { get; set; }
+        }
         public IActionResult Index()
         {
-            List<SelectListItem> ObjItem = new List<SelectListItem>()
+            ViewModel Viewbrands = new ViewModel();
+            //Viewbrands.ourBrands = await _context.Brand.Include();
+
+            Viewbrands.ourBrands = _context.Brand.ToList();
+
+            if (Viewbrands.ourBrands == null)
             {
-          new SelectListItem {Text="Select",Value="0",Selected=true },
-          new SelectListItem {Text="USD",Value="1" },
-          new SelectListItem {Text="GBP",Value="2"},
-          new SelectListItem {Text="ILS",Value="3"},
-          new SelectListItem {Text="EUR",Value="4" },
-            };
-            ViewBag.ListItem = ObjItem;
-            return View();
+                return NotFound();
+            }
+            return View(Viewbrands);
         }
 
         public IActionResult Privacy()
