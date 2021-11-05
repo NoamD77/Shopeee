@@ -28,9 +28,19 @@ namespace Shopeee.Controllers
         }
 
         // GET: Brands
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? search)
         {
-            return View(await _context.Brand.ToListAsync());
+            if(search == null)
+            {
+                return View(await _context.Brand.ToListAsync());
+            }
+            else
+            {
+                List<Brand> brandsAfterSearch = (from b in _context.Brand
+                                                 where b.Name.ToLower().Contains(search.ToLower())
+                                                 select b).ToList();
+                return View(brandsAfterSearch);
+            }
         }
 
         // GET: Brands/Details/5

@@ -35,6 +35,20 @@ namespace Shopeee.Controllers
             public ShopeeeContext context { get; set; }
         }
 
+        public class UpdateUserModel
+        {
+            public string UserId { get; set; }
+            public ApplicationUser User { get; set; }
+            public RegisterModel.InputModel InputModel { get; set; }
+
+
+            public List<IdentityRole> Member { get; set; }
+            public List<IdentityRole> NonMember { get; set; }
+
+            public string[] AddRoles { get; set; }
+            public string[] RemoveRoles { get; set; }
+        }
+
         [BindProperty]
         public InputModel Input { get; set; }
         public RegisterModel Register { get; set; }
@@ -147,6 +161,110 @@ namespace Shopeee.Controllers
                 return await UpdateRole(model.RoleId);
         }
 
+
+        [Authorize(Policy = "writepolicy")]
+        [HttpGet]
+        public async Task<IActionResult> UpdateUser(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var user = await UserManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            UpdateUserModel updateUserModel = new UpdateUserModel();
+            updateUserModel.User = await UserManager.FindByIdAsync(id);
+            updateUserModel.InputModel = new RegisterModel.InputModel();
+            updateUserModel.Member = new List<IdentityRole>();
+            updateUserModel.NonMember = new List<IdentityRole>();
+            List<IdentityRole> ListOfRoles = RoleManager.Roles.ToList();
+            foreach (IdentityRole role in ListOfRoles)
+            {
+                var list = await UserManager.IsInRoleAsync(user, role.Name) ? updateUserModel.Member : updateUserModel.NonMember;
+                list.Add(role);
+            }
+
+
+            return View(updateUserModel);
+        }
+
+        [Authorize(Policy = "writepolicy")]
+        [HttpPost]
+        public async Task<IActionResult> UpdateUser(UpdateUserModel Model)
+        {
+            IdentityResult result;
+            var user = await UserManager.FindByIdAsync(Model.UserId);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            if (ModelState.IsValid)
+            {
+                user.FirstName = Model.InputModel.FirstName;
+                user.LastName = Model.InputModel.LastName;
+                user.BirthDate = Model.InputModel.BirthDate;
+                if (!user.Email.Equals(Model.InputModel.Email))
+                {
+                    var code = await UserManager.GenerateChangeEmailTokenAsync(user, Model.InputModel.Email);
+                    result = await UserManager.ChangeEmailAsync(user, Model.InputModel.Email, code);
+                    if (!result.Succeeded)
+                        Errors(result);
+                }
+                if ("" + user.PhoneNumber == "")
+                {
+                    await UserManager.SetPhoneNumberAsync(user, Model.InputModel.PhoneNumber);
+                }
+                else if (!user.PhoneNumber.Equals(Model.InputModel.PhoneNumber))
+                {
+                    var code = await UserManager.GenerateChangePhoneNumberTokenAsync(user, Model.InputModel.PhoneNumber);
+                    result = await UserManager.ChangePhoneNumberAsync(user, Model.InputModel.PhoneNumber, code);
+                    if (!result.Succeeded)
+                        Errors(result);
+                }
+                if (!Model.InputModel.Password.Equals("NoChange"))
+                {
+                    result = await UserManager.RemovePasswordAsync(user);
+                    if (!result.Succeeded)
+                        Errors(result);
+                    result = await UserManager.AddPasswordAsync(user, Model.InputModel.Password);
+                    if (!result.Succeeded)
+                        Errors(result);
+                }
+
+                foreach (string RoleName in Model.AddRoles ?? new string[] { })
+                {
+                    IdentityRole role = await RoleManager.FindByNameAsync(RoleName);
+                    if (role != null)
+                    {
+                        result = await UserManager.AddToRoleAsync(user, RoleName);
+                        if (!result.Succeeded)
+                            Errors(result);
+                    }
+                }
+                foreach (string RoleName in Model.RemoveRoles ?? new string[] { })
+                {
+                    IdentityRole role = await RoleManager.FindByNameAsync(RoleName);
+                    if (role != null)
+                    {
+                        result = await UserManager.RemoveFromRoleAsync(user, RoleName);
+                        if (!result.Succeeded)
+                            Errors(result);
+                    }
+                }
+                await UserManager.UpdateAsync(user);
+            }
+
+            if (ModelState.IsValid)
+                return RedirectToAction("UsersList");
+            else
+                return await UpdateUser(Model.UserId);
+            //return View();
+        }
+
+
         [Authorize(Policy = "writepolicy")]
         [HttpPost]
         public async Task<IActionResult> DeleteRole(string id)
@@ -184,6 +302,13 @@ namespace Shopeee.Controllers
             return View("UsersList", UserManager.Users);
         }
 
+
+        [Authorize(Policy = "writepolicy")]
+        public IActionResult Statistics()
+        {
+            return View(); ;
+        }
+
         private bool UserExists(string id)
         {
             return _context.Users.Any(e => e.Id == id);
@@ -193,6 +318,32 @@ namespace Shopeee.Controllers
         {
             foreach (IdentityError error in result.Errors)
                 ModelState.AddModelError("", error.Description);
+        }
+
+        public IActionResult StatisticsTest()
+        {
+            var ItemsList = _context.Item.ToList();
+            List<object> data = new List<object>();
+            foreach (Item item in ItemsList)
+            {
+                data.Add(new { Product = item.Name, Count = item.Price });
+            }
+            return Json(data);
+        }
+
+        public IActionResult StatisticsItemsByBrand()
+        {
+            var BrandsList = _context.Brand.ToList();
+            List<object> data = new List<object>();
+            foreach (Brand brand in BrandsList)
+            {
+                var BrandItemsCount = (from i in _context.Item
+                                       where i.BrandId == brand.Id
+                                       select i).ToList().Count();
+                if (BrandItemsCount > 0)
+                    data.Add(new { Product = brand.Name, Count = BrandItemsCount });
+            }
+            return Json(data);
         }
 
     }

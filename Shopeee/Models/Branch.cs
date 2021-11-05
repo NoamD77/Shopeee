@@ -10,8 +10,12 @@ namespace Shopeee.Models
     {
         public int Id { get; set; }
         public String Name { get; set; }
+        public String City { get; set; }
+        public AreaType Area { get; set; }
         public String Location { get; set; }
         public String Address { get; set; }
+        public String Phone { get; set; }
+        public bool Accessibility { get; set; }
         
 
         [DataType(DataType.Time)]

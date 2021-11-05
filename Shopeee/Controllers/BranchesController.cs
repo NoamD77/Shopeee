@@ -25,6 +25,42 @@ namespace Shopeee.Controllers
             return View(await _context.Branch.ToListAsync());
         }
 
+        public PartialViewResult LiveSearch(string search, string type, string color, string gender, string brand)
+        {
+            List<Branch> res = null;
+            res = (
+                from b in _context.Branch
+                select b
+            ).ToList();
+            if (search != null)
+            {
+                res = res.Where(b => b.Name.Contains(search)).ToList();
+            }
+
+            //if (type != null)
+            //{
+            //    res = res.Where(i => i.Type.ToString().ToLower().Equals(type.ToLower())).ToList();
+            //}
+
+            //if (color != null)
+            //{
+            //    res = res.Where(i => i.Color.ToString().ToLower().Equals(color.ToLower())).ToList();
+            //}
+
+            //if (gender != null)
+            //{
+            //    res = res.Where(i => i.Gender.ToString().ToLower().Equals(gender.ToLower())).ToList();
+            //}
+
+            //if (brand != null)
+            //{
+            //    res = res.Where(i => i.Brand.Name.ToString().ToLower().Equals(brand.ToLower())).ToList();
+            //}
+
+            // Pass the List of results to a Partial View 
+            return PartialView("_PartialBranchesView", res);
+        }
+
         // GET: Branches/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -54,7 +90,7 @@ namespace Shopeee.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Location,Address,OpenHours,CloseHours")] Branch branch)
+        public async Task<IActionResult> Create([Bind("Id,Name,City,Area,Location,Address,OpenHours,CloseHours")] Branch branch)
         {
             if (ModelState.IsValid)
             {
@@ -86,7 +122,7 @@ namespace Shopeee.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Location,Address,OpenHours,CloseHours")] Branch branch)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,City,Area,Location,Address,OpenHours,CloseHours")] Branch branch)
         {
             if (id != branch.Id)
             {
