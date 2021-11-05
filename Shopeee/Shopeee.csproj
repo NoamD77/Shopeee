@@ -24,6 +24,8 @@
     <Compile Remove="Migrations\20210922172358_identityroles.Designer.cs" />
     <Compile Remove="Migrations\20211011153730_roleModifications.cs" />
     <Compile Remove="Migrations\20211011153730_roleModifications.Designer.cs" />
+    <Compile Remove="Migrations\20211019154445_branchesTypeChange.cs" />
+    <Compile Remove="Migrations\20211019154445_branchesTypeChange.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

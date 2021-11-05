@@ -12,47 +12,50 @@
     <a asp-action="Create">
         <button type="button"> Create New Branch</button>
     </a>
-        <table class="table table-hover table-bordered table-striped">
-            <thead>
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Name)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Location)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Address)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.WorkHours)
-                    </th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Name)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Location)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Address)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.WorkHours)
-                        </td>
-                        <td>
-                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+    <p>
+        <input id="livesearchtextbox" name="livesearchtextbox" placeholder="Search" autocomplete="off" />
+    </p>
+    <div id="con">
+        @Html.Partial("_PartialBranchesView", Model)
+    </div>
 </div>
+
+<script>
+    presearch = null
+    document.getElementById('livesearchtextbox').addEventListener('keyup', function (e) {
+        //Run LiveSearch on ever key up
+        let value = document.getElementById('livesearchtextbox').value
+        if (value != presearch) {
+            LiveSearch(value)
+            presearch = value
+        }
+    });
+
+    var elements = document.getElementsByClassName('form-control')
+    Array.from(elements).forEach(function (element) {
+        element.addEventListener('change', function (e) {
+            let value = document.getElementById('livesearchtextbox').value
+            LiveSearch(value)
+        });
+    });
+
+    function LiveSearch(value) {
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("LiveSearch", "Branches")",
+            data: {
+                search: value
+                //type: $("#typeselect :selected").text(),
+                //color: $("#colorselect :selected").text(),
+                //gender: $("#genderselect :selected").text(),
+                //brand: $("#brandselect :selected").text()
+            },
+            datatype: "html",
+            success: function (data) {
+                // Insert the returned search results html into the result element
+                $('#con').empty()
+                $('#con').html(data)
+            }
+        });
+    }
+</script>

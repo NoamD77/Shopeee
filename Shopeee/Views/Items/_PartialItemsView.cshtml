@@ -1,17 +1,22 @@
 ﻿@using Shopeee.Models;
+@using Shopeee.Class;
 @model IEnumerable<Shopeee.Models.Item>
+
+    <head>
+        <link rel="stylesheet" href="~/css/branches.css" />
+    </head>
 
 <div class="grid-container">
     @foreach (var item in Model)
     {
         <div class="card">
             <a asp-action="Details" asp-route-id="@item.Id">
-                <img src="@Url.Content(Shopeee.Class.GlobalVariables.webImagesPath)@Html.DisplayFor(modelItem =>item.Picture)" style="width:100%">
+                <img src="@Url.Content(GlobalVariables.webImagesPath)@Html.DisplayFor(modelItem =>item.Picture)" style="width:100%">
             </a>
             <a asp-action="Details" asp-route-id="@item.Id">
                 <p>@Html.DisplayFor(modelItem => item.Name)</p>
             </a>
-            <input id="qty_@item.Id" type="number" class="form-control" min="1" max="@item.Quantity" value="1" />
+            <input id="qty_@Html.DisplayFor(modelItem => item.Id)" type="number" class="form-control" min="1" max="@item.Quantity" value="1" />
             <p class="price">$@Html.DisplayFor(modelItem => item.Price)</p>
             @*<p>@Html.DisplayFor(modelItem => item.Description)</p>*@
             <p><button onclick="addtoCart(@item.Id)">Add to Cart</button></p>
