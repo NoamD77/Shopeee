@@ -14,6 +14,7 @@ using System.IO;
 using System.Net;
 using System.Text;
 using Shopeee.Class;
+using Shopeee.GlobalFunctions;
 
 namespace Shopeee.Controllers
 {
@@ -21,11 +22,13 @@ namespace Shopeee.Controllers
     {
         private readonly ShopeeeContext _context;
         private readonly IWebHostEnvironment Environment;
+        private GlobalFunctions.GlobalFunctions Functions;
 
         public ItemsController(ShopeeeContext context, IWebHostEnvironment _webHostEnvironment)
         {
             _context = context;
             Environment = _webHostEnvironment;
+            Functions = new GlobalFunctions.GlobalFunctions(_context, Environment);
         }
 
         // GET: Items
@@ -113,20 +116,21 @@ namespace Shopeee.Controllers
             {
                 if (postedFiles.Count != 0)
                 {
-                    string ext = Path.GetExtension(postedFiles[0].FileName);
-                    //if (postedFiles[0].ContentType.ToLower().StartsWith("image/"))
+                    IFormFile newUploadedFile = postedFiles[0];
+                    string ext = Path.GetExtension(newUploadedFile.FileName);
+                    //if (newUploadedFile.ContentType.ToLower().StartsWith("image/"))
                     // Check whether the selected file is image
                     //{
                     //    byte[] b;
-                    //    using (BinaryReader br = new BinaryReader(postedFiles[0].OpenReadStream()))
+                    //    using (BinaryReader br = new BinaryReader(newUploadedFile.OpenReadStream()))
                     //    {
-                    //        b = br.ReadBytes((int)postedFiles[0].OpenReadStream().Length);
+                    //        b = br.ReadBytes((int)newUploadedFile.OpenReadStream().Length);
                     //        // Convert the image in to bytes
                     //    }
                     //    Response.StatusCode = 200;
                     //}
                     bool check = false;
-                    using (var reader = new BinaryReader(postedFiles[0].OpenReadStream()))
+                    using (var reader = new BinaryReader(newUploadedFile.OpenReadStream()))
                     {
                         var signatures = Signatures._fileSignature[ext];
                         var headerBytes = reader.ReadBytes(signatures.Max(m => m.Length));
@@ -138,12 +142,13 @@ namespace Shopeee.Controllers
                         try
                         {
                             //save images to local folder just for backup
-                            saveImageLocally(postedFiles[0]);
+                            Functions.saveImageLocally(newUploadedFile);
+                            //.saveImageLocally(newUploadedFile);
 
                             //upload images to ftp server
-                            uploadPicture(postedFiles[0]);
+                            Functions.UploadPicture(newUploadedFile);
 
-                            item.Picture = Path.GetFileName(postedFiles[0].FileName);
+                            item.Picture = Path.GetFileName(newUploadedFile.FileName);
                         }
                         catch (Exception e)
                         {
@@ -202,13 +207,14 @@ namespace Shopeee.Controllers
                 {
                     if (postedFiles.Count != 0)
                     {
+                        IFormFile newUploadedFile = postedFiles[0];
                         //save images to local folder just for backup
-                        saveImageLocally(postedFiles[0]);
+                        Functions.saveImageLocally(newUploadedFile);
 
                         //upload images to ftp server
-                        uploadPicture(postedFiles[0]);
+                        Functions.UploadPicture(newUploadedFile);
 
-                        item.Picture = Path.GetFileName(postedFiles[0].FileName);
+                        item.Picture = Path.GetFileName(newUploadedFile.FileName);
                     }
                     else
                     {
@@ -221,7 +227,7 @@ namespace Shopeee.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ItemExists(item.Id))
+                    if (!Functions.ItemExists(item.Id))
                     {
                         return NotFound();
                     }
@@ -266,44 +272,6 @@ namespace Shopeee.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ItemExists(int id)
-        {
-            return _context.Item.Any(e => e.Id == id);
-        }
-
-        private byte[] ConvertToBytes(IFormFile image)
-        {
-            byte[] CoverImageBytes = null;
-            BinaryReader reader = new BinaryReader(image.OpenReadStream());
-            CoverImageBytes = reader.ReadBytes((int)image.Length);
-            return CoverImageBytes;
-        }
-
-        private void saveImageLocally(IFormFile file)
-        {
-            string wwwPath = this.Environment.WebRootPath;
-            string path = Path.Combine(wwwPath, "imgs");
-            if (!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-            }
-            using (FileStream stream = new FileStream(Path.Combine(path, file.FileName), FileMode.Create))
-            {
-                file.CopyTo(stream);
-            }
-        }
-
-        private void uploadPicture(IFormFile file)
-        {
-            FtpWebRequest request = (FtpWebRequest)WebRequest.Create(GlobalVariables.ftpImagesPath + Path.GetFileName(file.FileName));
-            request.Credentials = new NetworkCredential(GlobalVariables.ftpServerUsername, GlobalVariables.ftpServerPassword);
-            request.Method = WebRequestMethods.Ftp.UploadFile;
-
-            using (Stream ftpStream = request.GetRequestStream())
-            {
-                file.CopyTo(ftpStream);
-            }
-        }
 
         /*
         private StreamReader downloadPicture(string FileName)
