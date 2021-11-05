@@ -1,0 +1,98 @@
+﻿@model Shopeee.Controllers.AdministrationsController.UpdateUserModel
+@inject UserManager<Shopeee.Areas.Identity.ApplicationUser> UserManager;
+@{
+    ViewData["Title"] = "Update User";
+}
+
+
+<h1>@ViewData["Title"]</h1>
+
+<a asp-action="UsersList" class="btn btn-secondary">Back</a>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="UpdateUser" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div>
+                <input type="hidden" name="UserId" value="@Model.User.Id" />
+                <input type="hidden" name="InputModel.UserName" value="@Model.User.UserName" />
+            </div>
+            <hr />
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="InputModel.FirstName"></label>
+                <input name="InputModel.FirstName" class="form-control" value="@Model.User.FirstName" />
+                <span asp-validation-for="InputModel.FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="InputModel.LastName"></label>
+                <input name="InputModel.LastName" class="form-control" value="@Model.User.LastName" />
+                <span asp-validation-for="InputModel.LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="InputModel.Email"></label>
+                <input name="InputModel.Email" class="form-control" type="email" value="@Model.User.Email" />
+                <span asp-validation-for="InputModel.Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="InputModel.BirthDate"></label>
+                <input name="InputModel.BirthDate" type="date" class="form-control" value="@Model.User.BirthDate.ToString("yyyy-MM-dd")" />
+                <span asp-validation-for="InputModel.BirthDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="InputModel.PhoneNumber"></label>
+                <input name="InputModel.PhoneNumber" class="form-control" value="@Model.User.PhoneNumber" />
+                <span asp-validation-for="InputModel.PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="InputModel.Password"></label>
+                <input name="InputModel.Password" type="password" class="form-control" value="NoChange" />
+                <span asp-validation-for="InputModel.Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="InputModel.ConfirmPassword"></label>
+                <input name="InputModel.ConfirmPassword" type="password" class="form-control" value="NoChange" />
+                <span asp-validation-for="InputModel.ConfirmPassword" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-group">
+                <label>Add to Roles</label>
+                <table class="table table-bordered table-sm">
+                    @foreach (IdentityRole role in Model.NonMember)
+                    {
+                        <tr>
+                            <td>@role.Name</td>
+                            <td>
+                                <input type="checkbox" name="AddRoles" value="@role.Name">
+                            </td>
+                        </tr>
+                    }
+                </table>
+                <label>Remove from Roles</label>
+                <table class="table table-bordered table-sm">
+                    @foreach (IdentityRole role in Model.Member)
+                    {
+                        <tr>
+                            <td>@role.Name</td>
+                            <td>
+                                <input type="checkbox" name="RemoveRoles" value="@role.Name">
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+                <button type="submit" class="btn btn-primary">Update</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+}

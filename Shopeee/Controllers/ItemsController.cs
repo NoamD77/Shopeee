@@ -44,7 +44,7 @@ namespace Shopeee.Controllers
                 from i in _context.Item
                 select i
             ).Include(i => i.Brand).ToList();
-            if (search != null) 
+            if (search != null)
             {
                 res = res.Where(i => i.Name.Contains(search)).ToList();
             }
@@ -95,7 +95,7 @@ namespace Shopeee.Controllers
         // GET: Items/Create
         public IActionResult Create()
         {
-            
+
             ViewData["BrandId"] = new SelectList(_context.Brand, "Id", "Name");
             return View();
         }
@@ -107,9 +107,10 @@ namespace Shopeee.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Price,Quantity,Picture,Description,Gender,Type,Color,BrandId")] Item item, List<IFormFile> postedFiles)
         {
-            
 
-            if (ModelState.IsValid){
+
+            if (ModelState.IsValid)
+            {
                 if (postedFiles.Count != 0)
                 {
                     string ext = Path.GetExtension(postedFiles[0].FileName);
@@ -136,22 +137,23 @@ namespace Shopeee.Controllers
                     {
                         try
                         {
-                        //save images to local folder just for backup
-                        saveImageLocally(postedFiles[0]);
+                            //save images to local folder just for backup
+                            saveImageLocally(postedFiles[0]);
 
-                        //upload images to ftp server
-                        uploadPicture(postedFiles[0]);
+                            //upload images to ftp server
+                            uploadPicture(postedFiles[0]);
 
-                        item.Picture = Path.GetFileName(postedFiles[0].FileName);
+                            item.Picture = Path.GetFileName(postedFiles[0].FileName);
                         }
-                        catch(Exception e)
+                        catch (Exception e)
                         {
                             ViewBag.ErrorMessage = "Connection Timeout";
                             ViewData["BrandId"] = new SelectList(_context.Brand, "Id", "Name", item.BrandId);
                             return View(item);
                         }
                     }
-                    else { 
+                    else
+                    {
                         ViewBag.ErrorMessage = "Not an image";
                         ViewData["BrandId"] = new SelectList(_context.Brand, "Id", "Name", item.BrandId);
                         return View(item);
@@ -302,6 +304,7 @@ namespace Shopeee.Controllers
                 file.CopyTo(ftpStream);
             }
         }
+
         /*
         private StreamReader downloadPicture(string FileName)
         {
