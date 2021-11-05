@@ -4,6 +4,8 @@
 }
 
 <h1>Administration Panel</h1>
+<a asp-action="Statistics">Statistics</a>
+<br />
 <a asp-action="UsersList">Users</a>
 @{
     var NumOfUsers = Model.UserManager.Users.ToList().Count();

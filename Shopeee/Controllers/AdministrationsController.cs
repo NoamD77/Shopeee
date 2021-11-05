@@ -302,6 +302,13 @@ namespace Shopeee.Controllers
             return View("UsersList", UserManager.Users);
         }
 
+
+        [Authorize(Policy = "writepolicy")]
+        public IActionResult Statistics()
+        {
+            return View(); ;
+        }
+
         private bool UserExists(string id)
         {
             return _context.Users.Any(e => e.Id == id);
@@ -311,6 +318,31 @@ namespace Shopeee.Controllers
         {
             foreach (IdentityError error in result.Errors)
                 ModelState.AddModelError("", error.Description);
+        }
+
+        public IActionResult StatisticsTest()
+        {
+            var ItemsList = _context.Item.ToList();
+            List<object> data = new List<object>();
+            foreach (Item item in ItemsList)
+            {
+                data.Add(new { Product = item.Name, Count = item.Price });
+            }
+            return Json(data);
+        }
+
+        public IActionResult StatisticsItemsByBrand()
+        {
+            var BrandsList = _context.Brand.ToList();
+            List<object> data = new List<object>();
+            foreach (Brand brand in BrandsList)
+            {
+                var BrandItemsCount = (from i in _context.Item
+                                      where i.BrandId == brand.Id
+                                      select i).ToList().Count();
+                data.Add(new { Product = brand.Name, Count = BrandItemsCount });
+            }
+            return Json(data);
         }
 
     }
