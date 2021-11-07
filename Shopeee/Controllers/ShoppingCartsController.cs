@@ -11,16 +11,21 @@ using Shopeee.Class;
 using Shopeee.Services;
 using System.Net.Http;
 using Newtonsoft.Json.Linq;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Shopeee.Areas.Identity;
 
 namespace Shopeee.Controllers
 {
     public class ShoppingCartsController : Controller
     {
         private readonly ShopeeeContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public ShoppingCartsController(ShopeeeContext context)
+        public ShoppingCartsController(ShopeeeContext context, UserManager<ApplicationUser> UserManager)
         {
             _context = context;
+            _userManager = UserManager;
         }
 
         public class ViewModel
@@ -29,21 +34,28 @@ namespace Shopeee.Controllers
         }
 
         // GET: ShoppingCarts
-        public async Task<IActionResult> Index(int id)
+        [Authorize(Policy = "readpolicy")]
+        public async Task<IActionResult> Index(string id)
         {
-            ViewModel Viewbag = new ViewModel();
-
-            Viewbag.Bag = (from s in _context.ShoppingCart
-                           join i in _context.Item
-                           on s.ItemId equals i.Id
-                           where s.UserId == id
-                           select s).Include(s => s.Item).ToList();
-
-            foreach (var item in Viewbag.Bag)
+            var currentUser = await _userManager.GetUserAsync(User);
+            if (currentUser.Id == id)
             {
-                item.Item.Price = float.Parse(await Rates.ConvertCurrency(item.Item.Price.ToString()));
+                ViewModel Viewbag = new ViewModel();
+
+                Viewbag.Bag = (from s in _context.ShoppingCart
+                               join i in _context.Item
+                               on s.ItemId equals i.Id
+                               where s.UserId == id
+                               select s).Include(s => s.Item).ToList();
+
+                foreach (var item in Viewbag.Bag)
+                {
+                    item.Item.Price = float.Parse(await Rates.ConvertCurrency(item.Item.Price.ToString()));
+                }
+                return View(Viewbag);
             }
-            return View(Viewbag);
+            else
+                return RedirectToAction("Index", "Home");
         }
 
         // GET: ShoppingCarts/Details/5
@@ -71,8 +83,8 @@ namespace Shopeee.Controllers
         // GET: ShoppingCarts/Create
         public IActionResult Create()
         {
-            ViewData["ItemId"] = new SelectList(_context.Item, "Id", "Id");
-            ViewData["UserId"] = new SelectList(_context.User, "Id", "Email");
+            ViewData["ItemId"] = new SelectList(_context.Item, "Id", "Name");
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "UserName");
             return View();
         }
 
@@ -101,8 +113,8 @@ namespace Shopeee.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ItemId"] = new SelectList(_context.Item, "Id", "Id", shoppingCart.ItemId);
-            ViewData["UserId"] = new SelectList(_context.User, "Id", "Email", shoppingCart.UserId);
+            ViewData["ItemId"] = new SelectList(_context.Item, "Id", "Name", shoppingCart.ItemId);
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "UserName", shoppingCart.UserId);
             return RedirectToAction("Index", new { id = shoppingCart.UserId });
         }
 
@@ -119,8 +131,8 @@ namespace Shopeee.Controllers
             {
                 return NotFound();
             }
-            ViewData["ItemId"] = new SelectList(_context.Item, "Id", "Id", shoppingCart.ItemId);
-            ViewData["UserId"] = new SelectList(_context.User, "Id", "Email", shoppingCart.UserId);
+            ViewData["ItemId"] = new SelectList(_context.Item, "Id", "Name", shoppingCart.ItemId);
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "UserName", shoppingCart.UserId);
             return View(shoppingCart);
         }
 
@@ -157,7 +169,7 @@ namespace Shopeee.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["ItemId"] = new SelectList(_context.Item, "Id", "Id", shoppingCart.ItemId);
-            ViewData["UserId"] = new SelectList(_context.User, "Id", "Email", shoppingCart.UserId);
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "UserName", shoppingCart.UserId);
             return View(shoppingCart);
         }
 

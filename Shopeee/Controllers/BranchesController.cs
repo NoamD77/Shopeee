@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -80,6 +81,7 @@ namespace Shopeee.Controllers
         }
 
         // GET: Branches/Create
+        [Authorize(Policy = "writepolicy")]
         public IActionResult Create()
         {
             return View();
@@ -90,6 +92,7 @@ namespace Shopeee.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "writepolicy")]
         public async Task<IActionResult> Create([Bind("Id,Name,City,Area,Location,Address,OpenHours,CloseHours")] Branch branch)
         {
             if (ModelState.IsValid)
@@ -102,6 +105,7 @@ namespace Shopeee.Controllers
         }
 
         // GET: Branches/Edit/5
+        [Authorize(Policy = "writepolicy")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -122,6 +126,7 @@ namespace Shopeee.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "writepolicy")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,City,Area,Location,Address,OpenHours,CloseHours")] Branch branch)
         {
             if (id != branch.Id)
@@ -153,6 +158,7 @@ namespace Shopeee.Controllers
         }
 
         // GET: Branches/Delete/5
+        [Authorize(Policy = "writepolicy")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -173,6 +179,7 @@ namespace Shopeee.Controllers
         // POST: Branches/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "writepolicy")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var branch = await _context.Branch.FindAsync(id);

@@ -2,9 +2,21 @@
 @using Shopeee.Class;
 @model IEnumerable<Shopeee.Models.Item>
 
-    <head>
-        <link rel="stylesheet" href="~/css/branches.css" />
-    </head>
+@inject SignInManager<Shopeee.Areas.Identity.ApplicationUser> SignInManager
+@inject UserManager<Shopeee.Areas.Identity.ApplicationUser> UserManager
+@{
+    var signed = false;
+    var currentUser = new Shopeee.Areas.Identity.ApplicationUser();
+    if (SignInManager.IsSignedIn(User))
+    {
+        currentUser = await UserManager.GetUserAsync(User);
+        signed = true;
+    }
+}
+
+<head>
+    <link rel="stylesheet" href="~/css/branches.css" />
+</head>
 
 <div class="grid-container">
     @foreach (var item in Model)
@@ -19,13 +31,16 @@
             <input id="qty_@Html.DisplayFor(modelItem => item.Id)" type="number" class="form-control" min="1" max="@item.Quantity" value="1" />
             <p class="price">$@Html.DisplayFor(modelItem => item.Price)</p>
             @*<p>@Html.DisplayFor(modelItem => item.Description)</p>*@
-            <p><button onclick="addtoCart(@item.Id)">Add to Cart</button></p>
+            @if (signed)
+            {
+                <p><button onclick="addtoCart('@item.Id','@currentUser.Id')">Add to Cart</button></p>
+            }
         </div>
     }
 </div>
 
 <script>
-    function addtoCart(itemid) {
+    function addtoCart(itemid, userid) {
         var qty = document.getElementById("qty_".concat(itemid)).value
         alert(qty)
         $.ajax({
@@ -37,7 +52,7 @@
             data: {
                 ItemId: itemid,
                 Quantity: qty,
-                UserId: 7
+                UserId: userid
             },
             datatype: "html",
             success: function (data) {

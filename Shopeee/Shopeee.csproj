@@ -33,6 +33,8 @@
     <Compile Remove="Migrations\20211011153730_roleModifications.Designer.cs" />
     <Compile Remove="Migrations\20211019154445_branchesTypeChange.cs" />
     <Compile Remove="Migrations\20211019154445_branchesTypeChange.Designer.cs" />
+    <Compile Remove="Migrations\20211107195446_UserApplicationWithShoppingCart.cs" />
+    <Compile Remove="Migrations\20211107195446_UserApplicationWithShoppingCart.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
