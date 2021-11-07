@@ -8,6 +8,7 @@
         width = w - margin.left - margin.right,
         height = h - margin.top - margin.bottom;
 
+    console.log(data);
     var x = d3.scale.ordinal()
         .rangeRoundBands([width, 0], 0.1);
 

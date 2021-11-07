@@ -1,5 +1,4 @@
 ﻿function PieChart(data, w, h) {
-    console.log(data);
     var margin = {
         top: 20,
         right: 20,
