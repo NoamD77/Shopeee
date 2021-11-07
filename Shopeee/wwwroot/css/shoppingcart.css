@@ -3,7 +3,9 @@
     width: 100%;
     margin: 0;
     display: flex;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
 }
 
 .grid-table {
@@ -51,12 +53,12 @@ h4 {
         padding-top: 13px;
     }
 
-.fixed-warpper {
+/*.fixed-warpper {
     position: absolute;
     top: 150px;
-    left: 1000px;
+    left: 1000px;*/
     /*right:350px;*/
-}
+/*}*/
 
 .checkout-button {
     padding: 10px 15px;
@@ -164,10 +166,22 @@ h4 {
     }
 
 .post-facebook{
-    padding-top:500px;
+margin-top: 50px;
+width: 90%;
+display: flex;
+justify-content: space-around;
 }
 
+.post-facebook > button{
+    color: white;
+    background-color: rgb(12 100 189);
+    border-radius: 7px;
+    border-style: none;
+    padding: 0 30px;
+/*    height: 30px;*/
+}
 .bag-details {
     text-align: center;
     padding-top: 40px;
+    width: 100%;
 }
