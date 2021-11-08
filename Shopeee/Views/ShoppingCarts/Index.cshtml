@@ -12,6 +12,12 @@
 <head>
     <link rel="stylesheet" href="~/css/shoppingcart.css" />
     <script src="~/js/APIfunctions.js"></script>
+
+    <script>
+        function OrderAlert() {
+            alert("Your Order will be Shipped");
+        }
+    </script>
 </head>
 
 <body>
@@ -76,7 +82,13 @@
                                 <span class="small">
                                     *For United States, applicable sales tax will be applied
                                 </span>
-                                <a class="btn btn-success" asp-action="CheckOut"><i class="fa fa-arrow-left"></i> Check Out</a>
+                                <div class="btn btn-success">
+                                    <form asp-action="Order" asp-route-id="@Model.Bag[0].UserId" method="post">
+                                        <button type="submit" onclick="OrderAlert()">
+                                            Check Out
+                                        </button>
+                                    </form>
+                                </div>
                                 <a class="btn btn-dark" asp-controller="Items"><i class="fa fa-arrow-left"></i> Continue Shopping</a>
                             </div>
                         </div>

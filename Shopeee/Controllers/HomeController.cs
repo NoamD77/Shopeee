@@ -26,14 +26,26 @@ namespace Shopeee.Controllers
         public class ViewModel
         {
             public List<Brand> ourBrands { get; set; }
+
         }
         public IActionResult Index()
         {
             ViewModel Viewbrands = new ViewModel();
             //Viewbrands.ourBrands = await _context.Brand.Include();
+            var rand = new Random();
+            var Brands = _context.Brand.ToList();
+            var randBrandIndex = rand.Next(Brands.Count());
+            var BrandsToView = new List<Brand>();
+            while (BrandsToView.Count() < 4)
+                if (!BrandsToView.Contains(Brands[randBrandIndex]))
+                {
+                    BrandsToView.Add(Brands[randBrandIndex]);
+                    randBrandIndex = rand.Next(Brands.Count());
+                }
+                else
+                    randBrandIndex = rand.Next(Brands.Count());
 
-            Viewbrands.ourBrands = _context.Brand.ToList();
-
+            Viewbrands.ourBrands = BrandsToView;
             if (Viewbrands.ourBrands == null)
             {
                 return NotFound();
