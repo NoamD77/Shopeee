@@ -15,7 +15,7 @@
             <h1>#dress_your_day</h1>
             <p>Click here to find out your dress</p>
             <a asp-controller="Items" asp-action="Index">
-                <button>shop new</button>
+                <button>shop now</button>
             </a>
         </div>
         <div class="banner-img">
@@ -26,11 +26,11 @@
     <section class="section" id="our-brands-section">
         <h2>#our_brands</h2>
         <div class="brand-container">
-            @for (int i = 0; i < 4; i++)
+            @foreach (Brand brand in Model.ourBrands)
             {
                 <div class="brand-item">
-                    <p>@Model.ourBrands[i].Name</p>
-                    <img src="@Url.Content(Shopeee.Class.GlobalVariables.webImagesPath)@Model.ourBrands[i].Logo" />
+                    <p>@brand.Name</p>
+                    <img src="@Url.Content(Shopeee.Class.GlobalVariables.webImagesPath)@brand.Logo" />
                 </div>
             }
         </div>
