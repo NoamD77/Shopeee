@@ -26,7 +26,7 @@ namespace Shopeee.Controllers
             return View(await _context.Branch.ToListAsync());
         }
 
-        public PartialViewResult LiveSearch(string search, string type, string color, string gender, string brand)
+        public PartialViewResult LiveSearch(string search, string area, string city)
         {
             List<Branch> res = null;
             res = (
@@ -35,28 +35,19 @@ namespace Shopeee.Controllers
             ).ToList();
             if (search != null)
             {
-                res = res.Where(b => b.Name.Contains(search)).ToList();
+                res = res.Where(b => b.Name.ToLower().Contains(search.ToLower())).ToList();
             }
 
-            //if (type != null)
-            //{
-            //    res = res.Where(i => i.Type.ToString().ToLower().Equals(type.ToLower())).ToList();
-            //}
+            if (city != null)
+            {
+                res = res.Where(b => b.Name.ToLower().Contains(city.ToLower())).ToList();
+            }
 
-            //if (color != null)
-            //{
-            //    res = res.Where(i => i.Color.ToString().ToLower().Equals(color.ToLower())).ToList();
-            //}
+            if (area != null)
+            {
+                res = res.Where(i => i.Area.ToString().ToLower().Equals(area.ToLower())).ToList();
+            }
 
-            //if (gender != null)
-            //{
-            //    res = res.Where(i => i.Gender.ToString().ToLower().Equals(gender.ToLower())).ToList();
-            //}
-
-            //if (brand != null)
-            //{
-            //    res = res.Where(i => i.Brand.Name.ToString().ToLower().Equals(brand.ToLower())).ToList();
-            //}
 
             // Pass the List of results to a Partial View 
             return PartialView("_PartialBranchesView", res);

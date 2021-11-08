@@ -15,8 +15,8 @@ namespace Shopeee.Services
         {
             string EX_ACCESS_TOKEN = GlobalVariables.ExchangeRateKey;
             string EX_BASE_ADDRESS = GlobalVariables.ExchangeRateAPI;
-            string FROM = "USD";
-            string TO = GlobalVariables.Rate;
+            string FROM = GlobalVariables.baseRate;
+            string TO = GlobalVariables.currentRate;
             using (var httpClient = new HttpClient())
             {
                 httpClient.BaseAddress = new Uri(EX_BASE_ADDRESS);

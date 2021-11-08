@@ -29,6 +29,8 @@ namespace Shopeee.Class
 
         public static readonly string ExchangeRateKey = "b0a24c542f3bc9d27f465bfa";
 
-        public static string Rate = "USD";
+        public static string baseRate = "USD";
+
+        public static string currentRate = "USD";
     }
 }

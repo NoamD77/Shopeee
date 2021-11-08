@@ -31,6 +31,7 @@ namespace Shopeee.Controllers
         public class ViewModel
         {
             public List<ShoppingCart> Bag { get; set; }
+            public string newRate = GlobalVariables.currentRate;
         }
 
         // GET: ShoppingCarts
@@ -236,7 +237,7 @@ namespace Shopeee.Controllers
         [HttpPost]
         public ActionResult ChangeRate(string new_Rate)
         {
-            GlobalVariables.Rate = new_Rate;
+            GlobalVariables.currentRate = new_Rate;
             return new EmptyResult();
         }
     }

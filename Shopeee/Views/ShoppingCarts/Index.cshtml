@@ -11,12 +11,13 @@
 
 <head>
     <link rel="stylesheet" href="~/css/shoppingcart.css" />
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
     <script src="~/js/APIfunctions.js"></script>
 </head>
 
 <body>
     <select id="toCurrencySelect" name='currencies' onchange="ChangeRate()">
-        <option value='USD' title='US Dollar' selected>US Dollar</option>
+        <option value='USD' title='US Dollar'>US Dollar</option>
         <option value='ILS' title='Israeli Shekel'>Israeli Shekel</option>
         <option value='GBP' title='British Pound'>British Pound</option>
         <option value='EUR' title='Euro'>Euro</option>
@@ -90,4 +91,9 @@
         <input id="facebookMessageInput" name="facebookMessage" />
         <button onclick="postToFacebook()" type="submit" value="Create">Share</button>
     </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#toCurrencySelect').val('@Model.newRate')
+        });
+    </script>
 </body>
