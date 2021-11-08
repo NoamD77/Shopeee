@@ -13,13 +13,13 @@
                 @Html.DisplayNameFor(model => model.Area)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Location)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Address)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.WorkHours)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Location)
             </th>
             <th></th>
         </tr>
@@ -38,13 +38,23 @@
                 @Html.DisplayFor(modelItem => item.Area)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Location)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.Address)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.WorkHours)
+            </td>
+            <td>
+                @{
+                    var googleApiKey = "AIzaSyByIhhF4FzYO5yVwEJxAEfeEnWNd_EQ1FA";
+                    var googleMapSrc = "https://www.google.com/maps/embed/v1/place?key=" + googleApiKey + "&q=place_id:" + item.Location;
+                    <iframe width="450"
+                            height="300"
+                            style="border:0"
+                            loading="lazy"
+                            allowfullscreen
+                            src=@googleMapSrc>
+                    </iframe>
+                }
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

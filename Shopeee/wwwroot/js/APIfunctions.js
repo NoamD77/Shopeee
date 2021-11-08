@@ -30,20 +30,3 @@ function ChangeRate() {
         error: () => { alert("Failed") }
     });
 }
-
-//function postToExchangeRateAPI() {
-//    var TO = document.getElementById("toCurrencySelect").value
-//    var AMOUNT = '10'
-//    var link = "https://localhost:44319/ShoppingCarts/ConvertCurrency"
-//    $.ajax({
-//        type: "POST",
-//        url: link,
-//        data: {
-//            to: TO,
-//            amount: AMOUNT
-//        },
-//        datatype: "html",
-//        success: () => { alert("Success") },
-//        error: () => { alert("Failed") }
-//    });
-//}
