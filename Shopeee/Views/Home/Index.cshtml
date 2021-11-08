@@ -26,14 +26,20 @@
     <section class="section" id="our-brands-section">
         <h2>#our_brands</h2>
         <div class="brand-container">
-            @for (int i = 0; i < 4; i++)
+            @foreach (Brand brand in Model.ourBrands)
             {
                 <div class="brand-item">
-                    <p>@Model.ourBrands[i].Name</p>
-                    <img src="@Url.Content(Shopeee.Class.GlobalVariables.webImagesPath)@Model.ourBrands[i].Logo" />
+                    <p>@brand.Name</p>
+                    <img src="@Url.Content(Shopeee.Class.GlobalVariables.webImagesPath)@brand.Logo" />
                 </div>
             }
-        </div>
+            @*@for (int i = 0; i < 4; i++)
+                {
+                    <div class="brand-item">
+                        <p>@Model.ourBrands[i].Name</p>
+                        <img src="@Url.Content(Shopeee.Class.GlobalVariables.webImagesPath)@Model.ourBrands[i].Logo" />
+                        }
+                    </div>*@
     </section>
 
     <section class="section" id="our-team-section">
