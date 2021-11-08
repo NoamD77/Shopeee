@@ -11,7 +11,7 @@ namespace Shopeee.Models
     {
         [Key]
         public int CartID { get; set; }
-        
+
         //[ForeignKey("User")]
         //public int UserId { get; set; }
         //public virtual User User { get; set; }
@@ -25,5 +25,6 @@ namespace Shopeee.Models
         public Item Item { get; set; }
 
         public int Quantity { get; set; }
+        public bool Ordered { get; set; }
     }
 }
