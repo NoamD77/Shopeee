@@ -279,7 +279,7 @@ namespace Shopeee.Controllers
         }
 
         [HttpPost]
-        [Authorize(Policy = "readpolicy")]
+
         public ActionResult ChangeRate(string new_Rate)
         {
             GlobalVariables.Rate = new_Rate;
@@ -287,6 +287,7 @@ namespace Shopeee.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "readpolicy")]
         public async Task<IActionResult> Order(string id)
         {
             var shoppingCart = (from s in _context.ShoppingCart
