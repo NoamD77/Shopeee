@@ -9,18 +9,12 @@
     <script src="https://use.fontawesome.com/6e16709d88.js"></script>
 </head>
 <body class="home-body">
-
-    <section id="banner-section">
-        <div class="banner-text">
-            <h1>#dress_your_day</h1>
-            <p>Click here to find out your dress</p>
-            <a asp-controller="Items" asp-action="Index">
-                <button>shop now</button>
-            </a>
-        </div>
-        <div class="banner-img">
-            <img src="~/imgs/favpng_fashion-model-bijin.png" />
-        </div>
+    <section class="home-video">
+        <h2>#DRESS_YOUR_DAY</h2>
+        <video width="1800" height="400" autoplay loop>
+            <source src="~/video/homepagevideo.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
     </section>
 
     <section class="section" id="our-brands-section">
@@ -69,18 +63,12 @@
             </li>
             <li>
                 <i></i>
-                <p>(+972) 3-123-456</p>
+                <p>(+972) 772355910</p>
             </li>
             <li>
                 <i></i>
-                <p>Support@Shopeee.colman</p>
+                <p>support@Shopeee.co.il</p>
             </li>
         </ul>
     </section>
-    @*<div>
-            @for(int i=0; i<4; i++)
-            {
-                <p>@Model.ourBrands[i].Name</p>
-            }
-        </div>*@
 </body>

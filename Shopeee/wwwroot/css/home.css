@@ -57,6 +57,7 @@
 
 #our-brands-section > h2, #our-team-section > h2, #contact-section > h2 {
     text-transform: uppercase;
+    margin-bottom: 50px;
 }
 
 .team-members {
@@ -116,4 +117,8 @@ body {
 .brand-item > img {
     max-height:150px;
     aspect-ratio: auto;
+}
+
+.home-video {
+    margin-top:70px;
 }
