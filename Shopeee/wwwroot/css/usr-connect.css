@@ -131,3 +131,7 @@ a.navbar-brand {
     align-items: center;
     display: flex;
 }
+
+.manage-nav-selected {
+    color: #009A4D;
+}
