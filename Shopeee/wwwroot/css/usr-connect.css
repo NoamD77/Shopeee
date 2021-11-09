@@ -4,44 +4,53 @@
     align-items: center;
     background-color: white;
 }
+
 .btn-sign-in {
     background: none;
     color: #009A4D;
 }
+
 .btn-sign-up {
     background-color: #009A4D;
     color: white;
 }
-.btn-logout{
+
+.btn-logout {
     color: none;
     background-color: white;
     border: none;
 }
 
-.btn-logout:focus{
-    outline: none;
-}
+    .btn-logout:focus {
+        outline: none;
+    }
+
 user-connected {
     display: inline-flex;
     justify-content: center;
     align-items: center;
 }
+
 .usr-connected-item {
     margin-left: 10px;
 }
+
 .usr-connected-img {
     width: 10%;
     height: 10%;
 }
-.usr-name-link{
+
+.usr-name-link {
     text-decoration: none;
     color: black;
     font-weight: 400;
-    font-size:20px; 
+    font-size: 20px;
 }
-.usr-name-link:hover{
-    color: black;
-}
+
+    .usr-name-link:hover {
+        color: black;
+    }
+
 .button {
     border-radius: 50px;
     border: none;
@@ -52,12 +61,14 @@ user-connected {
     cursor: pointer;
     margin: 5px;
 }
+
     .button span {
         cursor: pointer;
         display: inline-block;
         position: relative;
         transition: 0.5s;
     }
+
         .button span:after {
             content: '\00bb';
             position: absolute;
@@ -66,16 +77,20 @@ user-connected {
             right: -20px;
             transition: 0.5s;
         }
+
     .button:hover span {
         padding-right: 25px;
     }
+
         .button:hover span:after {
             opacity: 1;
             right: 0;
         }
-        .button:focus{
-            outline: none;
-        }
+
+    .button:focus {
+        outline: none;
+    }
+
 a.navbar-brand {
     color: black;
     font-size: 54px;
@@ -85,16 +100,38 @@ a.navbar-brand {
     letter-spacing: -6.5px;
     transition: 0.3s;
 }
+
     a.navbar-brand:hover {
         color: #009A4D;
     }
 
-.bag-link:hover{
-    text-decoration:none;
+.bag-link:hover {
+    text-decoration: none;
 }
-.icon{
+
+.icon {
     transition: 0.2s;
 }
-.icon:hover{
-    transform:translateY(-5px);
+
+    .icon:hover {
+        transform: translateY(-5px);
+    }
+
+.usr-form-row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.form-group {
+
+}
+
+.usr-profile-edit {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.manage-nav-selected {
+    color: #009A4D;
 }

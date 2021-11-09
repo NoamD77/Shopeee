@@ -237,17 +237,15 @@ namespace Shopeee.Controllers
         [Authorize(Policy = "readpolicy")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var shoppingCart = await _context.ShoppingCart.FindAsync(id);
-            var shoppingCartID = await _context.ShoppingCart.FindAsync(id);
+            var shoppingCart = await _context.ShoppingCart.FindAsync(id) ?? new ShoppingCart();
             var currentUser = await _userManager.GetUserAsync(User);
             if (currentUser.Id == shoppingCart.UserId)
             {
                 _context.ShoppingCart.Remove(shoppingCart);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index", new { id = shoppingCartID.UserId });
+                return RedirectToAction("Index", new { id = shoppingCart.UserId });
             }
-            else
-                return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Home");
         }
 
         private bool ShoppingCartExists(int id)
@@ -294,8 +292,10 @@ namespace Shopeee.Controllers
             var shoppingCart = (from s in _context.ShoppingCart
                                 where s.UserId == id
                                 && !s.Ordered
-                                select s).ToList();
+                                select s).ToListAsync().Result ?? new List<ShoppingCart>();
             var currentUser = await _userManager.GetUserAsync(User);
+            if (shoppingCart.Count() == 0)
+                shoppingCart.Add(new ShoppingCart());
             if (currentUser.Id == shoppingCart.FirstOrDefault().UserId)
             {
                 foreach (ShoppingCart itemInBag in shoppingCart)
