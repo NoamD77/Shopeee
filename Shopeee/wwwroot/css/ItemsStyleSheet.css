@@ -11,8 +11,24 @@ a {
     grid-template-columns: repeat(4,1fr);
     grid-gap:50px;
 }
-
 .card {
+    display: grid;
+    /*    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);*/
+    width: 310px;
+    /*aspect-ratio: auto;*/
+    justify-items: center;
+    margin: auto;
+    padding: 1px 1px;
+    border-radius: 0;
+    /*    background-color: red;*/
+}
+    .card > a > img {
+        margin: auto;
+        width: 250px;
+        aspect-ratio: auto;
+        align-self: center;
+    }
+/*.card {
     display: inline-grid;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     max-width: 200px;
@@ -41,7 +57,7 @@ a {
 
 .card button:hover {
     opacity: 0.7;
-}
+}*/
 
 .livesearchtextbox {
     width: 100px;

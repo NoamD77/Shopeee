@@ -66,7 +66,7 @@ namespace Shopeee.Controllers
                 UserManager = UserManager,
                 RoleManager = RoleManager,
                 context = _context
-            }); ;
+            });
         }
 
 
@@ -306,7 +306,7 @@ namespace Shopeee.Controllers
         [Authorize(Policy = "writepolicy")]
         public IActionResult Statistics()
         {
-            return View(); ;
+            return View();
         }
 
         private bool UserExists(string id)
@@ -343,7 +343,7 @@ namespace Shopeee.Controllers
             return Json(data);
         }
 
-        public IActionResult StatisticsItemsByBrand()
+        public ActionResult StatisticsItemsByBrand()
         {
             var BrandsList = _context.Brand.ToList();
             List<object> data = new List<object>();

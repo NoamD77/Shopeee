@@ -1,0 +1,99 @@
+﻿body {
+}
+
+.admin-sidebar {
+    position: fixed;
+    top: 0px;
+    left: 5px;
+    height: 700px;
+    width: 10%;
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.admin-list-item {
+    font-size: 20px;
+    color: black;
+    padding: 10px 20px;
+    left: 0;
+    width: 100%;
+    text-transform: uppercase;
+    border-radius: 7px;
+    transition: 0.1s ease all;
+}
+
+    .admin-list-item:hover {
+        background-color: #009A4D;
+        cursor: pointer;
+        width: 100%;
+        color: white;
+        text-decoration: none;
+    }
+
+
+
+#barChart {
+    font-size: 14px;
+    box-shadow: 0px 0px 20px rgb(136 136 136 / 0.2);
+    border-radius: 30px;
+    padding: 5px 5px;
+    height: 400px;
+    width: 500px;
+    margin-left: 250px;
+    margin-right: 50px;
+    margin-bottom: 61px;
+    margin-top: 50px;
+}
+
+#pieChart {
+    box-shadow: 0px 0px 20px rgb(136 136 136 / 0.2);
+    border-radius: 30px;
+    padding: 30px 25px;
+    margin-top: 50px;
+    height: 400px;
+    width: 500px;
+}
+
+.bar {
+    fill: black;
+}
+
+    .bar:hover {
+        fill: forestgreen;
+    }
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+
+.x.axis path {
+    display: none;
+}
+
+.charts-container {
+    display: flex;
+    align-content: space-around;
+}
+
+/*.chart{
+    width: 200px;
+    height: 100px;
+    padding: 20px 20px;
+    background-color: red;
+    margin: 20px 20px;
+}*/
+.statisticsview {
+    display: flex;
+    width: 100%;
+    align-items: center;
+}
+
+.admin-title {
+    font-size: 25px;
+}
