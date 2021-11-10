@@ -14,22 +14,22 @@
     <a asp-action="Create">
         <button type="button"> Create New Branch</button>
     </a>
-    <p>
-        <input id="livesearchtextbox" name="livesearchtextbox" placeholder="Search" autocomplete="off" data-request-url="@Url.Action("LiveSearch", "Branches")" />
-    </p>
-    <p>
+        <div class="form-group center-input">
+            <label class="control-label">Search</label>
+            <input class="form-control search-bar" id="livesearchtextbox" name="livesearchtextbox" placeholder="Search for branches" autocomplete="off" data-request-url="@Url.Action("LiveSearch", "Branches")" />
+        </div>
+    <div class="filter-group">
         <div class="form-group">
             <label class="control-label">Area</label>
             <select asp-items="Html.GetEnumSelectList<AreaType>()" class="form-control" id="areaselect">
                 <option value="" selected="selected"></option>
             </select>
         </div>
-
         <div class="form-group">
             <label class="control-label">City</label>
-            <input id="citysearchtextbox" name="citysearchtextbox" placeholder="City name" autocomplete="off" />
+            <input class="form-control" id="citysearchtextbox" name="citysearchtextbox" placeholder="City name" autocomplete="off" />
         </div>
-    </p>
+    </div>
     <div id="con">
         @Html.Partial("_PartialBranchesView", Model)
     </div>
