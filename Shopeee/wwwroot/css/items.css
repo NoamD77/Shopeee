@@ -48,7 +48,7 @@ a {
     font-size: 13px;
 }
 
-.card > a > button {
+.card > p > button {
     width: 99%;
     border-style: none;
     background-color: white;

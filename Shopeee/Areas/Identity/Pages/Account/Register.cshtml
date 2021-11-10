@@ -18,11 +18,10 @@
     var roles = (List<IdentityRole>)ViewData["roles"];
     var Client = roles.Find(r => r.Name.Equals("Client"));
 }
-
+<link rel="stylesheet" href="~/css/site.css"/>
 <h1>@ViewData["Title"]</h1>
 
-<div class="row">
-    <div class="col-md-4">
+    <div class="center-page">
         <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
             <h4>Create a new account.</h4>
             <hr />
@@ -87,7 +86,6 @@
             }
         </form>
     </div>
-</div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
