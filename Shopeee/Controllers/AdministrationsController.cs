@@ -18,14 +18,16 @@ namespace Shopeee.Controllers
 {
     public class AdministrationsController : Controller
     {
+        SignInManager<ApplicationUser> SignInManager;
         RoleManager<IdentityRole> RoleManager;
         UserManager<ApplicationUser> UserManager;
         private readonly ShopeeeContext _context;
 
-        public AdministrationsController(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, ShopeeeContext context)
+        public AdministrationsController(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, ShopeeeContext context, SignInManager<ApplicationUser> signInManager)
         {
             this.UserManager = userManager;
             this.RoleManager = roleManager;
+            this.SignInManager = signInManager;
             this._context = context;
         }
         public class ViewModel
@@ -255,13 +257,13 @@ namespace Shopeee.Controllers
                     }
                 }
                 await UserManager.UpdateAsync(user);
+                await SignInManager.RefreshSignInAsync(user);
             }
 
             if (ModelState.IsValid)
                 return RedirectToAction("UsersList");
             else
                 return await UpdateUser(Model.UserId);
-            //return View();
         }
 
 
@@ -289,8 +291,18 @@ namespace Shopeee.Controllers
         public async Task<IActionResult> DeleteUser(string id)
         {
             ApplicationUser user = await UserManager.FindByIdAsync(id);
+            ApplicationUser DeletedUser = await UserManager.FindByNameAsync("Deleted-User");
+            var UsersOrder = (from s in _context.ShoppingCart
+                              where s.UserId == id
+                              select s).ToListAsync().Result;
             if (user != null)
             {
+                foreach (ShoppingCart shoppingCart in UsersOrder)
+                    if (shoppingCart.Ordered)
+                        shoppingCart.UserId = DeletedUser.Id;
+                    else
+                        _context.ShoppingCart.Remove(shoppingCart);
+                await _context.SaveChangesAsync();
                 IdentityResult result = await UserManager.DeleteAsync(user);
                 if (result.Succeeded)
                     return RedirectToAction("UsersList");
@@ -300,13 +312,6 @@ namespace Shopeee.Controllers
             else
                 ModelState.AddModelError("", "No user found");
             return View("UsersList", UserManager.Users);
-        }
-
-
-        [Authorize(Policy = "writepolicy")]
-        public IActionResult Statistics()
-        {
-            return View();
         }
 
         private bool UserExists(string id)

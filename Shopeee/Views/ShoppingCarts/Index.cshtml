@@ -24,12 +24,12 @@
 
 <body>
     @*<select id="toCurrencySelect" name='currencies' onchange="ChangeRate()">
-        <option value='USD' title='US Dollar'>US Dollar</option>
-        <option value='ILS' title='Israeli Shekel'>Israeli Shekel</option>
-        <option value='GBP' title='British Pound'>British Pound</option>
-        <option value='EUR' title='Euro'>Euro</option>
-        [...]
-    </select>*@
+            <option value='USD' title='US Dollar'>US Dollar</option>
+            <option value='ILS' title='Israeli Shekel'>Israeli Shekel</option>
+            <option value='GBP' title='British Pound'>British Pound</option>
+            <option value='EUR' title='Euro'>Euro</option>
+            [...]
+        </select>*@
     <div class="bag-details">
         @if (Model.Bag.Count() == 0)
         {
@@ -62,7 +62,19 @@
                                     <div class="item-det">
                                         <p>@item.Item.Color | </p>
                                         <p>@item.Item.Gender | </p>
-                                        <p>Qty @item.Quantity</p>
+                                        <div class="qty-btns">
+                                            <form asp-action="DecreaseQuantity" asp-route-id="@item.CartID" method="post">
+                                                <button type="submit">
+                                                    -
+                                                </button>
+                                            </form>
+                                            <p>Qty: @item.Quantity  </p>
+                                            <form asp-action="IncreaseQuantity" asp-route-id="@item.CartID" method="post">
+                                                <button type="submit">
+                                                    +
+                                                </button>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -76,34 +88,34 @@
                             </div>
                         }
                     </div>
-                        <div class="sticky">
-                            <div class="total-price">
-                                <div class="total-price-header">
-                                    <h4>total price</h4>
-                                    <select id="toCurrencySelect" name='currencies' onchange="ChangeRate()">
-                                        <option value='USD' title='US Dollar'>USD</option>
-                                        <option value='ILS' title='Israeli Shekel'>ILS</option>
-                                        <option value='GBP' title='British Pound'>GBP</option>
-                                        <option value='EUR' title='Euro'>EUR</option>
-                                        [...]
-                                    </select>
-                                </div>
-                                <p>@totalPrice.ToString("0.00")</p>
-                                <span class="small">
-                                    *For United States, applicable sales tax will be applied
-                                </span>
-                                <div class="btns-checkout">
-                                    <form asp-action="Order" asp-route-id="@Model.Bag[0].UserId" method="post">
-                                        <button class="btn btn-success" type="submit" onclick="OrderAlert()">
-                                            Check Out
-                                        </button>
-                                    </form>
-                                    <a class="btn btn-dark" asp-controller="Items">Continue Shopping <i class="fa fa-arrow-right"></i></a>
-                                </div>
+                    <div class="sticky">
+                        <div class="total-price">
+                            <div class="total-price-header">
+                                <h4>total price</h4>
+                                <select id="toCurrencySelect" name='currencies' onchange="ChangeRate()">
+                                    <option value='USD' title='US Dollar'>USD</option>
+                                    <option value='ILS' title='Israeli Shekel'>ILS</option>
+                                    <option value='GBP' title='British Pound'>GBP</option>
+                                    <option value='EUR' title='Euro'>EUR</option>
+                                    [...]
+                                </select>
+                            </div>
+                            <p>@totalPrice.ToString("0.00")</p>
+                            <span class="small">
+                                *For United States, applicable sales tax will be applied
+                            </span>
+                            <div class="btns-checkout">
+                                <form asp-action="Order" asp-route-id="@Model.Bag[0].UserId" method="post">
+                                    <button class="btn btn-success" type="submit" onclick="OrderAlert()">
+                                        Check Out
+                                    </button>
+                                </form>
+                                <a class="btn btn-dark" asp-controller="Items">Continue Shopping <i class="fa fa-arrow-right"></i></a>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
         }
     </div>
     <div class="post-facebook">
