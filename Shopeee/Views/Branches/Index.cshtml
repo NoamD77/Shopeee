@@ -5,6 +5,8 @@
 }
 <head>
     <link rel="stylesheet" href="~/css/branches.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="~/js/BranchesSearch.js"></script>
 </head>
 
 <div class="body">
@@ -14,7 +16,7 @@
     </a>
         <div class="form-group center-input">
             <label class="control-label">Search</label>
-            <input class="form-control search-bar" id="livesearchtextbox" name="livesearchtextbox" placeholder="Search for branches" autocomplete="off" />
+            <input class="form-control search-bar" id="livesearchtextbox" name="livesearchtextbox" placeholder="Search for branches" autocomplete="off" data-request-url="@Url.Action("LiveSearch", "Branches")" />
         </div>
     <div class="filter-group">
         <div class="form-group">

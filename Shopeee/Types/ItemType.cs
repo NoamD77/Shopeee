@@ -8,7 +8,6 @@ namespace Shopeee.Models
 {
     public enum ItemType
     {
-        [Display(Name = "Product Type")]
         Shirt = 0,
         Pants = 1,
         Socks = 2,
