@@ -30,16 +30,23 @@ namespace Shopeee.Controllers
         // GET: Brands
         public async Task<IActionResult> Index(string? search)
         {
-            if(search == null)
+            if (HttpContext.Request.Headers["X-Requested-With"] == "XMLHttpRequest")
             {
-                return View(await _context.Brand.ToListAsync());
+                if (search == null)
+                {
+                    return PartialView(await _context.Brand.ToListAsync());
+                }
+                else
+                {
+                    List<Brand> brandsAfterSearch = (from b in _context.Brand
+                                                     where b.Name.ToLower().Contains(search.ToLower())
+                                                     select b).ToList();
+                    return PartialView(brandsAfterSearch);
+                }
             }
             else
             {
-                List<Brand> brandsAfterSearch = (from b in _context.Brand
-                                                 where b.Name.ToLower().Contains(search.ToLower())
-                                                 select b).ToList();
-                return View(brandsAfterSearch);
+                return View(await _context.Brand.ToListAsync());
             }
         }
 

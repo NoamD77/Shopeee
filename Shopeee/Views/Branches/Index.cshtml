@@ -5,6 +5,8 @@
 }
 <head>
     <link rel="stylesheet" href="~/css/branches.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="~/js/BranchesSearch.js"></script>
 </head>
 
 <div class="body">
@@ -13,7 +15,7 @@
         <button type="button"> Create New Branch</button>
     </a>
     <p>
-        <input id="livesearchtextbox" name="livesearchtextbox" placeholder="Search" autocomplete="off" />
+        <input id="livesearchtextbox" name="livesearchtextbox" placeholder="Search" autocomplete="off" data-request-url="@Url.Action("LiveSearch", "Branches")" />
     </p>
     <p>
         <div class="form-group">

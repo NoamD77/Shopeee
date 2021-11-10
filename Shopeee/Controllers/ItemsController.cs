@@ -49,7 +49,7 @@ namespace Shopeee.Controllers
             ).Include(i => i.Brand).ToList();
             if (search != null)
             {
-                res = res.Where(i => i.Name.Contains(search)).ToList();
+                res = res.Where(i => i.Name.ToLower().Contains(search.ToLower())).ToList();
             }
 
             if (type != null)
