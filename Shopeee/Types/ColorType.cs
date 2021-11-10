@@ -11,6 +11,12 @@ namespace Shopeee.Models
         Red = 1,
         Blue = 2,
         Green = 3,
-        //continue adding
+        Brown = 4,
+        White = 5,
+        Yellow = 6,
+        Grey = 7,
+        Pink = 8,
+        Multi = 9,
+        Purple = 10,
     }
 }

@@ -7,68 +7,64 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Shopeee.Data;
 using Shopeee.Models;
+using Shopeee.Class;
+using Shopeee.Services;
+using System.Net.Http;
+using Newtonsoft.Json.Linq;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Shopeee.Areas.Identity;
 
 namespace Shopeee.Controllers
 {
     public class ShoppingCartsController : Controller
     {
         private readonly ShopeeeContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public ShoppingCartsController(ShopeeeContext context)
+        public ShoppingCartsController(ShopeeeContext context, UserManager<ApplicationUser> UserManager)
         {
             _context = context;
+            _userManager = UserManager;
         }
 
         public class ViewModel
         {
             public List<ShoppingCart> Bag { get; set; }
+            public string newRate = GlobalVariables.currentRate;
         }
 
         // GET: ShoppingCarts
-        public async Task<IActionResult> Index(int id)
+        [Authorize(Policy = "readpolicy")]
+        public async Task<IActionResult> Index(string id)
         {
-            ViewModel Viewbag = new ViewModel();
-            //Viewbag.Bag = await _context.ShoppingCart
-            //    .Include(s => s.Item)
-            //    .Include(s => s.User)
-            //    .FirstOrDefaultAsync(m => m.UserId == id);
+            var currentUser = await _userManager.GetUserAsync(User);
+            if (currentUser.Id == id)
+            {
+                ViewModel Viewbag = new ViewModel();
 
-            //Viewbag.Bag = _context.ShoppingCart
-            //    .Include(s => s.Item)
-            //    .Include(s => s.User)
-            //    .Where(s => s.UserId == id).ToList();
+                Viewbag.Bag = (from s in _context.ShoppingCart
+                               join i in _context.Item
+                               on s.ItemId equals i.Id
+                               where s.UserId == id
+                               && !s.Ordered
+                               select s).Include(s => s.Item).ToList();
 
-            Viewbag.Bag = (from s in _context.ShoppingCart
-                          join i in _context.Item
-                          on s.ItemId equals i.Id
-                          where s.UserId == id
-                          select s).Include(s=>s.Item).ToList();
-
-            //var bagitems = from i in _context.Item
-            //               join s in _context.ShoppingCart
-            //               on i.Id equals s.ItemId
-            //               where s.UserId == id
-            //               select i;
-
-            //Viewbag.Bagitems = bagitems.ToList();
-            
-            //var temp = _context.Item
-            //                .Join(_context.ShoppingCart,
-            //                      p => p.Id,
-            //                      e => e.ItemId,
-            //                      (p, e) => e
-            //                      ).Where(e => e.UserId == id).FirstOrDefault();
-            //var UserExist = _context.User.Find(id);
-            //var shopeeeContext = _context.ShoppingCart
-            //    .Include(s => s.Item)
-            //    .Include(s => s.User);
-            
-            return View(Viewbag);
+                foreach (var item in Viewbag.Bag)
+                {
+                    item.Item.Price = float.Parse(await Rates.ConvertCurrency(item.Item.Price.ToString()));
+                }
+                return View(Viewbag);
+            }
+            else
+                return RedirectToAction("Index", "Home");
         }
 
         // GET: ShoppingCarts/Details/5
+        [Authorize(Policy = "readpolicy")]
         public async Task<IActionResult> Details(int? id)
         {
+
             if (id == null)
             {
                 return NotFound();
@@ -79,20 +75,26 @@ namespace Shopeee.Controllers
                 .Include(s => s.Item)
                 .Include(s => s.User)
                 .FirstOrDefaultAsync(m => m.CartID == id);
-
-            if (shoppingCart == null)
+            var currentUser = await _userManager.GetUserAsync(User);
+            if (currentUser.Id == shoppingCart.UserId)
             {
-                return NotFound();
-            }
+                if (shoppingCart == null)
+                {
+                    return NotFound();
+                }
 
-            return View(shoppingCart);
+                return View(shoppingCart);
+            }
+            else
+                return RedirectToAction("Index", "Home");
         }
 
         // GET: ShoppingCarts/Create
+        [Authorize(Policy = "readpolicy")]
         public IActionResult Create()
         {
-            ViewData["ItemId"] = new SelectList(_context.Item, "Id", "Id");
-            ViewData["UserId"] = new SelectList(_context.User, "Id", "Email");
+            ViewData["ItemId"] = new SelectList(_context.Item, "Id", "Name");
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "UserName");
             return View();
         }
 
@@ -100,20 +102,41 @@ namespace Shopeee.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(Policy = "readpolicy")]
         //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CartID,UserId,ItemId,Quantity")] ShoppingCart shoppingCart)
+        public async Task<IActionResult> Create([Bind("CartID,UserId,ItemId,Quantity,Ordered")] ShoppingCart shoppingCart)
         {
+            var cartItem = (from s in _context.ShoppingCart
+                            where shoppingCart.UserId == s.UserId
+                            && shoppingCart.ItemId == s.ItemId
+                            && !s.Ordered
+                            select s).FirstOrDefault();
+
+
             if (ModelState.IsValid)
             {
-                _context.Add(shoppingCart);
+                var temp = _context.ShoppingCart.Find(shoppingCart.User);
+                var currentUser = await _userManager.GetUserAsync(User);
+                if (currentUser.Id == shoppingCart.UserId)
+                {
+                    if (cartItem == null)
+                    {
+                        _context.Add(shoppingCart);
+                    }
+                    else
+                        cartItem.Quantity += shoppingCart.Quantity;
+                }
+                else
+                    return RedirectToAction("Index", "Home");
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ItemId"] = new SelectList(_context.Item, "Id", "Id", shoppingCart.ItemId);
-            ViewData["UserId"] = new SelectList(_context.User, "Id", "Email", shoppingCart.UserId);
+            ViewData["ItemId"] = new SelectList(_context.Item, "Id", "Name", shoppingCart.ItemId);
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "UserName", shoppingCart.UserId);
             return RedirectToAction("Index", new { id = shoppingCart.UserId });
         }
 
+        [Authorize(Policy = "readpolicy")]
         // GET: ShoppingCarts/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -123,13 +146,19 @@ namespace Shopeee.Controllers
             }
 
             var shoppingCart = await _context.ShoppingCart.FindAsync(id);
-            if (shoppingCart == null)
+            var currentUser = await _userManager.GetUserAsync(User);
+            if (currentUser.Id == shoppingCart.UserId)
             {
-                return NotFound();
+                if (shoppingCart == null)
+                {
+                    return NotFound();
+                }
+                ViewData["ItemId"] = new SelectList(_context.Item, "Id", "Name", shoppingCart.ItemId);
+                ViewData["UserId"] = new SelectList(_context.Users, "Id", "UserName", shoppingCart.UserId);
+                return View(shoppingCart);
             }
-            ViewData["ItemId"] = new SelectList(_context.Item, "Id", "Id", shoppingCart.ItemId);
-            ViewData["UserId"] = new SelectList(_context.User, "Id", "Email", shoppingCart.UserId);
-            return View(shoppingCart);
+            else
+                return RedirectToAction("Index", "Home");
         }
 
         // POST: ShoppingCarts/Edit/5
@@ -137,7 +166,8 @@ namespace Shopeee.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CartID,UserId,ItemId,Quantity")] ShoppingCart shoppingCart)
+        [Authorize(Policy = "readpolicy")]
+        public async Task<IActionResult> Edit(int id, [Bind("CartID,UserId,ItemId,Quantity,Ordered")] ShoppingCart shoppingCart)
         {
             if (id != shoppingCart.CartID)
             {
@@ -148,8 +178,14 @@ namespace Shopeee.Controllers
             {
                 try
                 {
-                    _context.Update(shoppingCart);
-                    await _context.SaveChangesAsync();
+                    var currentUser = await _userManager.GetUserAsync(User);
+                    if (currentUser.Id == shoppingCart.UserId)
+                    {
+                        _context.Update(shoppingCart);
+                        await _context.SaveChangesAsync();
+                    }
+                    else
+                        return RedirectToAction("Index", "Home");
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -165,11 +201,12 @@ namespace Shopeee.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["ItemId"] = new SelectList(_context.Item, "Id", "Id", shoppingCart.ItemId);
-            ViewData["UserId"] = new SelectList(_context.User, "Id", "Email", shoppingCart.UserId);
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "UserName", shoppingCart.UserId);
             return View(shoppingCart);
         }
 
         // GET: ShoppingCarts/Delete/5
+        [Authorize(Policy = "readpolicy")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -185,37 +222,90 @@ namespace Shopeee.Controllers
             {
                 return NotFound();
             }
-
-            return View(shoppingCart);
+            var currentUser = await _userManager.GetUserAsync(User);
+            if (currentUser.Id == shoppingCart.UserId)
+            {
+                return View(shoppingCart);
+            }
+            else
+                return RedirectToAction("Index", "Home");
         }
 
         // POST: ShoppingCarts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "readpolicy")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var shoppingCart = await _context.ShoppingCart.FindAsync(id);
-            var shoppingCartID = await _context.ShoppingCart.FindAsync(id);
-            _context.ShoppingCart.Remove(shoppingCart);
-            await _context.SaveChangesAsync();
-            return RedirectToAction("Index",new { id = shoppingCartID.UserId });
+            var shoppingCart = await _context.ShoppingCart.FindAsync(id) ?? new ShoppingCart();
+            var currentUser = await _userManager.GetUserAsync(User);
+            if (currentUser.Id == shoppingCart.UserId)
+            {
+                _context.ShoppingCart.Remove(shoppingCart);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index", new { id = shoppingCart.UserId });
+            }
+            return RedirectToAction("Index", "Home");
         }
 
         private bool ShoppingCartExists(int id)
         {
             return _context.ShoppingCart.Any(e => e.CartID == id);
         }
-        
-        //[HttpPost]
-        //public ActionResult UpdateQuantity(int cartId, int quantity)
-        //{
-        //    var cart = _context.ShoppingCart.FirstOrDefault(c => c.UserId == UserId);
-        //    cart.Quantity = quantity;
 
-        //    _context.SaveChanges();
+        [HttpPost]
+        [Authorize(Policy = "readpolicy")]
+        public async Task<string> PostToFacebook(string facebookMassage)
+        {
+            string FB_PAGE_ID = GlobalVariables.FacebookPageID;
+            string FB_ACCESS_TOKEN = GlobalVariables.FacebookPageToken;
+            string FB_BASE_ADDRESS = GlobalVariables.FacebookAPI;
+            using (var httpClient = new HttpClient())
+            {
+                httpClient.BaseAddress = new Uri(FB_BASE_ADDRESS);
 
-        //    return RedirectToAction(nameof(Index), new { ID = id });
-        //}
+                var parameters = new Dictionary<string, string>
+                {
+                    { "access_token", FB_ACCESS_TOKEN },
+                    { "message", facebookMassage }
+                };
+                var encodedContent = new FormUrlEncodedContent(parameters);
+
+                var result = await httpClient.PostAsync($"{FB_PAGE_ID}/feed", encodedContent);
+                var msg = result.EnsureSuccessStatusCode();
+                return await msg.Content.ReadAsStringAsync();
+            }
+        }
+
+        [HttpPost]
+
+        public ActionResult ChangeRate(string new_Rate)
+        {
+            GlobalVariables.currentRate = new_Rate;
+            return new EmptyResult();
+        }
+
+        [HttpPost]
+        [Authorize(Policy = "readpolicy")]
+        public async Task<IActionResult> Order(string id)
+        {
+            var shoppingCart = (from s in _context.ShoppingCart
+                                where s.UserId == id
+                                && !s.Ordered
+                                select s).ToListAsync().Result ?? new List<ShoppingCart>();
+            var currentUser = await _userManager.GetUserAsync(User);
+            if (shoppingCart.Count() == 0)
+                shoppingCart.Add(new ShoppingCart());
+            if (currentUser.Id == shoppingCart.FirstOrDefault().UserId)
+            {
+                foreach (ShoppingCart itemInBag in shoppingCart)
+                    itemInBag.Ordered = true;
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index", new { id = id });
+            }
+            else
+                return RedirectToAction("Index", "Home");
+        }
     }
 }
 

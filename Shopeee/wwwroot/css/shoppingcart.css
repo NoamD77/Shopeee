@@ -3,7 +3,9 @@
     width: 100%;
     margin: 0;
     display: flex;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
 }
 
 .grid-table {
@@ -42,22 +44,41 @@ h4 {
     height: 180px;
     background-color: white;
     margin-left: 10px;
-    max-height: 180px;
+    /*    max-height: 180px;*/
     overflow: auto;
+    align-items: center;
     /*z-index: 999;*/
 }
+.total-price-header {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
 
-    .total-price > h4 {
-        padding-top: 13px;
-    }
-
-.fixed-warpper {
-    position: absolute;
-    top: 150px;
-    left: 1000px;
-    /*right:350px;*/
+}
+.total-price-header > h4 {
+    padding-top: 13px;
 }
 
+#toCurrencySelect {
+    border-radius: 10px;
+    height: 30px;
+    margin-top: 3px;
+    border: none;
+}
+
+#toCurrencySelect:focus{
+    outline: none;
+}
+
+#toCurrencySelect > option {
+    font-weight: 500;
+}
+/*.fixed-warpper {
+    position: absolute;
+    top: 150px;
+    left: 1000px;*/
+/*right:350px;*/
+/*}*/
 .checkout-button {
     padding: 10px 15px;
     margin-top: 10px;
@@ -110,10 +131,17 @@ h4 {
         font-size: 12px;
         text-align: left;
     }
+    .item-des > a {
+        text-decoration: none;
+        color: black;
+    }
+    .item-des > a > p{
+    text-align:left;
+    }
 
-        .item-des > p:first-child {
-            font-weight: 600;
-        }
+    .item-des > p {
+        font-weight: 600;
+    }
 
 .item-det {
     display: flex;
@@ -127,47 +155,75 @@ h4 {
         padding-right: 5px;
     }
 
-.del-btn {
-    width: 80px;
-    height: 150px;
-    display: flex;
-    align-items: start;
-    justify-content: center;
-    padding-top: 12px;
+.del-btn-con > form > button {
+    width: 25px;
+    aspect-ratio: auto;
+    background-color: transparent;
+    border: none;
+    margin-right: 10px;
+    cursor: pointer;
+    transition: 0.15s ease-in-out;
 }
 
-    .del-btn > a {
-        color: black;
+    .del-btn-con > form > button:hover {
+        color: rgb(190 0 0);
     }
+
+.del-btn-con {
+    height: 150px;
+    display: flex;
+    justify-content: flex-start;
+    padding-top: 10px;
+}
 
 .small {
     font-size: 12px;
     padding-bottom: 40px;
 }
-.footer-reco-itms{
-    align-items:center;
-    width:888px;
+
+/*.footer-reco-itms {
+    align-items: center;
+    width: 888px;
 }
-.row-rec-itm{
-    display:flex;
-    align-items:center;
-    
+
+.row-rec-itm {
+    display: flex;
+    align-items: center;
 }
+
 .recommended-item {
-    align-content:center;
-    margin:10px;
+    align-content: center;
+    margin: 10px;
 }
 
     .recommended-item > a > img {
         height: 100px;
         width: 80px;
     }
-
-.post-facebook{
-    padding-top:500px;
+*/
+.btns-checkout {
+    display: flex;
+    justify-content: space-evenly;
 }
+
+.post-facebook {
+    margin-top: 50px;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+
+    .post-facebook > button {
+        color: white;
+        background-color: rgb(12 100 189);
+        border-radius: 7px;
+        border-style: none;
+        padding: 0 30px;
+        /*    height: 30px;*/
+    }
 
 .bag-details {
     text-align: center;
     padding-top: 40px;
+    width: 100%;
 }

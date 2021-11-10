@@ -2,36 +2,20 @@
 @{
     ViewData["Title"] = "Administration Panel";
 }
+<head>
+    <link rel="stylesheet" href="~/css/administration.css" />
+</head>
 
-<h1>Administration Panel</h1>
-<a asp-action="Statistics">Statistics</a>
-<br />
-<a asp-action="UsersList">Users</a>
-@{
-    var NumOfUsers = Model.UserManager.Users.ToList().Count();
-    <p>Total Users: @NumOfUsers</p>
-}
-<br />
-<a asp-action="RolesList">Roles</a>
-@{
-    var NumOfRoles = Model.RoleManager.Roles.ToList().Count();
-    <p>Total Users: @NumOfRoles</p>
-}
-<br />
-<a asp-controller="Items" asp-action="Index">Items</a>
-@{
-    var NumOfItems = Model.context.Item.Count();
-    <p>Total Items: @NumOfItems</p>
-}
-<br />
-<a asp-controller="Brands" asp-action="Index">Brands</a>
-@{
-    var NumOfBrands = Model.context.Brand.Count();
-    <p>Total Items: @NumOfBrands</p>
-}
-<br />
-<a asp-controller="Branches" asp-action="Index">Branches</a>
-@{
-    var NumOfBranches = Model.context.Branch.Count();
-    <p>Total Items: @NumOfBranches</p>
-}
+
+
+<aside class="admin-sidebar">
+    <h1 class="admin-title">Admin Dashboard</h1>
+    <a asp-action="UsersList" class="admin-list-item">Users</a>
+    <a asp-action="RolesList" class="admin-list-item">Roles</a>
+    <a asp-controller="Items" asp-action="Index" class="admin-list-item">Items</a>
+    <a asp-controller="Brands" asp-action="Index" class="admin-list-item">Brands</a>
+    <a asp-controller="Branches" asp-action="Index" class="admin-list-item">Branches</a>
+</aside>
+<div class="statisticsview">
+    <partial name="Statistics" />
+</div>

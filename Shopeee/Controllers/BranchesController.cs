@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -25,7 +26,7 @@ namespace Shopeee.Controllers
             return View(await _context.Branch.ToListAsync());
         }
 
-        public PartialViewResult LiveSearch(string search, string type, string color, string gender, string brand)
+        public PartialViewResult LiveSearch(string search, string area, string city)
         {
             List<Branch> res = null;
             res = (
@@ -34,28 +35,19 @@ namespace Shopeee.Controllers
             ).ToList();
             if (search != null)
             {
-                res = res.Where(b => b.Name.Contains(search)).ToList();
+                res = res.Where(b => b.Name.ToLower().Contains(search.ToLower())).ToList();
             }
 
-            //if (type != null)
-            //{
-            //    res = res.Where(i => i.Type.ToString().ToLower().Equals(type.ToLower())).ToList();
-            //}
+            if (city != null)
+            {
+                res = res.Where(b => b.Name.ToLower().Contains(city.ToLower())).ToList();
+            }
 
-            //if (color != null)
-            //{
-            //    res = res.Where(i => i.Color.ToString().ToLower().Equals(color.ToLower())).ToList();
-            //}
+            if (area != null)
+            {
+                res = res.Where(i => i.Area.ToString().ToLower().Equals(area.ToLower())).ToList();
+            }
 
-            //if (gender != null)
-            //{
-            //    res = res.Where(i => i.Gender.ToString().ToLower().Equals(gender.ToLower())).ToList();
-            //}
-
-            //if (brand != null)
-            //{
-            //    res = res.Where(i => i.Brand.Name.ToString().ToLower().Equals(brand.ToLower())).ToList();
-            //}
 
             // Pass the List of results to a Partial View 
             return PartialView("_PartialBranchesView", res);
@@ -80,6 +72,7 @@ namespace Shopeee.Controllers
         }
 
         // GET: Branches/Create
+        [Authorize(Policy = "writepolicy")]
         public IActionResult Create()
         {
             return View();
@@ -90,6 +83,7 @@ namespace Shopeee.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "writepolicy")]
         public async Task<IActionResult> Create([Bind("Id,Name,City,Area,Location,Address,OpenHours,CloseHours")] Branch branch)
         {
             if (ModelState.IsValid)
@@ -102,6 +96,7 @@ namespace Shopeee.Controllers
         }
 
         // GET: Branches/Edit/5
+        [Authorize(Policy = "writepolicy")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -122,6 +117,7 @@ namespace Shopeee.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "writepolicy")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,City,Area,Location,Address,OpenHours,CloseHours")] Branch branch)
         {
             if (id != branch.Id)
@@ -153,6 +149,7 @@ namespace Shopeee.Controllers
         }
 
         // GET: Branches/Delete/5
+        [Authorize(Policy = "writepolicy")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -173,6 +170,7 @@ namespace Shopeee.Controllers
         // POST: Branches/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "writepolicy")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var branch = await _context.Branch.FindAsync(id);

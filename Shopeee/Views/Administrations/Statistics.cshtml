@@ -3,44 +3,17 @@
 }
 <head>
     <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-    <style>
-        #barChart {
-            font-size: 14px;
-        }
-
-        .bar {
-            fill: black;
-        }
-
-            .bar:hover {
-                fill: forestgreen;
-            }
-
-        .axis path,
-        .axis line {
-            fill: none;
-            stroke: #000;
-            shape-rendering: crispEdges;
-        }
-
-        .x.axis path {
-            display: none;
-        }
-    </style>
+    <link rel="stylesheet" href="~/css/administration.css" />
 </head>
-
-<h1>@ViewData["Title"]</h1>
-<svg id="barChart"></svg>
-<script src="~/js/BarChart.js"></script>
-<script type="text/javascript">
-    var width = 1000,
-        height = 600;
-    d3.json("StatisticsTest", (data) => BarChart(data, width, height));
-</script>
-<svg id="pieChart"></svg>
-<script src="~/js/PieChart.js"></script>
-<script type="text/javascript">
-    var width = 1000,
-        height = 600;
-    d3.json("StatisticsItemsByBrand", (data) => PieChart(data, width, height));
-</script>
+<div class="charts-container">
+        <svg id="barChart"></svg>
+        <script src="~/js/BarChart.js"></script>
+        <script type="text/javascript">            
+            d3.json("Administrations/StatisticsItemsinCarts", (data) => BarChart(data, 500, 400));
+        </script>
+        <svg id="pieChart"></svg>
+        <script src="~/js/PieChart.js"></script>
+        <script type="text/javascript">
+            d3.json("Administrations/StatisticsItemsByBrand", (data) => PieChart(data, 500, 400));
+        </script>
+</div>

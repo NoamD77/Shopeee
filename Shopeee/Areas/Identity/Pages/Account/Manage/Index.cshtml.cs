@@ -24,7 +24,10 @@ namespace Shopeee.Areas.Identity.Pages.Account.Manage
         }
 
         public string Username { get; set; }
-
+        public string Email { get; set; }
+        [DataType(DataType.Date)]
+        [Display(Name = "Birth Date")]
+        public DateTime BirthDate { get; set; }
         [TempData]
         public string StatusMessage { get; set; }
 
@@ -36,18 +39,28 @@ namespace Shopeee.Areas.Identity.Pages.Account.Manage
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
+            [Display(Name = "First Name")]
+            [Required]
+            public string FirstName { get; set; }
+            [Display(Name = "Last Name")]
+            [Required]
+            public string LastName { get; set; }
         }
 
         private async Task LoadAsync(ApplicationUser user)
         {
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-
+            var email = await _userManager.GetEmailAsync(user);
             Username = userName;
+            Email = email;
+            BirthDate = user.BirthDate;
 
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber
+                PhoneNumber = phoneNumber,
+                FirstName = user.FirstName,
+                LastName = user.LastName
             };
         }
 
@@ -87,7 +100,26 @@ namespace Shopeee.Areas.Identity.Pages.Account.Manage
                     return RedirectToPage();
                 }
             }
-
+            if (Input.FirstName != user.FirstName)
+            {
+                user.FirstName = Input.FirstName;
+                await _userManager.UpdateAsync(user);
+                if (Input.FirstName != user.FirstName)
+                {
+                    StatusMessage = "Unexpected error when trying to set first name.";
+                    return RedirectToPage();
+                }
+            }
+            if (Input.LastName != user.LastName)
+            {
+                user.LastName = Input.LastName;
+                await _userManager.UpdateAsync(user);
+                if (Input.LastName != user.LastName)
+                {
+                    StatusMessage = "Unexpected error when trying to set last name.";
+                    return RedirectToPage();
+                }
+            }
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
             return RedirectToPage();

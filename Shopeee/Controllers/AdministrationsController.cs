@@ -66,7 +66,7 @@ namespace Shopeee.Controllers
                 UserManager = UserManager,
                 RoleManager = RoleManager,
                 context = _context
-            }); ;
+            });
         }
 
 
@@ -306,7 +306,7 @@ namespace Shopeee.Controllers
         [Authorize(Policy = "writepolicy")]
         public IActionResult Statistics()
         {
-            return View(); ;
+            return View();
         }
 
         private bool UserExists(string id)
@@ -320,18 +320,30 @@ namespace Shopeee.Controllers
                 ModelState.AddModelError("", error.Description);
         }
 
-        public IActionResult StatisticsTest()
+        public IActionResult StatisticsItemsinCarts()
         {
             var ItemsList = _context.Item.ToList();
+            var itemidwithcount = (from s in _context.ShoppingCart
+                                   group s by s.ItemId into c
+                                   select new { ItemId = c.Key, Count = c.Count() });
             List<object> data = new List<object>();
             foreach (Item item in ItemsList)
             {
-                data.Add(new { Product = item.Name, Count = item.Price });
+                var ItemsInCarts = (from r in itemidwithcount
+                                    where r.ItemId == item.Id
+                                    select r).Count();
+                if (ItemsInCarts > 0)
+                {
+                    ItemsInCarts *= (from s in _context.ShoppingCart
+                                     where s.ItemId == item.Id
+                                     select s.Quantity).Sum();
+                    data.Add(new { Product = item.Name, Count = ItemsInCarts });
+                }
             }
             return Json(data);
         }
 
-        public IActionResult StatisticsItemsByBrand()
+        public ActionResult StatisticsItemsByBrand()
         {
             var BrandsList = _context.Brand.ToList();
             List<object> data = new List<object>();

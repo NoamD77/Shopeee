@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Shopeee.Areas.Identity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -10,11 +11,13 @@ namespace Shopeee.Models
     {
         [Key]
         public int CartID { get; set; }
-        
-        //One to One
-        [ForeignKey("User")]
-        public int UserId { get; set; }
-        public virtual User User { get; set; }
+
+        //[ForeignKey("User")]
+        //public int UserId { get; set; }
+        //public virtual User User { get; set; }
+        [ForeignKey("ApplicationUser")]
+        public string UserId { get; set; }
+        public virtual ApplicationUser User { get; set; }
 
         //One to Many
         [ForeignKey("Item")]
@@ -22,5 +25,6 @@ namespace Shopeee.Models
         public Item Item { get; set; }
 
         public int Quantity { get; set; }
+        public bool Ordered { get; set; }
     }
 }
