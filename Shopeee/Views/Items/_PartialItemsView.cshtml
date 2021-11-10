@@ -28,12 +28,12 @@
             <a asp-action="Details" asp-route-id="@item.Id">
                 <p>@Html.DisplayFor(modelItem => item.Name)</p>
             </a>
-            <input id="qty_@Html.DisplayFor(modelItem => item.Id)" type="number" class="form-control" min="1" max="@item.Quantity" value="1" />
+            <input id="qty_@Html.DisplayFor(modelItem => item.Id)" type="number" class="form-control-item" min="1" max="@item.Quantity" value="1" />
             <p class="price">$@Html.DisplayFor(modelItem => item.Price)</p>
             @*<p>@Html.DisplayFor(modelItem => item.Description)</p>*@
             @if (signed)
             {
-                <p><button onclick="addtoCart('@item.Id','@currentUser.Id')">Add to Cart</button></p>
+                <p><button class="btn-buy-now" onclick="addtoCart('@item.Id','@currentUser.Id')">Add to Cart</button></p>
             }
         </div>
     }

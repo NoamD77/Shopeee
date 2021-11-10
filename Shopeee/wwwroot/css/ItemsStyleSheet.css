@@ -1,5 +1,5 @@
 ﻿p {
-    margin: 1px
+width: 100%;
 }
 
 a {
@@ -13,14 +13,10 @@ a {
 }
 .card {
     display: grid;
-    /*    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);*/
     width: 310px;
-    /*aspect-ratio: auto;*/
     justify-items: center;
-    margin: auto;
     padding: 1px 1px;
     border-radius: 0;
-    /*    background-color: red;*/
 }
     .card > a > img {
         margin: auto;
@@ -28,36 +24,31 @@ a {
         aspect-ratio: auto;
         align-self: center;
     }
-/*.card {
-    display: inline-grid;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-    max-width: 200px;
-    margin: auto;
-    text-align: center;
-    font-family: arial;
-}
 
 .price {
     color: black;
     font-weight:bold;
-    font-size: 18px;
+    font-size: 25px;
 }
 
-.card button {
+.card > p > button {
     border: none;
     outline: 0;
     padding: 12px;
     color: green;
+    text-transform: uppercase;
     background-color: #FFF;
     text-align: center;
     cursor: pointer;
     width: 100%;
     font-size: 22px;
+    transition: 0.2s ease all;
 }
 
-.card button:hover {
-    opacity: 0.7;
-}*/
+.card > p > button:hover {
+    background-color: green;
+    color: white;
+}
 
 .livesearchtextbox {
     width: 100px;
@@ -67,4 +58,8 @@ a {
     width:100px;
     align-self:center;
     display: inline-grid;
+}
+
+.form-control-item{
+    width: 20%;
 }

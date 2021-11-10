@@ -6,67 +6,60 @@
 <head>
     <link rel="stylesheet" href="~/css/brands.css" />
 </head>
-<h1>Our Brands</h1>
-<body>
-    <p>
-        <a asp-action="Create">Create New</a>
-    </p>
-
-    <div class="brands-container">
-        @foreach (var item in Model)
-        {
-            <div class="brand-brand-item">
-                <h4>@Html.DisplayFor(modelItem => item.Name)</h4>
-                <img src="@Url.Content(Shopeee.Class.GlobalVariables.webImagesPath)@Html.DisplayFor(modelItem =>item.Logo)" />
-                <div class="brand-actions">
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                </div>
-            </div>
-        }
-    </div>
-</body>
-<div id="test">
-    <h1>Index</h1>
-
-    <p>
-        <a asp-action="Create">Create New</a>
-    </p>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Name)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Logo)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
+    <div id="con">
+        <h1>Our Brands</h1>
         <input id="txt_search" autocomplete="off" />
         <button id="btn_search">Search</button>
-        <tbody id="body">
+        <div class="brands-container">
             @foreach (var item in Model)
             {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Logo)
-                    </td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                    </td>
-                </tr>
+                <div class="brand-brand-item">
+                    <h4>@Html.DisplayFor(modelItem => item.Name)</h4>
+                    <img src="@Url.Content(Shopeee.Class.GlobalVariables.webImagesPath)@Html.DisplayFor(modelItem =>item.Logo)" />
+                </div>
             }
-        </tbody>
-    </table>
-</div>
+        </div>
+    </div>
+@*<div id="test">
+        <h1>Index</h1>
+
+        <p>
+            <a asp-action="Create">Create New</a>
+        </p>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Logo)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <input id="txt_search" autocomplete="off" />
+            <button id="btn_search">Search</button>
+            <tbody id="body">
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Logo)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>*@
 
 <script>
     presearch = null
@@ -89,7 +82,7 @@
             },
             datatype: "html",
             success: function (data) {
-                $('#test').html(data);
+                $('#con').html(data);
                 document.getElementById('txt_search').value = value
                 // Insert the returned search results html into the result element
                 //$('#con').empty();
