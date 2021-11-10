@@ -60,44 +60,6 @@ namespace Shopeee.Controllers
                 return RedirectToAction("Index", "Home");
         }
 
-        // GET: ShoppingCarts/Details/5
-        [Authorize(Policy = "readpolicy")]
-        public async Task<IActionResult> Details(int? id)
-        {
-
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-
-            var shoppingCart = await _context.ShoppingCart
-                .Include(s => s.Item)
-                .Include(s => s.User)
-                .FirstOrDefaultAsync(m => m.CartID == id);
-            var currentUser = await _userManager.GetUserAsync(User);
-            if (currentUser.Id == shoppingCart.UserId)
-            {
-                if (shoppingCart == null)
-                {
-                    return NotFound();
-                }
-
-                return View(shoppingCart);
-            }
-            else
-                return RedirectToAction("Index", "Home");
-        }
-
-        // GET: ShoppingCarts/Create
-        [Authorize(Policy = "readpolicy")]
-        public IActionResult Create()
-        {
-            ViewData["ItemId"] = new SelectList(_context.Item, "Id", "Name");
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "UserName");
-            return View();
-        }
-
         // POST: ShoppingCarts/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -136,99 +98,35 @@ namespace Shopeee.Controllers
             return RedirectToAction("Index", new { id = shoppingCart.UserId });
         }
 
-        [Authorize(Policy = "readpolicy")]
-        // GET: ShoppingCarts/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var shoppingCart = await _context.ShoppingCart.FindAsync(id);
-            var currentUser = await _userManager.GetUserAsync(User);
-            if (currentUser.Id == shoppingCart.UserId)
-            {
-                if (shoppingCart == null)
-                {
-                    return NotFound();
-                }
-                ViewData["ItemId"] = new SelectList(_context.Item, "Id", "Name", shoppingCart.ItemId);
-                ViewData["UserId"] = new SelectList(_context.Users, "Id", "UserName", shoppingCart.UserId);
-                return View(shoppingCart);
-            }
-            else
-                return RedirectToAction("Index", "Home");
-        }
-
-        // POST: ShoppingCarts/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
         [Authorize(Policy = "readpolicy")]
-        public async Task<IActionResult> Edit(int id, [Bind("CartID,UserId,ItemId,Quantity,Ordered")] ShoppingCart shoppingCart)
+        public async Task<IActionResult> IncreaseQuantity(int id)
         {
-            if (id != shoppingCart.CartID)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    var currentUser = await _userManager.GetUserAsync(User);
-                    if (currentUser.Id == shoppingCart.UserId)
-                    {
-                        _context.Update(shoppingCart);
-                        await _context.SaveChangesAsync();
-                    }
-                    else
-                        return RedirectToAction("Index", "Home");
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ShoppingCartExists(shoppingCart.CartID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["ItemId"] = new SelectList(_context.Item, "Id", "Id", shoppingCart.ItemId);
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "UserName", shoppingCart.UserId);
-            return View(shoppingCart);
-        }
-
-        // GET: ShoppingCarts/Delete/5
-        [Authorize(Policy = "readpolicy")]
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var shoppingCart = await _context.ShoppingCart
-                .Include(s => s.Item)
-                .Include(s => s.User)
-                .FirstOrDefaultAsync(m => m.CartID == id);
-            if (shoppingCart == null)
-            {
-                return NotFound();
-            }
+            var shoppingCart = await _context.ShoppingCart.FindAsync(id) ?? new ShoppingCart();
             var currentUser = await _userManager.GetUserAsync(User);
             if (currentUser.Id == shoppingCart.UserId)
             {
-                return View(shoppingCart);
+                shoppingCart.Quantity++;
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index", new { id = shoppingCart.UserId });
             }
-            else
-                return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpPost]
+        [Authorize(Policy = "readpolicy")]
+        public async Task<IActionResult> DecreaseQuantity(int id)
+        {
+            var shoppingCart = await _context.ShoppingCart.FindAsync(id) ?? new ShoppingCart();
+            var currentUser = await _userManager.GetUserAsync(User);
+            if (currentUser.Id == shoppingCart.UserId)
+            {
+                if (shoppingCart.Quantity > 1)
+                    shoppingCart.Quantity--;
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index", new { id = shoppingCart.UserId });
+            }
+            return RedirectToAction("Index", "Home");
         }
 
         // POST: ShoppingCarts/Delete/5
@@ -278,7 +176,6 @@ namespace Shopeee.Controllers
         }
 
         [HttpPost]
-
         public ActionResult ChangeRate(string new_Rate)
         {
             GlobalVariables.currentRate = new_Rate;

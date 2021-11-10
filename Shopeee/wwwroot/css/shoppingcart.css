@@ -49,15 +49,16 @@ h4 {
     align-items: center;
     /*z-index: 999;*/
 }
+
 .total-price-header {
     display: flex;
     justify-content: space-evenly;
     align-items: center;
+}
 
-}
-.total-price-header > h4 {
-    padding-top: 13px;
-}
+    .total-price-header > h4 {
+        padding-top: 13px;
+    }
 
 #toCurrencySelect {
     border-radius: 10px;
@@ -66,13 +67,13 @@ h4 {
     border: none;
 }
 
-#toCurrencySelect:focus{
-    outline: none;
-}
+    #toCurrencySelect:focus {
+        outline: none;
+    }
 
-#toCurrencySelect > option {
-    font-weight: 500;
-}
+    #toCurrencySelect > option {
+        font-weight: 500;
+    }
 /*.fixed-warpper {
     position: absolute;
     top: 150px;
@@ -131,13 +132,15 @@ h4 {
         font-size: 12px;
         text-align: left;
     }
+
     .item-des > a {
         text-decoration: none;
         color: black;
     }
-    .item-des > a > p{
-    text-align:left;
-    }
+
+        .item-des > a > p {
+            text-align: left;
+        }
 
     .item-des > p {
         font-weight: 600;
@@ -151,7 +154,7 @@ h4 {
 }
 
     .item-det > p {
-        font-size: 12px;
+        font-size: 16px;
         padding-right: 5px;
     }
 
@@ -227,3 +230,50 @@ h4 {
     padding-top: 40px;
     width: 100%;
 }
+
+
+/*
+.item-det {
+    display: flex;
+    margin: auto;
+    width: 220px;
+    justify-content: left;
+}
+
+    .item-det > p {
+        font-size: 12px;
+        padding-right: 5px;
+    }*/
+.qty-btns > form > button {
+    font-size: 16px;
+    padding-right: 5px;
+    aspect-ratio: auto;
+    background-color: transparent;
+    border: none;
+    margin-right: 10px;
+    cursor: pointer;
+    transition: 0.15s ease-in-out;
+}
+
+.qty-btns > form > button:hover {
+    color: #009A4D;
+    transform:translateY(-3px);
+}
+
+.qty-btn-con {
+    /*display: flex;*/
+    /*    justify-content: center;
+   align-items:center;*/
+}
+
+.qty-btns {
+    display: flex;
+}
+
+/*.qty-btn {
+    height: 50%;
+}
+
+.qty-btns > p {
+    font-size: 10px;
+}*/
