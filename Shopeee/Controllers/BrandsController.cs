@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using Shopeee.Class;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Shopeee.Controllers
 {
@@ -69,6 +70,7 @@ namespace Shopeee.Controllers
         }
 
         // GET: Brands/Create
+        [Authorize(Policy = "writepolicy")]
         public IActionResult Create()
         {
             return View();
@@ -79,6 +81,7 @@ namespace Shopeee.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "writepolicy")]
         public async Task<IActionResult> Create([Bind("Id,Name,Logo")] Brand brand, List<IFormFile> postedFiles)
         {
             if (ModelState.IsValid)
@@ -129,6 +132,7 @@ namespace Shopeee.Controllers
         }
 
         // GET: Brands/Edit/5
+        [Authorize(Policy = "writepolicy")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -149,6 +153,7 @@ namespace Shopeee.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "writepolicy")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Logo")] Brand brand, List<IFormFile> postedFiles)
         {
             if (id != brand.Id)
@@ -197,6 +202,7 @@ namespace Shopeee.Controllers
         }
 
         // GET: Brands/Delete/5
+        [Authorize(Policy = "writepolicy")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -217,10 +223,26 @@ namespace Shopeee.Controllers
         // POST: Brands/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "writepolicy")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var brand = await _context.Brand.FindAsync(id);
-            _context.Brand.Remove(brand);
+            var brandItems = (from i in _context.Item
+                              where i.BrandId == id
+                              select i).ToListAsync().Result;
+            foreach (Item item in brandItems)
+            {
+                var carts = (from s in _context.ShoppingCart
+                             where s.ItemId == item.Id
+                             select s).ToListAsync().Result;
+                foreach (ShoppingCart cart in carts)
+                {
+                    _context.ShoppingCart.Remove(cart);
+                }
+                _context.Item.Remove(item);
+            }
+            if (brand != null)
+                _context.Brand.Remove(brand);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
