@@ -15,6 +15,7 @@
 }
 
 <head>
+    <link rel="stylesheet" href="~/css/branches.css" />
     <link rel="stylesheet" href="~/css/items.css" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="~/js/ItemsSearch.js"></script>
@@ -22,7 +23,9 @@
 @if (adminuser)
 {
     <p>
-        <a asp-action="Create">Create New</a>
+        <a asp-action="Create">
+            <button type="button"> Create New Item</button>
+        </a>
     </p>
 }
 

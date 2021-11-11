@@ -14,6 +14,7 @@
     }
 }
 <head>
+
     <link rel="stylesheet" href="~/css/brands.css" />
 </head>
 <div id="con">
@@ -21,7 +22,9 @@
     @if (adminuser)
     {
         <p>
-            <a asp-action="Create">Create New</a>
+            <a asp-action="Create">
+                <button type="button" class="search-btn"> Create New Brand</button>
+            </a>
         </p>
     }
     <input id="txt_search" class="search-bar" autocomplete="off" />

@@ -75,7 +75,8 @@ namespace Shopeee.Areas.Identity.Pages.Account
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl = returnUrl ?? Url.Content("~/");
-
+            if (_signInManager.IsSignedIn(User))
+                return Page();
             if (ModelState.IsValid)
             {
                 // This doesn't count login failures towards account lockout
