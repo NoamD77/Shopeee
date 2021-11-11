@@ -18,14 +18,16 @@
     var roles = (List<IdentityRole>)ViewData["roles"];
     var Client = roles.Find(r => r.Name.Equals("Client"));
 }
-<link rel="stylesheet" href="~/css/site.css"/>
+<link rel="stylesheet" href="~/css/site.css" />
+<link rel="stylesheet" href="~/css/center-page.css" />
 <h1>@ViewData["Title"]</h1>
 
-    <div class="center-page">
-        <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <h4>Create a new account.</h4>
-            <hr />
-            <div asp-validation-summary="All" class="text-danger"></div>
+<div>
+    <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
+        <h4>Create a new account.</h4>
+        <hr />
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="flex-around">
             <div class="form-group">
                 <label asp-for="Input.FirstName"></label>
                 <input asp-for="Input.FirstName" class="form-control" />
@@ -36,6 +38,8 @@
                 <input asp-for="Input.LastName" class="form-control" />
                 <span asp-validation-for="Input.LastName" class="text-danger"></span>
             </div>
+        </div>
+        <div class="flex-around">
             <div class="form-group">
                 <label asp-for="Input.UserName"></label>
                 <input asp-for="Input.UserName" class="form-control" />
@@ -46,6 +50,8 @@
                 <input asp-for="Input.Email" class="form-control" />
                 <span asp-validation-for="Input.Email" class="text-danger"></span>
             </div>
+        </div>
+        <div class="flex-around">
             <div class="form-group">
                 <label asp-for="Input.BirthDate"></label>
                 <input asp-for="Input.BirthDate" class="form-control" />
@@ -56,6 +62,8 @@
                 <input asp-for="Input.PhoneNumber" class="form-control" />
                 <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
             </div>
+        </div>
+        <div class="flex-around">
             <div class="form-group">
                 <label asp-for="Input.Password"></label>
                 <input asp-for="Input.Password" class="form-control" />
@@ -66,26 +74,27 @@
                 <input asp-for="Input.ConfirmPassword" class="form-control" />
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
-            @if (AdminUser)
-            {
-                <div class="form-group">
-                    <label asp-for="Input.Role"></label>
-                    <select asp-for="Input.Role" class="form-control" asp-items='new SelectList(roles,"Id","Name")'>
-                    </select>
-                    <span asp-validation-for="Input.Role" class="text-danger"></span>
-                </div>
-                <button type="submit" class="btn btn-primary">Create</button>
-            }
-            else
-            {
-                <div class="form-group">
-                    <input asp-for="Input.Role" type="hidden" class="form-control" value="@Client.Id" />
-                    <span asp-validation-for="Input.Role" class="text-danger"></span>
-                </div>
-                <button type="submit" class="btn btn-primary">Register</button>
-            }
-        </form>
-    </div>
+        </div>
+        @if (AdminUser)
+        {
+            <div class="form-group">
+                <label asp-for="Input.Role"></label>
+                <select asp-for="Input.Role" class="form-control" asp-items='new SelectList(roles,"Id","Name")'>
+                </select>
+                <span asp-validation-for="Input.Role" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Create</button>
+        }
+        else
+        {
+            <div class="form-group">
+                <input asp-for="Input.Role" type="hidden" class="form-control" value="@Client.Id" />
+                <span asp-validation-for="Input.Role" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Register</button>
+        }
+    </form>
+</div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
