@@ -111,6 +111,7 @@ a.navbar-brand {
 
 .icon {
     transition: 0.2s;
+    cursor: pointer;
 }
 
     .icon:hover {
