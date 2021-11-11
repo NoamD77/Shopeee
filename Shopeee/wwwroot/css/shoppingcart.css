@@ -65,6 +65,7 @@ h4 {
     height: 30px;
     margin-top: 3px;
     border: none;
+    cursor: pointer;
 }
 
     #toCurrencySelect:focus {
@@ -149,7 +150,7 @@ h4 {
 .item-det {
     display: flex;
     margin: auto;
-    width: 220px;
+    width: 260px;
     justify-content: left;
 }
 
@@ -222,6 +223,7 @@ h4 {
         border-radius: 7px;
         border-style: none;
         padding: 0 30px;
+        cursor: pointer;
         /*    height: 30px;*/
     }
 

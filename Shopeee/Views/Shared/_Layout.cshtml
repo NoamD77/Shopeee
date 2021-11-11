@@ -18,19 +18,22 @@
             <div class="header-container">
                 <div class="blank-div">
                 </div>
-                <a class="navbar-brand" href="/Home/Index#home">Shopeee.</a>
+                <a class="navbar-brand" href="/Home/Index#home-video">Shopeee.</a>
                 <partial name="_LoginPartial" />
             </div>
         </nav>
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link" href="/Home/Index#home">Home</a>
+                <a class="nav-link" href="/Home/Index#home-video">Home</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" asp-area="" asp-controller="Items" asp-action="Index">Explore</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/Home/Index#our-brands-section">our brands</a>
+                <a class="nav-link" asp-area="" asp-controller="Brands" asp-action="Index">our brands</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" asp-area="" asp-controller="Branches" asp-action="Index">branches</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="/Home/Index#our-team-section">our team</a>

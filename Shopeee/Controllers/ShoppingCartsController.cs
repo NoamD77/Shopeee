@@ -65,7 +65,6 @@ namespace Shopeee.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [Authorize(Policy = "readpolicy")]
-        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("CartID,UserId,ItemId,Quantity,Ordered")] ShoppingCart shoppingCart)
         {
             var cartItem = (from s in _context.ShoppingCart

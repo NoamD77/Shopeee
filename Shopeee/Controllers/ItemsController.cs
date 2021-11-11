@@ -121,17 +121,6 @@ namespace Shopeee.Controllers
                 {
                     IFormFile newUploadedFile = postedFiles[0];
                     string ext = Path.GetExtension(newUploadedFile.FileName);
-                    //if (newUploadedFile.ContentType.ToLower().StartsWith("image/"))
-                    // Check whether the selected file is image
-                    //{
-                    //    byte[] b;
-                    //    using (BinaryReader br = new BinaryReader(newUploadedFile.OpenReadStream()))
-                    //    {
-                    //        b = br.ReadBytes((int)newUploadedFile.OpenReadStream().Length);
-                    //        // Convert the image in to bytes
-                    //    }
-                    //    Response.StatusCode = 200;
-                    //}
                     bool check = false;
                     using (var reader = new BinaryReader(newUploadedFile.OpenReadStream()))
                     {
@@ -289,22 +278,5 @@ namespace Shopeee.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-
-
-        /*
-        private StreamReader downloadPicture(string FileName)
-        {
-            FtpWebRequest request = (FtpWebRequest)WebRequest.Create("ftp://files.000webhost.com/public_html/images/" + FileName);
-            request.Credentials = new NetworkCredential("unthinkable-surface", "Aa123456");
-            request.Method = WebRequestMethods.Ftp.DownloadFile;
-
-            FtpWebResponse response = (FtpWebResponse)request.GetResponse();
-
-            Stream responseStream = response.GetResponseStream();
-            StreamReader reader = new StreamReader(responseStream);
-            return reader;
-            reader.Close();
-            response.Close();
-        }*/
     }
 }

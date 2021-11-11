@@ -32,14 +32,6 @@ namespace Shopeee.GlobalFunctions
             return _context.Item.Any(e => e.Id == id);
         }
 
-        //private byte[] ConvertToBytes(IFormFile image)
-        //{
-        //    byte[] CoverImageBytes = null;
-        //    BinaryReader reader = new BinaryReader(image.OpenReadStream());
-        //    CoverImageBytes = reader.ReadBytes((int)image.Length);
-        //    return CoverImageBytes;
-        //}
-
         public void saveImageLocally(IFormFile file)
         {
             string wwwPath = this.Environment.WebRootPath;

@@ -62,8 +62,7 @@
 
 .team-members {
     width: 100%;
-    display: flex;
-    justify-content: space-around;
+    column-count: 4;
 }
 
 .team-member > img {
@@ -114,11 +113,12 @@ body {
     display: flex;
     flex-direction: column-reverse;
 }
-.brand-item > img {
-    max-height:150px;
-    aspect-ratio: auto;
-}
+
+    .brand-item > img {
+        max-height: 150px;
+        aspect-ratio: auto;
+    }
 
 .home-video {
-    margin-top:70px;
+    margin-top: 70px;
 }

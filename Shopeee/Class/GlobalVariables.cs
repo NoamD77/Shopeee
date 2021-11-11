@@ -19,7 +19,7 @@ namespace Shopeee.Class
 
         public static readonly string FacebookPageID = "293533752446566";
 
-        public static readonly string FacebookPageToken = "EAAMs4FMOuNYBAIuAv0o18dxhkQQdBwbCdqz91ZAcZBZCaSD38t41FPpxbfVNCl5aGeN0JBs4S6FTazL3rzhw0M7sZBapJH1noBHlJudATJ8RFJgqqP7QhxlKyk0HL0mFCr3mxwGrJhRZBBG5exTBamYZAvZB05IL9HHMR0KbvOZCx0Ul5h1oGp7E";
+        public static readonly string FacebookPageToken = "EAAMs4FMOuNYBAFIBqAKXC7ejoVFagGh5ZBWM2dWL6uLynBvWAxcARptit6LXiO0ynXqk2M6HJ2lUlqGuLliZBzau2CIoyKPZAVpbQIExhnhSyGZBr9nwoLPG7KK7extC6Sj26ddTWkKDKm79gAGAqAbik1KOEAE5DIrdf9oJIx1aZAZAdeE5U1FQBGwnLQQGEZD";
 
         public static readonly string FacebookAPI = "https://graph.facebook.com/";
 
@@ -29,7 +29,7 @@ namespace Shopeee.Class
 
         public static readonly string ExchangeRateKey = "b0a24c542f3bc9d27f465bfa";
 
-        public static string baseRate = "USD";
+        public static readonly string baseRate = "USD";
 
         public static string currentRate = "USD";
     }

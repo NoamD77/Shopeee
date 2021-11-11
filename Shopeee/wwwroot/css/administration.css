@@ -3,11 +3,10 @@
 
 .admin-sidebar {
     position: fixed;
-    top: 0px;
-    left: 5px;
-    height: 700px;
-    width: 10%;
-    z-index: 999;
+    top: 16.3vh;
+    left: 0.1vw;
+    height: 70.3vh;
+    width: 16vw;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -40,21 +39,21 @@
     box-shadow: 0px 0px 20px rgb(136 136 136 / 0.2);
     border-radius: 30px;
     padding: 5px 5px;
-    height: 400px;
-    width: 500px;
-    margin-left: 250px;
+    height: 52.7vh;
+    width: 31.25vw;
+    margin-left: 19.5vw;
     margin-right: 50px;
-    margin-bottom: 61px;
-    margin-top: 50px;
+    margin-bottom: 8.7vh;
+    margin-top: 1rem;
 }
 
 #pieChart {
     box-shadow: 0px 0px 20px rgb(136 136 136 / 0.2);
     border-radius: 30px;
     padding: 30px 25px;
-    margin-top: 50px;
-    height: 400px;
-    width: 500px;
+    margin-top: 1rem;
+    height: 52.7vh;
+    width:31.25vw;
 }
 
 .bar {
@@ -95,5 +94,5 @@
 }
 
 .admin-title {
-    font-size: 25px;
+    font-size: 2vw;
 }
