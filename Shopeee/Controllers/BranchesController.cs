@@ -174,7 +174,8 @@ namespace Shopeee.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var branch = await _context.Branch.FindAsync(id);
-            _context.Branch.Remove(branch);
+            if (branch != null)
+                _context.Branch.Remove(branch);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

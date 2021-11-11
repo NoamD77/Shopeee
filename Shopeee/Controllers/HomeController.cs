@@ -53,28 +53,6 @@ namespace Shopeee.Controllers
             return View(Viewbrands);
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        public IActionResult AboutUs()
-        {
-            return View();
-        }
-        public IActionResult Explore()
-        {
-            return View();
-        }
-        public IActionResult Sales()
-        {
-            return View();
-        }
-        public IActionResult Contact()
-        {
-            return View();
-        }
-
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

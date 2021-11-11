@@ -11,20 +11,16 @@ namespace Shopeee.Data
 {
     public class ShopeeeContext : IdentityDbContext<ApplicationUser>
     {
-        public ShopeeeContext (DbContextOptions<ShopeeeContext> options)
+        public ShopeeeContext(DbContextOptions<ShopeeeContext> options)
             : base(options)
         {
         }
-
-        public DbSet<Shopeee.Models.User> User { get; set; }
 
         public DbSet<Shopeee.Models.Brand> Brand { get; set; }
 
         public DbSet<Shopeee.Models.Item> Item { get; set; }
 
         public DbSet<Shopeee.Models.Branch> Branch { get; set; }
-
-        public DbSet<Shopeee.Models.Permissions> Permissions { get; set; }
 
         public DbSet<Shopeee.Models.ShoppingCart> ShoppingCart { get; set; }
     }
