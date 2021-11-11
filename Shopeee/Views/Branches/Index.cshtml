@@ -1,7 +1,16 @@
 ﻿@model IEnumerable<Shopeee.Models.Branch>
+@inject SignInManager<Shopeee.Areas.Identity.ApplicationUser> signInManager;
+@inject UserManager<Shopeee.Areas.Identity.ApplicationUser> userManager;
 
 @{
     ViewData["Title"] = "Index";
+    var signed = signInManager.IsSignedIn(User);
+    var adminuser = false;
+    if (signed)
+    {
+        var currentUser = await userManager.GetUserAsync(User);
+        adminuser = await userManager.IsInRoleAsync(currentUser, "Administrator");
+    }
 }
 <head>
     <link rel="stylesheet" href="~/css/branches.css" />
@@ -11,13 +20,18 @@
 
 <div class="body">
     <h1>Our Branches</h1>
-    <a asp-action="Create">
-        <button type="button"> Create New Branch</button>
-    </a>
-        <div class="form-group center-input">
-            <label class="control-label">Search</label>
-            <input class="form-control search-bar" id="livesearchtextbox" name="livesearchtextbox" placeholder="Search for branches" autocomplete="off" data-request-url="@Url.Action("LiveSearch", "Branches")" />
-        </div>
+    @if (adminuser)
+    {
+        <p>
+            <a asp-action="Create">
+                <button type="button"> Create New Branch</button>
+            </a>
+        </p>
+    }
+    <div class="form-group center-input">
+        <label class="control-label">Search</label>
+        <input class="form-control search-bar" id="livesearchtextbox" name="livesearchtextbox" placeholder="Search for branches" autocomplete="off" data-request-url="@Url.Action("LiveSearch", "Branches")" />
+    </div>
     <div class="filter-group">
         <div class="form-group">
             <label class="control-label">Area</label>
