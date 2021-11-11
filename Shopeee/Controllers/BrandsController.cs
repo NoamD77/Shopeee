@@ -182,7 +182,8 @@ namespace Shopeee.Controllers
                         brand.Logo = tempbrand.Logo;
                         _context.Entry(tempbrand).State = EntityState.Detached;
                     }
-                    _context.Update(brand);
+                    if (brand != null)
+                        _context.Update(brand);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)

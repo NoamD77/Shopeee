@@ -1,30 +1,30 @@
 ﻿@model Shopeee.Models.Brand
-
+@using Shopeee.Class;
 @{
     ViewData["Title"] = "Delete";
 }
 
-<h1>Delete</h1>
+<head>
+    <link rel="stylesheet" href="~/css/ItemDetailsStyleSheet.css" />
+</head>
+
 
 <h3>Are you sure you want to delete this?</h3>
 <div>
-    <h4>Brand</h4>
     <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Logo)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Logo)
-        </dd>
-    </dl>
-    
+    <div class="container">
+
+        <div class="left">
+            <img src="@Url.Content(GlobalVariables.webImagesPath)@Html.DisplayFor(modelItem =>Model.Logo)" style="width:100%" />
+        </div>
+
+
+        <div class="right">
+            <p><h1>@Html.DisplayFor(modelItem => Model.Name)</h1></p>
+        </div>
+
+    </div>
+
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
