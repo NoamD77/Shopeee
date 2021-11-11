@@ -52,6 +52,7 @@ namespace Shopeee.Controllers
         }
 
         // GET: Brands/Details/5
+        [Authorize(Policy = "writepolicy")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
