@@ -3,57 +3,73 @@
 @{
     ViewData["Title"] = "Edit";
 }
+<link rel="stylesheet" href="~/css/ItemDetailsStyleSheet.css" />
 <link rel="stylesheet" href="~/css/center-page.css" />
-<h1>Edit Branch</h1>
-<hr />
-<div>
+
+
+
+<form asp-action="Edit">
     <div>
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+        <h1>Edit Branch</h1>
+        <hr />
+        <div class="container">
+            <div class="left">
+                @{
+                    var googleApiKey = "AIzaSyByIhhF4FzYO5yVwEJxAEfeEnWNd_EQ1FA";
+                    var googleMapSrc = "https://www.google.com/maps/embed/v1/place?key=" + googleApiKey + "&q=place_id:" + Model.Location;
+                    <iframe width="450"
+                            height="300"
+                            style="border:0"
+                            loading="lazy"
+                            allowfullscreen
+                            src=@googleMapSrc>
+                    </iframe>
+                }
             </div>
-            <div class="form-group">
-                <label asp-for="City" class="control-label"></label>
-                <input asp-for="City" class="form-control" />
-                <span asp-validation-for="City" class="text-danger"></span>
+            <div class="right">
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Name)
+                </dt>
+                <dd class="col-sm-10">
+                    <input asp-for="Name" class="form-control" />
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.City)
+                </dt>
+                <dd class="col-sm-10">
+                    <input asp-for="City" class="form-control" />
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Area)
+                </dt>
+                <dd class="col-sm-10">
+                    <input asp-for="Area" class="form-control" />
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Location)
+                </dt>
+                <dd class="col-sm-10">
+                    <input asp-for="Location" class="form-control" />
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Address)
+                </dt>
+                <dd class="col-sm-10">
+                    <input asp-for="Address" class="form-control" />
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.WorkHours)
+                </dt>
+                <dt class="col-sm-10">
+                    <input asp-for="OpenHours" class="form-control" />
+                    <input asp-for="CloseHours" class="form-control" />
+                </dt>
+                </dl>
             </div>
-            <div class="form-group">
-                <label asp-for="Area" class="control-label"></label>
-                <input asp-for="Area" class="form-control" />
-                <span asp-validation-for="Area" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Location" class="control-label"></label>
-                <input asp-for="Location" class="form-control" />
-                <span asp-validation-for="Location" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Address" class="control-label"></label>
-                <input asp-for="Address" class="form-control" />
-                <span asp-validation-for="Address" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="OpenHours" class="control-label"></label>
-                <input asp-for="OpenHours" class="form-control" />
-                <span asp-validation-for="OpenHours" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CloseHours" class="control-label"></label>
-                <input asp-for="CloseHours" class="form-control" />
-                <span asp-validation-for="CloseHours" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-primary" />
+        | <a asp-action="Index">Back to List</a>
+    </div>
+</form>

@@ -1,22 +1,22 @@
 ﻿@model IEnumerable<Shopeee.Models.Branch>
+@inject SignInManager<Shopeee.Areas.Identity.ApplicationUser> signInManager;
+@inject UserManager<Shopeee.Areas.Identity.ApplicationUser> userManager;
+
+@{
+    var signed = signInManager.IsSignedIn(User);
+    var adminuser = false;
+    if (signed)
+    {
+        var currentUser = await userManager.GetUserAsync(User);
+        adminuser = await userManager.IsInRoleAsync(currentUser, "Administrator");
+    }
+}
 
 <table class="table table-hover table-bordered table-striped">
     <thead>
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.City)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Area)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Address)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.WorkHours)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Location)
@@ -27,41 +27,34 @@
     <tbody>
         @foreach (var item in Model)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.City)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Area)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Address)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.WorkHours)
-            </td>
-            <td>
-                @{
-                    var googleApiKey = "AIzaSyByIhhF4FzYO5yVwEJxAEfeEnWNd_EQ1FA";
-                    var googleMapSrc = "https://www.google.com/maps/embed/v1/place?key=" + googleApiKey + "&q=place_id:" + item.Location;
-                    <iframe width="450"
-                            height="300"
-                            style="border:0"
-                            loading="lazy"
-                            allowfullscreen
-                            src=@googleMapSrc>
-                    </iframe>
-                }
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @{
+                        var googleApiKey = "AIzaSyByIhhF4FzYO5yVwEJxAEfeEnWNd_EQ1FA";
+                        var googleMapSrc = "https://www.google.com/maps/embed/v1/place?key=" + googleApiKey + "&q=place_id:" + item.Location;
+                        <iframe width="450"
+                                height="300"
+                                style="border:0"
+                                loading="lazy"
+                                allowfullscreen
+                                src=@googleMapSrc>
+                        </iframe>
+                    }
+                </td>
+                <td>
+                    @if (adminuser)
+                    {
+                        <div>
+                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        </div>
+                    }
+                    <a asp-action="Details" asp-route-id="@item.Id"> Details </a>
+                </td>
+            </tr>
         }
     </tbody>
 </table>

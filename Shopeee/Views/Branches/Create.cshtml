@@ -4,12 +4,13 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<link rel="stylesheet" href="~/css/center-page.css" />
 
-<h4>Branch</h4>
+<h1>Create Branch</h1>
+
 <hr />
-<div class="row">
-    <div class="col-md-4">
+<div>
+    <div style="width:100%;">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -27,34 +28,35 @@
                 <input asp-for="Area" class="form-control" />
                 <span asp-validation-for="Area" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Location" class="control-label"></label>
-                <input asp-for="Location" class="form-control" />
-                <span asp-validation-for="Location" class="text-danger"></span>
+            <div class="flex-around">
+                <div class="form-group">
+                    <label asp-for="Location" class="control-label"></label>
+                    <input asp-for="Location" class="form-control" />
+                    <span asp-validation-for="Location" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Address" class="control-label"></label>
+                    <input asp-for="Address" class="form-control" />
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Address" class="control-label"></label>
-                <input asp-for="Address" class="form-control" />
-                <span asp-validation-for="Address" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="OpenHours" class="control-label"></label>
-                <input asp-for="OpenHours" class="form-control" />
-                <span asp-validation-for="OpenHours" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CloseHours" class="control-label"></label>
-                <input asp-for="CloseHours" class="form-control" />
-                <span asp-validation-for="CloseHours" class="text-danger"></span>
+            <div class="flex-around">
+                <div class="form-group">
+                    <label asp-for="OpenHours" class="control-label"></label>
+                    <input asp-for="OpenHours" class="form-control" />
+                    <span asp-validation-for="OpenHours" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CloseHours" class="control-label"></label>
+                    <input asp-for="CloseHours" class="form-control" />
+                    <span asp-validation-for="CloseHours" class="text-danger"></span>
+                </div>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
+                | <a asp-action="Index">Back to List</a>
             </div>
         </form>
     </div>
 </div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
+ 
