@@ -1,11 +1,17 @@
 ﻿@model Shopeee.Models.Item
 @using Shopeee.Class;
+@inject SignInManager<Shopeee.Areas.Identity.ApplicationUser> signInManager;
 @inject UserManager<Shopeee.Areas.Identity.ApplicationUser> userManager;
 
 @{
     ViewData["Title"] = "Details";
-    var currentUser = await userManager.GetUserAsync(User);
-    var adminuser = await userManager.IsInRoleAsync(currentUser, "Administrator");
+    var signed = signInManager.IsSignedIn(User);
+    var adminuser = false;
+    if (signed)
+    {
+        var currentUser = await userManager.GetUserAsync(User);
+        adminuser = await userManager.IsInRoleAsync(currentUser, "Administrator");
+    }
 }
 
 <head>
@@ -47,7 +53,7 @@
 </div>
 
 
-        
+
 <div>
     @if (adminuser)
     {
