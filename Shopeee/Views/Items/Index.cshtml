@@ -1,7 +1,17 @@
 ﻿@model IEnumerable<Shopeee.Models.Item>
+@using Shopeee.Class;
+@inject SignInManager<Shopeee.Areas.Identity.ApplicationUser> signInManager;
+@inject UserManager<Shopeee.Areas.Identity.ApplicationUser> userManager;
 
 @{
     ViewData["Title"] = "Index";
+    var signed = signInManager.IsSignedIn(User);
+    var adminuser = false;
+    if (signed)
+    {
+        var currentUser = await userManager.GetUserAsync(User);
+        adminuser = await userManager.IsInRoleAsync(currentUser, "Administrator");
+    }
 }
 
 <head>
@@ -9,10 +19,12 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="~/js/ItemsSearch.js"></script>
 </head>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+@if (adminuser)
+{
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+}
 
 <p>
     <input id="livesearchtextbox" name="livesearchtextbox" placeholder="Search" autocomplete="off" data-request-url="@Url.Action("LiveSearch", "Items")" />

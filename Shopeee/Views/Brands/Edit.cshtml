@@ -1,36 +1,45 @@
 ﻿@model Shopeee.Models.Brand
-
+@using Shopeee.Class;
 @{
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<head>
+    <link rel="stylesheet" href="~/css/ItemDetailsStyleSheet.css" />
+</head>
 
-<h4>Brand</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div>
-                <label asp-for="TempPicture" class="control-label"></label>
-                <input asp-for="TempPicture" class="form-control" type="file" name="postedFiles" accept=".jpg, .jpeg, .webp, .bmp, .png" />
-                <span asp-validation-for="TempPicture" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+
+
+
+<form asp-action="Edit" enctype="multipart/form-data">
+    <div class="container">
+
+        <div class="left">
+            <img src="@Url.Content(GlobalVariables.webImagesPath)@Html.DisplayFor(modelItem =>Model.Logo)" style="width:100%" />
+        </div>
+
+        <div class="right">
+            <p><h1>@Html.DisplayFor(modelItem => Model.Name)</h1></p>
+
+            <table>
+                <tr>
+                    <td class="td_space"><div class="title">@Html.DisplayNameFor(modelItem => Model.Name)</div></td>
+                    <td>
+                        <input asp-for="Name" class="form-control" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="td_space"><div class="title">@Html.DisplayNameFor(modelItem => Model.Logo)</div></td>
+                    <td>
+                        <input asp-for="TempPicture" class="form-control" type="file" name="postedFiles" accept=".jpg, .jpeg, .webp, .bmp, .png" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-primary" />
+        <a asp-action="Index">Back to List</a>
+    </div>
+</form>

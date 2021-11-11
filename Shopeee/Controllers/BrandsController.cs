@@ -52,6 +52,7 @@ namespace Shopeee.Controllers
         }
 
         // GET: Brands/Details/5
+        [Authorize(Policy = "writepolicy")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -182,7 +183,8 @@ namespace Shopeee.Controllers
                         brand.Logo = tempbrand.Logo;
                         _context.Entry(tempbrand).State = EntityState.Detached;
                     }
-                    _context.Update(brand);
+                    if (brand != null)
+                        _context.Update(brand);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)

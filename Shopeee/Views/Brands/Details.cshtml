@@ -1,30 +1,39 @@
 ﻿@model Shopeee.Models.Brand
-
+@using Shopeee.Class;
 @{
     ViewData["Title"] = "Details";
 }
+<head>
+    <link rel="stylesheet" href="~/css/ItemDetailsStyleSheet.css" />
+</head>
+
 
 <h1>Details</h1>
 
-<div>
-    <h4>Brand</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Logo)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Logo)
-        </dd>
-    </dl>
+
+<div class="container">
+
+    <div class="left">
+        <img src="@Url.Content(GlobalVariables.webImagesPath)@Html.DisplayFor(modelItem =>Model.Logo)" style="width:100%" />
+    </div>
+
+
+    <div class="right">
+        <p><h1>@Html.DisplayFor(modelItem => Model.Name)</h1></p>
+        <table>
+            <tr>
+                <td class="td_space"><div class="title">@Html.DisplayNameFor(model => model.Name)</div></td>
+                <td>@Html.DisplayFor(model => model.Name)</td>
+            </tr>
+        </table>
+    </div>
+
 </div>
+
+
+
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Delete" asp-route-id="@Model.Id">Delete</a> |
     <a asp-action="Index">Back to List</a>
 </div>
