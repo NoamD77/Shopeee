@@ -35,7 +35,6 @@ namespace Shopeee.Models
 
         }
 
-        //public ICollection<Item> ItemStock { get; set; }
 
     }
 }

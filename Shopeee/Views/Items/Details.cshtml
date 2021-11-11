@@ -13,12 +13,10 @@
 
     <div class="left">
         <img src="@Url.Content(GlobalVariables.webImagesPath)@Html.DisplayFor(modelItem =>Model.Picture)" style="width:100%" />
-        @*<img src="~/imgs/@Html.DisplayFor(modelItem =>Model.Picture)" style="width:100%" onmousemove="zoomIn(event)" onmouseout="zoomOut()" />*@
     </div>
 
 
     <div class="right">
-        @*<div id="overlay" onmousemove="zoomIn(event)"></div>*@
         <p><h1>@Html.DisplayFor(modelItem => Model.Name)</h1></p>
         <p class="price">$@Html.DisplayFor(modelItem => Model.Price)</p>
         <table>
@@ -42,67 +40,6 @@
 <div>
     <p>@Html.DisplayFor(modelItem => Model.Description)</p>
 </div>
-
-@*<div>
-        <h4>Item</h4>
-        <hr />
-        <dl class="row">
-            <dt class = "col-sm-2">
-                @Html.DisplayNameFor(model => model.Name)
-            </dt>
-            <dd class = "col-sm-10">
-                @Html.DisplayFor(model => model.Name)
-            </dd>
-            <dt class = "col-sm-2">
-                @Html.DisplayNameFor(model => model.Price)
-            </dt>
-            <dd class = "col-sm-10">
-                @Html.DisplayFor(model => model.Price)
-            </dd>
-            <dt class = "col-sm-2">
-                @Html.DisplayNameFor(model => model.Quantity)
-            </dt>
-            <dd class = "col-sm-10">
-                @Html.DisplayFor(model => model.Quantity)
-            </dd>
-            <dt class = "col-sm-2">
-                @Html.DisplayNameFor(model => model.Picture)
-            </dt>
-            <dd class = "col-sm-10">
-                @Html.DisplayFor(model => model.Picture)
-            </dd>
-            <dt class = "col-sm-2">
-                @Html.DisplayNameFor(model => model.Description)
-            </dt>
-            <dd class = "col-sm-10">
-                @Html.DisplayFor(model => model.Description)
-            </dd>
-            <dt class = "col-sm-2">
-                @Html.DisplayNameFor(model => model.Gender)
-            </dt>
-            <dd class = "col-sm-10">
-                @Html.DisplayFor(model => model.Gender)
-            </dd>
-            <dt class = "col-sm-2">
-                @Html.DisplayNameFor(model => model.Type)
-            </dt>
-            <dd class = "col-sm-10">
-                @Html.DisplayFor(model => model.Type)
-            </dd>
-            <dt class = "col-sm-2">
-                @Html.DisplayNameFor(model => model.Color)
-            </dt>
-            <dd class = "col-sm-10">
-                @Html.DisplayFor(model => model.Color)
-            </dd>
-            <dt class = "col-sm-2">
-                @Html.DisplayNameFor(model => model.Brand)
-            </dt>
-            <dd class = "col-sm-10">
-                @Html.DisplayFor(model => model.Brand.Name)
-            </dd>
-        </dl>
-    </div>*@
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>

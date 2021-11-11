@@ -4,13 +4,13 @@
 }
 
 <head>
-    @*<script src="~/js/APIfunctions.js"></script>*@
     <link rel="stylesheet" href="~/css/home.css" />
     <script src="https://use.fontawesome.com/6e16709d88.js"></script>
 </head>
 <body class="home-body" id="home-video">
     <section >
         <h2>#DRESS_YOUR_DAY</h2>
+        <canvas id="myCanvas"></canvas>
         <video width="800" height="400" autoplay loop>
             <source src="~/video/homepagevideo.mp4" type="video/mp4">
             Your browser does not support the video tag.
@@ -71,4 +71,12 @@
             </li>
         </ul>
     </section>
+
+    <script>
+        var canvas = document.getElementById("myCanvas");
+        var ctx = canvas.getContext("2d");
+        ctx.fillStyle = "#F0F0F0";
+        ctx.fillRect(0, 0, 1200, 10);
+    </script>
+
 </body>
