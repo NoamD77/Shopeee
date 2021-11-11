@@ -3,26 +3,25 @@
 @{
     ViewData["Title"] = "Create";
 }
-
-<h1>Create</h1>
-
-<h4>Item</h4>
+<link rel="stylesheet" href="~/css/center-page.css" />
+<h1>Create New Item</h1>
 <hr />
-<div class="row">
-    <div class="col-md-4">
+<div>
+    <div>
         @if (ViewBag.ErrorMessage != null)
         {
             <div class="alert alert-danger">
                 <p>@ViewBag.ErrorMessage</p>
             </div>
         }
-            <form asp-action="Create" enctype="multipart/form-data">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-group">
-                    <label asp-for="Name" class="control-label"></label>
-                    <input asp-for="Name" class="form-control" />
-                    <span asp-validation-for="Name" class="text-danger"></span>
-                </div>
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="flex">
                 <div class="form-group">
                     <label asp-for="Price" class="control-label"></label>
                     <input asp-for="Price" class="form-control" />
@@ -33,16 +32,18 @@
                     <input asp-for="Quantity" class="form-control" />
                     <span asp-validation-for="Quantity" class="text-danger"></span>
                 </div>
-                <div class="form-group">
-                    <label asp-for="TempPicture" class="control-label"></label>
-                    <input asp-for="TempPicture" class="form-control" type="file" name="postedFiles" accept=".jpg, .jpeg, .webp, .bmp, .png" />
-                    <span asp-validation-for="TempPicture" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Description" class="control-label"></label>
-                    <input asp-for="Description" class="form-control" />
-                    <span asp-validation-for="Description" class="text-danger"></span>
-                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="TempPicture" class="control-label"></label>
+                <input asp-for="TempPicture" class="form-control" type="file" name="postedFiles" accept=".jpg, .jpeg, .webp, .bmp, .png" />
+                <span asp-validation-for="TempPicture" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="flex">
                 <div class="form-group">
                     <label asp-for="Gender" class="control-label"></label>
                     <select asp-for="Gender" asp-items="Html.GetEnumSelectList<GenderType>()" class="form-control"></select>
@@ -62,11 +63,12 @@
                     <label asp-for="BrandId" class="control-label"></label>
                     <select asp-for="BrandId" class="form-control" asp-items="ViewBag.BrandId"></select>
                 </div>
-                <div class="form-group">
-                    <input type="submit" value="Create" class="btn btn-primary" />
-                </div>
-            </form>
-        </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
 </div>
 
 <div>

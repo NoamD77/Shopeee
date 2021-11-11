@@ -9,11 +9,11 @@
         <svg id="barChart"></svg>
         <script src="~/js/BarChart.js"></script>
         <script type="text/javascript">            
-            d3.json("Administrations/StatisticsItemsinCarts", (data) => BarChart(data, 500, 400));
+            d3.json("Administrations/StatisticsItemsinCarts", (data) => BarChart(data, 400, 300));
         </script>
         <svg id="pieChart"></svg>
         <script src="~/js/PieChart.js"></script>
         <script type="text/javascript">
-            d3.json("Administrations/StatisticsItemsByBrand", (data) => PieChart(data, 500, 400));
+            d3.json("Administrations/StatisticsItemsByBrand", (data) => PieChart(data, 400, 300));
         </script>
 </div>
