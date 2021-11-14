@@ -19,7 +19,7 @@ namespace Shopeee.Class
 
         public static readonly string FacebookPageID = "293533752446566";
 
-        public static readonly string FacebookPageToken = "EAAMs4FMOuNYBAFIBqAKXC7ejoVFagGh5ZBWM2dWL6uLynBvWAxcARptit6LXiO0ynXqk2M6HJ2lUlqGuLliZBzau2CIoyKPZAVpbQIExhnhSyGZBr9nwoLPG7KK7extC6Sj26ddTWkKDKm79gAGAqAbik1KOEAE5DIrdf9oJIx1aZAZAdeE5U1FQBGwnLQQGEZD";
+        public static readonly string FacebookPageToken = "EAAMs4FMOuNYBAKZCKfCjCC745elppcL0ScY9iIDVv5HlMUWnKTcZA9ZCud1MnaUVZCx3JlJZAKSfOjVOZBvymvtZCyFgcneCwGQTSdZCnlg6mGIwURBiAN247cEtkSbpGnUdgUdiz3W1gMJpGUBlemYrCK1Ukb1ZAOHMhZBmA4FJ3S7Upe3FJQZAg37";
 
         public static readonly string FacebookAPI = "https://graph.facebook.com/";
 
